@@ -1,0 +1,58 @@
+#layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.contenido {
+  flex-grow: 1;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.menu {
+  display: none;
+  cursor: pointer;
+}
+
+/* Transición base */
+.Slide {
+  transition: transform 0.3s ease-in-out;
+}
+
+@media (max-width: 430px) {
+  #layout {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .menu {
+    display: block;
+    position: fixed;
+    left: 1rem;
+    top: 0.5rem;
+    z-index: 100;
+  }
+
+  /* Sidebar oculto por defecto */
+  .Slide {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 99;
+  }
+
+  /* Sidebar visible */
+  .Slide.Open {
+    transform: translateX(0);
+  }
+
+  .contenido {
+    flex-grow: 1;
+    height: 100vh;
+    overflow: hidden;
+  }
+}

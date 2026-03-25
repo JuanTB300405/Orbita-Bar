@@ -1,0 +1,21 @@
+
+.buscador-container {
+    padding: 7px;
+    width: 500px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    background-color: white;
+    gap: 10px;
+    border-radius: 10px;
+}
+
+.buscadors {
+    height: 40px;
+    width: 500px;
+    background-color: white;
+    color: black;
+    padding-left: 10px;
+    border: none
+}
+

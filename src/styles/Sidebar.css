@@ -1,0 +1,147 @@
+.sidebar {
+  width: 320px;
+  height: 100vh;
+  background: #c7db9c;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.sidebar img {
+  width: 290px;
+  height: 110px;
+  box-shadow: 0 0 10px #4e4e4e;
+  margin-bottom: 20px;
+}
+
+.sidebar nav {
+  text-align: center;
+  width: 100%;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.sidebar li {
+  margin: 0.4rem 8px;
+  width: 94%;
+  text-align: left;
+  display: flex;
+  border: 1px solid #827b7b;
+}
+
+.sidebar svg {
+  flex-direction: row;
+  padding-right: 5px;
+  color: black;
+}
+
+.sidebar a {
+  width: 80%;
+  font-family: "Nova Square", sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: 25px;
+}
+
+.sidebar li:hover {
+  transform: scale(1.05);
+  background-color: #fff0bd;
+}
+
+.sidebar button {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  border: 2px solid #338936;
+  background-color: #ffffff;
+  color: #338936;
+  padding: 5px;
+  font-size: 20px;
+  outline: none;
+}
+
+.logout:hover {
+  transform: scale(1.05);
+  background-color: #338936;
+  color: white;
+}
+
+.logout:hover svg {
+  stroke: white;
+}
+
+/* Estilos del modal */
+
+.modal-s {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(90, 90, 90, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 99999;
+}
+
+.modal-contenedor-s {
+  width: 620px;
+  height: 240px;
+  background-color: #c7db9c;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 20px;
+  z-index: 99999;
+}
+
+.modal-contenedor-s h2 {
+  width: 500px;
+  height: 50%;
+  padding: 0;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 30px;
+  text-align: center;
+  padding-left: 50px;
+  color: #333;
+}
+
+#botoness-s {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  text-align: center;
+}
+
+#botoness-s .boton.rojo,
+#botoness-s .boton.verde {
+  font-size: 25px;
+}
+
+@media (max-width: 430px) {
+  .sidebar img {
+    margin-top: 4rem;
+  }
+
+  .modal-contenedor-s {
+    width: 90%;
+  }
+
+  .modal-contenedor-s h2 {
+    width: 100%;
+    padding-left: 10px;
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,504 @@
+.rata {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+  overflow-y: auto; /* 🔹 habilita scroll */
+}
+
+.rata2 {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: end;
+}
+
+.alertIcon {
+  margin-right: 65px;
+  transform: translateY(35%);
+  cursor: pointer;
+  transition: transform 0.3s ease, fill 0.3s ease;
+}
+
+.rata2 .alertIcon:hover {
+  fill: red;
+  transform: translateY(20%) scale(0.8);
+  transform: translateY(20%) rotate(15deg);
+}
+
+.modal-noti-p {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(90, 90, 90, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 99;
+}
+
+.closeIcon {
+  transform: translateY(-20%);
+  cursor: pointer;
+  margin-left: 10px;
+  transition: transform 0.3s ease, stroke 0.3s ease;
+}
+
+.closeIcon:hover {
+  stroke: red;
+  transform: scale(1) rotate(90deg);
+}
+
+.modal-noti {
+  width: 40%;
+  height: 90vh;
+  margin-right: 20px;
+  background-color: #fff0bd;
+  z-index: 999;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.modal-noti-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  flex-shrink: 0;
+  background-color: #fff0bd;
+  border-radius: 25px 25px 0 0;
+  z-index: 10;
+  position: sticky;
+  top: 0;
+}
+
+.modal-body-noti {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 15px 20px 25px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+.noti-prod {
+  width: 100%;
+  height: 50px;
+  background-color: #c7db9c;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 12px 18px;
+  box-sizing: border-box;
+}
+
+.modal-body-noti::-webkit-scrollbar {
+  width: 8px;
+}
+.modal-body-noti::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.modal-noti h1 {
+  font-family: monospace;
+  font-size: 30px;
+  color: black;
+  margin: 15px 10px;
+}
+
+.noti-prod p {
+  font-family: monospace;
+  font-size: 25px;
+  color: black;
+  margin: 15px 10px;
+}
+
+.Contenedor_principal {
+  width: 70vw;
+  height: 90vh;
+  padding-top: 0px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 2rem;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.Principal_contenido {
+  background-color: #c7db9c;
+  min-width: 40rem;
+  max-width: 40rem;
+  min-height: 30rem;
+  width: 70%;
+  flex-wrap: nowrap;
+  border-radius: 1rem;
+}
+
+.Contenido_superior {
+  display: flex;
+  flex-direction: row;
+}
+
+.Principal_valores {
+  border-radius: 1rem;
+  background-color: white;
+  min-width: 5rem;
+  min-height: 30rem;
+  max-height: 39rem;
+  width: 30%;
+  height: 30rem;
+  background-color: #c7db9c;
+}
+
+.Superior_busqueda {
+  min-width: 5rem;
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.8rem;
+  color: black;
+}
+
+#Busqueda_buscador {
+  color: black;
+  background-color: white;
+  border: none;
+  height: 2rem;
+  border-radius: 0.5rem;
+}
+
+.Superior_Cantidad {
+  min-width: 5rem;
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.8rem;
+  color: black;
+}
+
+.Superior_Cantidad_Agregar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.homeB {
+  margin: 1.5rem;
+  height: 3.5rem;
+  width: 10rem;
+  align-self: flex-end;
+}
+
+.Tabla_productos {
+  text-align: left;
+  color: black;
+  background-color: white;
+  width: 95%;
+  margin: 0.5rem;
+  padding-left: 20px;
+  border-collapse: collapse;
+}
+
+.Tabla_productos tbody td {
+  border-bottom: 2px solid #333;
+  padding: 0.2rem 0.5rem;
+  width: 2rem;
+}
+
+.Tabla_productos th {
+  padding-left: 0.5rem;
+}
+
+.Cantidades {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+#c {
+  text-align: center;
+}
+
+.Cantidades_numero {
+  text-align: center;
+  color: black;
+  background-color: white;
+  width: 2rem;
+  min-width: 2rem;
+  max-width: 2rem;
+  border: 0.5px solid #ccc;
+}
+
+.Cantidades_A {
+  background-color: red;
+  border-radius: 50%;
+  height: 1.5rem;
+}
+
+.Cantidades_B {
+  background-color: green;
+  border-radius: 50%;
+  height: 1.5rem;
+}
+
+.labels {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  color: black;
+}
+
+.label_Contenido {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.label_Botones {
+  justify-self: flex-center;
+  align-self: flex-center;
+  display: flex;
+  gap: 1.5rem;
+  flex-direction: column;
+}
+
+.Labels_input {
+  color: black;
+  background-color: white;
+  border: none;
+  height: 2rem;
+  border-radius: 0.5rem;
+}
+
+.Contenido_labels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 1rem;
+}
+
+.Superior_busqueda {
+  position: relative; /* clave: referencia para que los hijos absolute se ubiquen respecto a este contenedor */
+  min-width: 5rem;
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.8rem;
+  color: black;
+}
+
+.Sugerencia_Productos {
+  position: absolute;
+  top: 77%; /* justo debajo del input */
+  left: 3%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  margin-top: 0.2rem; /* pequeño espacio */
+  max-height: 200px;
+  overflow-y: auto;
+  width: 94%; /* igual ancho que el input */
+  z-index: 100;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.Sugerencia_Productos div {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.Sugerencia_Productos div:hover {
+  background-color: #f0f0f0;
+}
+
+@media (max-width: 430px) {
+  .Contenedor_principal {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: nowrap;
+    font-size: 1.5rem;
+    justify-content: flex-start;
+    gap: 2rem;
+  }
+  .rata {
+    width: 100%;
+  }
+
+  .alertIcon {
+    margin-right: 1rem;
+  }
+  .Principal_contenido {
+    margin-left: 2.4rem;
+    margin-top: 2rem;
+    width: 95%;
+    min-width: 90vw;
+    height: 50vh;
+    align-self: flex-start;
+    border: solid 0.1rem green;
+    box-shadow: 0.5rem 0.4rem 9px 1px rgba(104, 130, 101, 0.96);
+  }
+  .Contenido_superior {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    gap: 0rem;
+  }
+  .Superior_Cantidad_Agregar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    position: static;
+  }
+  .Superior_busqueda {
+    width: 90%;
+  }
+  .Superior_Cantidad {
+    width: 40%;
+  }
+  #Busqueda_buscador {
+    width: 100%;
+    font-size: 1.5rem;
+  }
+
+  .homeB {
+    margin: 2rem 1.3rem 0rem 2rem;
+  }
+
+  .Contenido_Tabla {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-radius: 1rem;
+    margin-top: 2rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .Principal_valores {
+    margin-left: 2.4rem;
+    width: 95%;
+    min-width: 90vw;
+    min-height: 65%;
+    align-self: flex-start;
+    border: solid 0.1rem green;
+    box-shadow: 0.5rem 0.4rem 9px 1px rgba(104, 130, 101, 0.96);
+    margin-bottom: 1rem;
+  }
+  .label_Contenido {
+    gap: 0rem;
+    justify-content: flex-start;
+  }
+
+  .Contenido_labels {
+    width: 90%;
+  }
+
+  .Labels_input {
+    font-size: 1.5rem;
+  }
+  .modal-noti-header {
+    display: flex;
+    flex-direction: column; /* 🔹 título debajo del icono */
+    align-items: center;
+    gap: 0.3rem;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .modal-noti {
+    width: 100%;
+    min-width: 90%; /* 🔹 límite para evitar desbordes */
+    max-height: 85vh;
+    height: auto;
+    background-color: #fff0bd;
+    border-radius: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+  }
+
+  .modal-noti-p {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(90, 90, 90, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem; /* 🔹 evita que el modal toque los bordes */
+    box-sizing: border-box;
+  }
+
+  .modal-noti-header h1 {
+    font-size: 1rem; /* 🔹 texto más pequeño */
+    line-height: 1.2;
+    margin: 0;
+    text-align: center;
+  }
+
+  .noti-prod {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  .noti-prod p {
+    font-size: 0.9rem;
+    margin: 0;
+    word-wrap: break-word; /* 🔹 evita texto cortado */
+  }
+  .noti-prod svg {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  .closeIcon {
+    align-self: flex-end;
+    margin-bottom: 5px;
+  }
+}
+
+.sugerencia-item{
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.sugerencia-item:hover{
+  background: #f2f2f2;
+}
+
+.stock-producto{
+  font-size: 13px;
+  color: #666;
+}

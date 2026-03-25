@@ -1,0 +1,92 @@
+.boton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 2px solid transparent;
+    font-size: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+/* Variante neutro*/
+
+.boton.neutro {
+    background-color: #FFF0BD;
+    color: #333;
+    border-color: #333;
+}
+.boton.neutro:hover {
+    background-color: #333;
+    color: #FFF0BD;
+}
+
+.boton.neutro:hover .icono-boton svg {
+    stroke: #FFF0BD;
+}
+
+
+/* Variante verde*/
+
+.boton.verde {
+    background-color: white;
+    color: #338936;
+    border-color: #338936;
+}
+.boton.verde:hover {
+    background-color: #338936;
+    color: white;
+}
+
+.boton.verde:hover .icono-boton svg {
+    stroke: white;
+}
+
+/* Variante azul*/
+
+.boton.azul {
+    background-color: white;
+    color: #334789;
+    border-color: #334789;
+}
+.boton.azul:hover {
+    background-color: #334789;
+    color: white;
+}
+
+.boton.azul:hover .icono-boton svg {
+    stroke: white;
+}
+
+
+/* Variante roja*/
+
+.boton.rojo {
+    background-color: white;
+    color: #CC1800;
+    border-color: #CC1800;
+}
+.boton.rojo:hover {
+    background-color: #CC1800;
+    color: white;
+}
+
+.boton.rojo:hover .icono-boton svg {
+    stroke: white;
+}
+
+/* Variante activa */
+
+.boton.activo {
+    background-color: #333;
+    color: #FFF0BD;
+    border-color: #FFF0BD;
+}
+
+.boton.activo:hover {
+    background-color: #FFF0BD;
+    color: #333;
+    border-color: #333;
+}

@@ -1,0 +1,61 @@
+.card{
+    margin-left: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    background-color: rgb(189, 187, 187);
+    border-radius: 1rem;
+    width: 95%;
+    height: 5rem;
+}
+.card img{
+    margin-left: 1rem; ;
+    height: 4rem;
+    width: 4rem;
+    border-radius: 1rem;
+}
+
+.card_Precio{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    font-size: 1rem;
+    justify-content: flex-end;
+    align-items: center;
+    gap:0.5rem;
+    padding-right:1rem ;
+    flex-wrap: wrap;
+}
+
+.precio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 2rem;
+    border-radius: 0.5rem;
+    padding: 0 0.5rem;
+    min-width: fit-content; 
+    max-width: 100%;
+}
+
+.btnV{
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    width:3.5rem;
+    height: 2.5rem;
+    background-color: green;
+    margin-left: 0.5rem;
+}
+
+.btnR{
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    width:3.5rem;
+    height: 2.5rem;
+    background-color: red;
+}

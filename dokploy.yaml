@@ -1,0 +1,10 @@
+name: qsabores-frontend
+services:
+  web:
+    build:
+      builder: nixpacks
+      buildCommand: npm run build # 👈 Compila Vite
+    static:
+      spa: true # 👈 Activa el modo SPA
+      buildPath: dist # 👈 Carpeta generada por vite build
+      outputPath: / # 👈 Se sirve desde la raíz

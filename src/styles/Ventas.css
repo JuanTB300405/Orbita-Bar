@@ -1,0 +1,659 @@
+.Ventas {
+  flex-grow: 1;
+  height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  overflow-y: auto; /* 🔹 habilita scroll */
+  scroll-behavior: smooth; /* 🔹 scroll suave */
+}
+
+H1 {
+  font-family: monospace;
+  font-size: 80px;
+  color: black;
+  margin: 25px 0px;
+  margin: 0rem;
+}
+
+.Botones {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.contenedor_inputs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-family: "Nova Square", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  position: relative;
+  gap: 8px;
+}
+
+.fechaInicio,
+.fechaFin {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  border: none;
+}
+
+.TablaVentas {
+  background-color: #c7db9c;
+  width: 95%;
+  margin: 2rem 0;
+  margin-top: 0.7rem;
+  padding: 15px;
+  border-radius: 15px;
+  overflow-x: auto;
+  flex-shrink: 0; /* evita que se reduzca al hacer scroll */
+}
+
+.Tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.Tabla th,
+.Tabla td {
+  padding: 0.2rem;
+  text-align: center;
+}
+
+
+
+.Tabla th {
+  background-color: #c7db9c;
+  font-weight: bold;
+}
+
+.check {
+  min-width: 2rem;
+  min-height: 100%;
+}
+.panel {
+  position: fixed;
+  top: 50%;
+  left: 62.2%;
+  transform: translate(-50%, -60%); /* <-- CENTRADO REAL */
+  background-color: #e3efc8;
+  color: black;
+  width: 35rem;
+  height: 30rem;
+  padding: 0.9rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  opacity: 0;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+  border: black 0.2rem solid;
+  font-family: "Nova Square", sans-serif;
+}
+
+/* Estado oculto */
+.panel-closed {
+  transform: translate(-50%, -60%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Estado visible */
+.panel-open {
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+.contenidoP {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(199, 219, 156);
+  height: 100%;
+}
+
+.contenidoP button {
+  margin-top: auto;
+  margin-bottom: 1rem;
+  width: 10rem;
+  align-self: center;
+}
+
+.contenidoP h1 {
+  font-size: 1.5rem;
+  align-self: flex-start;
+  margin: 0rem;
+  padding: 0rem;
+  font-family: "monospace";
+  margin-bottom: 0.5rem;
+}
+
+.contenidoP h2 {
+  font-size: 1.1rem;
+  align-self: flex-start;
+  margin: 0rem;
+  padding: 0rem;
+}
+.contenidoP h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.125rem;
+}
+
+.ListaProductos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 14rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.ListaProductos li:hover {
+  transform: scale(1.01);
+  transition: 0.2s;
+  background-color: #b0aeaebf;
+}
+.ListaProductos_producto {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 70%;
+  background-color: #ffffff;
+  border: black 0.1rem solid;
+  text-align: start;
+  padding: 0.5rem 1rem;
+  list-style: none;
+  font-family: monospace;
+  font-size: 1.2rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.4rem;
+  box-shadow: 10px 10px 10px rgba(11, 10, 10, 0.1);
+}
+
+span {
+  color: #19951d;
+  font-weight: bold;
+}
+
+.ListaProductos_producto span {
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
+.botones {
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  color: white;
+  margin-top: auto;
+}
+.botones button:hover {
+  transform: scale(1.05);
+  transition: 0.2s;
+}
+
+.botones_Salir {
+  background-color: #c62828;
+  opacity: 0.85;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.botones_Descargar {
+  background-color: #0b7d12;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+#Total {
+  font-size: 1.3rem;
+  margin-top: 0.5rem;
+}
+
+#Total span {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #0b7d12;
+}
+
+.headerVenta {
+  padding: 0.4rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding-left: 1rem;
+}
+
+.BotonFiltro {
+  color: black;
+  align-self: flex-start;
+  justify-self: flex-start;
+  background-color: rgb(199, 219, 156);
+  border: #bcda7b 0.2rem solid;
+  margin-left: 1rem;
+  width: 12rem;
+  cursor: pointer;
+  border-radius: 0.8rem;
+  font-weight: bolder;
+  font-family: "Nova Square", sans-serif;
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  padding-left: 1rem;
+  transition: 0.3s;
+}
+
+.BotonFiltro:hover {
+  transform: scale(1.01);
+  box-shadow: 0.3rem 0.2rem 0.5rem rgb(38, 90, 27);
+  color: rgb(21, 156, 68);
+}
+
+.superior {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.superior H1 {
+  justify-self: center;
+  align-self: center;
+}
+
+.superiorBotones {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+
+.BotonSeleccion {
+  align-self: flex-start;
+  justify-self: flex-start;
+  background-color: rgb(199, 219, 156);
+  border: #bcda7b 0.2rem solid;
+  margin-left: 1rem;
+  width: 12rem;
+  cursor: pointer;
+  border-radius: 0.8rem;
+  font-weight: bolder;
+  font-family: "Nova Square", sans-serif;
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  padding-left: 0.5rem;
+  transition: 0.3s;
+  color: black;
+  padding-left: 1.5rem;
+}
+
+.BotonSeleccion:hover {
+  transform: scale(1.01);
+  box-shadow: 0.3rem 0.2rem 0.5rem rgb(38, 90, 27);
+  color: rgb(21, 156, 68);
+}
+
+.Cuadro {
+  border: #000 0.15rem solid;
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+.Cuadro0 {
+  background-color: black;
+  border: gray 0.1rem solid;
+}
+
+.PanelF {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  background-color: rgb(240, 249, 220);
+  height: 50%;
+  width: 32%;
+  z-index: 100;
+  top: 28%;
+  border-radius: 1rem;
+  border: black 0.2rem solid;
+  font-family: "Nova Square", sans-serif;
+}
+
+.PanelO {
+  display: none;
+}
+
+.PF_Header {
+  color: black;
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(199, 219, 156);
+  align-self: flex-start;
+  width: 100%;
+  height: 4rem;
+  align-items: center;
+  justify-content: space-evenly;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+.Header_Titulo {
+  padding-left: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: rgb(158, 177, 116);
+  width: 21rem;
+  height: 3rem;
+  border-radius: 1rem;
+  text-align: center;
+  gap: 1rem;
+  font-family: "Nova Square", sans-serif;
+  border-radius: 1rem;
+}
+
+.BotonesAtajo {
+  width: 100%;
+  max-height: 9rem;
+  height: 6rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  padding-top: 1rem;
+  gap: 0.5rem;
+}
+
+.BA {
+  background-color: rgb(158, 177, 116);
+  min-width: 3rem;
+  height: 2rem;
+  padding: 0 1rem;
+  margin-left: 0.5rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+  color: #1f2a14;
+  font-weight: bold;
+}
+
+.BA:hover {
+  transform: scale(1.02);
+  box-shadow: 0.4rem 0.3rem 0.5rem rgb(10, 10, 9);
+
+  /* gradiente en el texto */
+  background-image: linear-gradient(
+    90deg,
+    #1f3d1a 0%,
+    #1f3d1a 50%,
+    #0000 50%,
+    #0000 100%
+  );
+
+  background-size: 200% 100%;
+  background-position: 100% 0;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: textoHibrido 0.6s ease forwards;
+}
+
+@keyframes textoHibrido {
+  from {
+    background-position: 0% 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+
+.PF_Fechas {
+  color: black;
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.Fechas {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0;
+}
+
+.Fechas p {
+  align-self: flex-start;
+  margin: 0.2rem 0 0 0;
+  height: auto;
+}
+
+.Fechas_input {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+#BAplicar {
+  background-color: green;
+  color: white;
+  width: 6rem;
+  height: auto;
+  margin-top: 0.5rem;
+}
+
+.ButtonA {
+  margin-top: 0.2rem;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Dinput {
+  background-color: #f7efd6;
+  color: black;
+  border: none;
+  height: 2rem;
+  width: 9rem;
+  border-radius: 0.5rem;
+  padding-left: 0.7rem;
+  border: rgb(199, 219, 156) 0.1rem solid;
+  font-size: 1rem;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  margin-right: 0.5rem;
+}
+
+#CerrarF:hover {
+  transform: translateY(-0.2rem);
+  background-color: red;
+  border-radius: 4rem;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(65%) sepia(20%) saturate(300%) hue-rotate(35deg)
+    brightness(95%);
+}
+
+.Cubierta {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Descargar {
+  align-self: flex-start;
+  justify-self: flex-start;
+  background-color: rgb(199, 219, 156);
+  border: #bcda7b 0.2rem solid;
+  margin-left: 1rem;
+  width: 12rem;
+  cursor: pointer;
+  border-radius: 0.8rem;
+  font-weight: bolder;
+  font-family: "Nova Square", sans-serif;
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+  padding-left: 0.5rem;
+  transition: 0.3s;
+  color: black;
+  padding-left: 1.5rem;
+}
+
+.DescargarC {
+  display: none;
+}
+
+.Total{
+  align-self: flex-start;
+  justify-self: flex-start;
+  background-color: rgb(199, 219, 156);
+  border: #bcda7b 0.2rem solid;
+  margin-left: 1rem;
+  width: 8rem;
+  cursor: pointer;
+  border-radius: 0.8rem;
+  font-weight: bolder;
+  font-family: "Nova Square", sans-serif;
+  font-size: 1.1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.2rem;
+  align-items: center;
+  transition: 0.3s;
+  color: black;
+  padding-left: 1rem;
+}
+
+@media (max-width: 430px) {
+  .superior H1 {
+    font-size: 2.2rem;
+    margin-top: 2.5rem;
+  }
+
+  .superiorBotones {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .BotonFiltro,
+  .BotonSeleccion,
+  .Descargar,
+  .DescargarO {
+    width: calc(50% - 1rem);
+    margin-left: 0.5rem;
+    font-size: 0.85rem;
+    padding-left: 0.5rem;
+  }
+
+  .Total {
+    width: calc(50% - 1rem);
+    margin-left: 0.5rem;
+  }
+
+  .panel {
+    left: 50%;
+    width: 92vw;
+    height: auto;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .ListaProductos {
+    max-height: 10rem;
+  }
+
+  .TablaVentas {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+
+  .PanelF {
+    width: 90%;
+    height: auto;
+    top: 5%;
+    left: 5%;
+  }
+
+  .BotonesAtajo {
+    height: auto;
+    max-height: none;
+    padding: 0.5rem;
+    gap: 0.4rem;
+  }
+
+  .BA {
+    font-size: 0.85rem;
+    padding: 0 0.6rem;
+    height: 1.8rem;
+  }
+
+  .PF_Fechas {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .Fechas {
+    width: 90%;
+  }
+
+  .Dinput {
+    width: 100%;
+  }
+}
