@@ -1,7 +1,7 @@
 import { useState } from "react";
 import React from "react";
 import { useNavigate } from 'react-router-dom';
-import logo from "../assets/images/qsaboreslogo.png"
+import logo from "../assets/images/orbitafondo.jpeg";
 import bosque from "../assets/images/bosque.jpeg"
 import '../styles/Login.css'
 import { authentication } from "../js/login";
@@ -23,8 +23,8 @@ const Login = ({setAutenticacion}) => {
         const response = await authentication({contrasena: document.getElementById("contrasena").value})
 
         if(response.status == 200 ) {//quitar 'true' esto es para que no me esté pidiendo token de auth 
-            navigate('/');
             setAutenticacion(true);
+            navigate('/');
             setCargando(false)
         }else {
             setError("Contraseña incorrecta, verifique por favor.");

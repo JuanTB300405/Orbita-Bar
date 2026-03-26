@@ -1,6 +1,6 @@
 import "../styles/Sidebar.css";
 import { Navigate, useNavigate } from "react-router-dom";
-import logo from "../assets/images/qsaboreslogo.png";
+import logo from "../assets/images/orbitafondo.jpeg";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Button from "./Button";
@@ -27,14 +27,14 @@ const Sidebar = () => {
       <nav>
         <ul>
           <img src={logo} alt="Q'Sabores Logo" />
-          <li>
+          <li className="li">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
+              width="35"
+              height="35"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#000000"
+              stroke="#ffffff"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -50,14 +50,14 @@ const Sidebar = () => {
               Ventas
             </Link>
           </li>
-          <li>
+          <li className="li">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
+              width="35"
+              height="35"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#000000"
+              stroke="#ffffff"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -75,14 +75,14 @@ const Sidebar = () => {
               Inventario
             </Link>
           </li>
-          <li>
+          <li className="li">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
+              width="35"
+              height="35"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#000000"
+              stroke="#ffffff"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -99,14 +99,14 @@ const Sidebar = () => {
               Informes
             </Link>
           </li>
-          <li>
+          <li className="li">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
+              width="35"
+              height="35"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="currentColor"
+              stroke="#ffffff"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -125,13 +125,13 @@ const Sidebar = () => {
               Registro Ventas
             </Link>
           </li>
-          <li>
+          <li className="li">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
+              width="35"
+              height="35"
               viewBox="0 0 24 24"
-              fill="#000000"
+              fill="#ffffff"
               class="icon icon-tabler icons-tabler-filled icon-tabler-coin"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -146,14 +146,14 @@ const Sidebar = () => {
               Egresos
             </Link>
           </li>
-          <li>
+          <li className="li">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
+              width="35"
+              height="35"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="currentColor"
+              stroke="#ffffff"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -169,14 +169,14 @@ const Sidebar = () => {
               Proveedores
             </Link>
           </li>
-          <li>
+          <li className="li">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="40"
-              height="40"
+              width="35"
+              height="35"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#000000"
+              stroke="#ffffff"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -194,8 +194,6 @@ const Sidebar = () => {
           </li>
         </ul>
       </nav>
-      <br />
-      <br />
       <button className="logout" onClick={abrirmodal}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -203,7 +201,7 @@ const Sidebar = () => {
           height="24"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#338936"
+          stroke="#39FF14"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"

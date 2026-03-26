@@ -1,7 +1,7 @@
 .sidebar {
   width: 320px;
   height: 100vh;
-  background: #c7db9c;
+  background: linear-gradient(to top, #333, #000000 15%);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
@@ -12,9 +12,9 @@
 
 .sidebar img {
   width: 290px;
-  height: 110px;
-  box-shadow: 0 0 10px #4e4e4e;
+  height: 150px;
   margin-bottom: 20px;
+  border-radius: 25px;
 }
 
 .sidebar nav {
@@ -30,11 +30,11 @@
 }
 
 .sidebar li {
-  margin: 0.4rem 8px;
-  width: 94%;
+  margin: 0.6rem 8px 0.6rem 28px;
+  width: 78%;
   text-align: left;
   display: flex;
-  border: 1px solid #827b7b;
+  border-radius: 5px;
 }
 
 .sidebar svg {
@@ -44,37 +44,50 @@
 }
 
 .sidebar a {
-  width: 80%;
+  width: 80%; 
   font-family: "Nova Square", sans-serif;
-  color: rgb(0, 0, 0);
-  font-size: 25px;
+  color: #ffffff;
+  font-size: 1.5rem;
+}
+
+.li:hover svg {
+  stroke: black;
 }
 
 .sidebar li:hover {
   transform: scale(1.05);
-  background-color: #fff0bd;
+  background-color: #39FF14;
 }
+
+.sidebar a:hover {
+  color: black;
+}
+
 
 .sidebar button {
   display: flex;
   text-align: center;
   justify-content: center;
-  border: 2px solid #338936;
-  background-color: #ffffff;
-  color: #338936;
+  border: 2px solid #39FF14;
+  background-color: #333;
+  color: #39FF14;
   padding: 5px;
   font-size: 20px;
   outline: none;
 }
 
+.logout {
+  margin-top: 3.25rem;
+}
+
 .logout:hover {
   transform: scale(1.05);
-  background-color: #338936;
-  color: white;
+  background-color: #39FF14;
+  color: #333;
 }
 
 .logout:hover svg {
-  stroke: white;
+  stroke: #333;
 }
 
 /* Estilos del modal */

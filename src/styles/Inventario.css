@@ -9,10 +9,17 @@
   overflow-y: auto;
 }
 
+:root {
+  --verde:#39FF14;
+  --azul:#06EBF7;
+  --negro:#333;
+  --fondo:linear-gradient(to top, #333, #000000 15%)
+}
+
 .inventario h1 {
   font-family: monospace;
   font-size: 80px;
-  color: black;
+  color: #ffffff;
   margin: 25px 0px;
 }
 
@@ -32,7 +39,7 @@
 }
 
 .iconoti .alertIcon:hover {
-  fill: red;
+  fill:#ff1818;
   transform: translateY(-50%) scale(1.2);
   transform: translateY(-50%) rotate(15deg);
 }
@@ -58,7 +65,7 @@
 }
 
 .closeIcon:hover {
-  stroke: red;
+  stroke: #ff1818;
   transform: scale(1) rotate(90deg);
 }
 
@@ -146,8 +153,8 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  border: 2px solid #333;
-  background-color: #fff0bd;
+  border: 2px solid #ffffff;
+  background-color: #333;
   border-radius: 10px;
 }
 

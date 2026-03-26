@@ -390,7 +390,7 @@ const Inventario = () => {
               width="60"  
               height="60"  
               viewBox="0 0 24 24"  
-              fill="#7c0000ff"  
+              fill="#ff1818"  
               className="alertIcon"
               onClick={verNoti}
             >
