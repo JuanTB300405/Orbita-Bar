@@ -27,6 +27,9 @@ const Sidebar = () => {
       <nav>
         <ul>
           <img src={logo} alt="Q'Sabores Logo" />
+          <p className="slogan">
+            <span></span>Orbit Control System
+          </p>
           <li className="li">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +37,7 @@ const Sidebar = () => {
               height="35"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#ffffff"
+              stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -57,7 +60,7 @@ const Sidebar = () => {
               height="35"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#ffffff"
+              stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -82,7 +85,7 @@ const Sidebar = () => {
               height="35"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#ffffff"
+              stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -106,7 +109,7 @@ const Sidebar = () => {
               height="35"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#ffffff"
+              stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -131,7 +134,7 @@ const Sidebar = () => {
               width="35"
               height="35"
               viewBox="0 0 24 24"
-              fill="#ffffff"
+              fill="currentColor"
               class="icon icon-tabler icons-tabler-filled icon-tabler-coin"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -153,7 +156,7 @@ const Sidebar = () => {
               height="35"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#ffffff"
+              stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -176,7 +179,7 @@ const Sidebar = () => {
               height="35"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#ffffff"
+              stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"

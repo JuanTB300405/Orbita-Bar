@@ -18,8 +18,7 @@ const Home = () => {
   const [cantidad, setCantidad] = useState("");
   const [devuelta, setDevuelta] = useState("");
   const [ventaActual, setVentaActual] = useState(null);
-  const [mostrarFactura, setMostrarFactura] = useState(false);
-   const printRef = useRef();
+  const printRef = useRef();
 
   const [pago, setPago] = useState(0);
   const [Tdevuelve, setTdevuelve] = useState("--");
@@ -43,7 +42,7 @@ const Home = () => {
   const exito = (texto) => {
     toast.success(texto);
   };
-  
+
   const vender = async () => {
     if (pago < calcularTotal()) {
       alert("El pago es insuficiente");
@@ -57,8 +56,6 @@ const Home = () => {
     const ahoraUTC = new Date();
     const ahoraColombia = new Date(ahoraUTC.getTime() - 5 * 60 * 60 * 1000);
     const [fecha, hora] = ahoraColombia.toISOString().split("T");
-
-    const fechaHora = fecha + "T" + hora
 
     const data = {
       fecha: ahoraUTC,
@@ -114,7 +111,6 @@ const Home = () => {
     }
   };
 
-
   const devolucion = (valor) => {
     const total = calcularTotal();
     const pagoNumero = Number(valor);
@@ -131,7 +127,7 @@ const Home = () => {
   const calcularTotal = () => {
     return productosSeleccionados.reduce(
       (total, producto) => total + producto.total,
-      0
+      0,
     );
   };
 
@@ -181,13 +177,13 @@ const Home = () => {
         setExistencias(data);
       } else {
         setError(
-          "Error al acceder a las Existencias de los productos porximos a terminar"
+          "Error al acceder a las Existencias de los productos porximos a terminar",
         );
         console.error("Respuesta inesperada:", data);
       }
     } catch (err) {
       setError(
-        "Error al acceder a las Existencias de los productos porximos a terminar"
+        "Error al acceder a las Existencias de los productos porximos a terminar",
       );
       console.error("Error en la consulta:", err);
     }
@@ -201,7 +197,7 @@ const Home = () => {
   const handleBusqueda = (texto) => {
     setBusqueda(texto);
     const filtracion = productos.filter((p) =>
-      p.nombre.toLowerCase().includes(texto.toLowerCase())
+      p.nombre.toLowerCase().includes(texto.toLowerCase()),
     );
     setSugerencia(filtracion);
   };
@@ -215,7 +211,7 @@ const Home = () => {
   const AgregarProducto = () => {
     if (productoSeleccionado && cantidad > 0) {
       const Existe = productosSeleccionados.find(
-        (p) => p.id === productoSeleccionado.id
+        (p) => p.id === productoSeleccionado.id,
       );
 
       if (Existe) {
@@ -246,7 +242,6 @@ const Home = () => {
 
   const [noti, setNoti] = useState(false);
   const [condicion, setCondicion] = useState(false);
-
 
   useEffect(() => {
     if (existencias.length === 0) {
@@ -293,7 +288,6 @@ const Home = () => {
       </div>
       <section className="Contenedor_principal">
         <section className="Principal_contenido">
-
           <div className="Contenido_superior">
             <div className="Superior_busqueda">
               <label>Producto</label>
@@ -316,7 +310,7 @@ const Home = () => {
                       <span>{producto.nombre}</span>
 
                       <span className="stock-producto">
-                       ({producto.cantidad_actual})
+                        ({producto.cantidad_actual})
                       </span>
                     </div>
                   ))}
@@ -504,9 +498,11 @@ const Home = () => {
               <Button variant="verde" onClick={() => vender()}>
                 Vender
               </Button>
-              
-                {/* El componente de impresión invisible */}
-                {ventaActual && <ImprimirFacturaPOS ref={printRef} venta={ventaActual} />}
+
+              {/* El componente de impresión invisible */}
+              {ventaActual && (
+                <ImprimirFacturaPOS ref={printRef} venta={ventaActual} />
+              )}
 
               <Button variant="rojo" onClick={() => cancelarPago()}>
                 Cancelar
@@ -568,7 +564,7 @@ const Home = () => {
           </div>
         </div>
       )}
-          {/* {mostrarFactura && ventaActual && (
+      {/* {mostrarFactura && ventaActual && (
             console.log("ventaActual", ventaActual),
             <ImprimirFacturaPOS
               venta={ventaActual}

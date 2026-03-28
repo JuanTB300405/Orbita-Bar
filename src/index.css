@@ -6,7 +6,9 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   /*background: #0c0c0c;*/
-  background: linear-gradient(to top, #333, #000000 15%);
+  background-image: url(assets/images/galaxia3.png);
+  background-size: cover;
+  background-position: center;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

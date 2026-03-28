@@ -1,7 +1,7 @@
 .sidebar {
   width: 320px;
   height: 100vh;
-  background: linear-gradient(to top, #333, #000000 15%);
+  background: linear-gradient(to left, #333, #000000 10%);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
@@ -11,12 +11,28 @@
 }
 
 .sidebar img {
-  width: 290px;
-  height: 150px;
+  width: 18rem;
+  height: 8rem;
   margin-bottom: 20px;
   border-radius: 25px;
+  mask-image: radial-gradient(circle, black 50%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
 }
-
+.slogan {
+  padding-left: 3rem;
+  text-align: start;
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.3rem;
+  font-family: Orbitron;
+}
+.slogan span {
+  display: inline-block;
+  width: 1.5rem;
+  height: 0.8rem;
+  border-top: 0.1rem solid #39ff14;
+  margin-right: 0.4rem;
+}
 .sidebar nav {
   text-align: center;
   width: 100%;
@@ -27,62 +43,61 @@
   padding: 0;
   margin-bottom: 0;
   width: 100%;
+  margin-top: 0.8rem;
 }
 
 .sidebar li {
-  margin: 0.6rem 8px 0.6rem 28px;
+  margin: 0.6rem 8px 0.2rem 2.5rem;
   width: 78%;
   text-align: left;
   display: flex;
-  border-radius: 5px;
+  border-radius: 0;
+  color: #ffffff;
+  border-bottom: 0.1rem solid rgba(255, 255, 255, 0.05);
 }
 
 .sidebar svg {
   flex-direction: row;
   padding-right: 5px;
-  color: black;
 }
 
 .sidebar a {
-  width: 80%; 
+  width: 80%;
   font-family: "Nova Square", sans-serif;
   color: #ffffff;
   font-size: 1.5rem;
 }
 
-.li:hover svg {
-  stroke: black;
-}
-
 .sidebar li:hover {
-  transform: scale(1.05);
-  background-color: #39FF14;
+  border-bottom: 0.1rem solid #39ff14;
+  color: #39ff14;
 }
 
 .sidebar a:hover {
-  color: black;
+  color: #39ff14;
 }
-
 
 .sidebar button {
   display: flex;
   text-align: center;
   justify-content: center;
-  border: 2px solid #39FF14;
+  border: 2px solid #39ff14;
   background-color: #333;
-  color: #39FF14;
+  color: #39ff14;
   padding: 5px;
   font-size: 20px;
   outline: none;
 }
 
 .logout {
-  margin-top: 3.25rem;
+  margin-top: 0.7rem;
+  margin-bottom: 2rem;
+  width: 54%;
 }
 
 .logout:hover {
   transform: scale(1.05);
-  background-color: #39FF14;
+  background-color: #39ff14;
   color: #333;
 }
 
