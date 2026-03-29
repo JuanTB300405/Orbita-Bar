@@ -1,13 +1,15 @@
 .sidebar {
   width: 320px;
   height: 100vh;
-  background: linear-gradient(to left, #333, #000000 10%);
+  background: linear-gradient(to left, rgba(0, 255, 106, 0.08), #000000 10%);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 10;
   flex-shrink: 0;
+  border-right: 0.1rem solid rgba(0, 255, 106, 0.3);
+  box-shadow: 0.5rem 0rem 4rem rgba(0, 255, 106, 0.3);
 }
 
 .sidebar img {
@@ -18,6 +20,37 @@
   mask-image: radial-gradient(circle, black 50%, transparent 100%);
   -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
 }
+#logoOrbita {
+  position: relative;
+  width: 18rem;
+  height: 8rem;
+  margin-left: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+#logoOrbita::before {
+  content: "";
+  position: absolute;
+  width: 6rem;
+  height: 6rem;
+  top: 50%;
+  left: 54%;
+  margin-top: -4.5rem;
+  margin-left: -4.5rem;
+  border-radius: 50%;
+  border: 0.3rem solid #39ff14;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  animation: girar 2s linear infinite;
+  z-index: 3;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .slogan {
   padding-left: 3rem;
   text-align: start;
@@ -25,14 +58,30 @@
   font-weight: bold;
   font-size: 1.3rem;
   font-family: Orbitron;
+  border-top: 0.1rem solid rgba(0, 255, 106, 0.3);
+  padding-top: 0.4rem;
+}
+@keyframes titilar {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 .slogan span {
   display: inline-block;
-  width: 1.5rem;
+  width: 0.8rem;
   height: 0.8rem;
-  border-top: 0.1rem solid #39ff14;
+  background-color: #39ff14;
   margin-right: 0.4rem;
+  border-radius: 100%;
+  animation: titilar 2.5s ease-in-out infinite;
 }
+
 .sidebar nav {
   text-align: center;
   width: 100%;
@@ -45,14 +94,23 @@
   width: 100%;
   margin-top: 0.8rem;
 }
-
+@keyframes levitar {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
 .sidebar li {
   margin: 0.6rem 8px 0.2rem 2.5rem;
   width: 78%;
   text-align: left;
   display: flex;
   border-radius: 0;
-  color: #ffffff;
   border-bottom: 0.1rem solid rgba(255, 255, 255, 0.05);
 }
 
@@ -60,17 +118,22 @@
   flex-direction: row;
   padding-right: 5px;
 }
-
+.slidebar svg:hover {
+  animation: levitar 0.5s ease-in-out infinite;
+}
 .sidebar a {
   width: 80%;
   font-family: "Nova Square", sans-serif;
   color: #ffffff;
   font-size: 1.5rem;
 }
-
 .sidebar li:hover {
   border-bottom: 0.1rem solid #39ff14;
-  color: #39ff14;
+}
+
+.sidebar li:hover svg {
+  stroke: #39ff14;
+  animation: levitar 1s ease-in-out infinite;
 }
 
 .sidebar a:hover {

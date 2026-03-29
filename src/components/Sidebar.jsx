@@ -26,7 +26,10 @@ const Sidebar = () => {
     <div className="sidebar">
       <nav>
         <ul>
-          <img src={logo} alt="Q'Sabores Logo" />
+          <div id="logoOrbita">
+            <img src={logo} alt="Q'Sabores Logo" />
+          </div>
+
           <p className="slogan">
             <span></span>Orbit Control System
           </p>

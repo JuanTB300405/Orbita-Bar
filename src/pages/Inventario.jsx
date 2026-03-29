@@ -27,7 +27,7 @@ const Inventario = () => {
       producto.nombre.toLowerCase().includes(busqueda.toLowerCase()) &&
       producto.categoria.nombre
         .toLowerCase()
-        .includes(categoriaSeleccionada.toLowerCase())
+        .includes(categoriaSeleccionada.toLowerCase()),
   );
   console.log("datos filtrados", datosFitrados);
 
@@ -54,11 +54,15 @@ const Inventario = () => {
       if (Array.isArray(data)) {
         setExistencias(data);
       } else {
-        setError("Error al acceder a las Existencias de los productos porximos a terminar");
+        setError(
+          "Error al acceder a las Existencias de los productos porximos a terminar",
+        );
         console.error("Respuesta inesperada:", data);
       }
     } catch (err) {
-      setError("Error al acceder a las Existencias de los productos porximos a terminar");
+      setError(
+        "Error al acceder a las Existencias de los productos porximos a terminar",
+      );
       console.error("Error en la consulta:", err);
     }
   };
@@ -100,7 +104,7 @@ const Inventario = () => {
     obtenerExistencias();
   }, []);
 
-  console.log("Hijueputa",existencias);
+  console.log("Hijueputa", existencias);
 
   // Logica para verificar los cambios del formulario y guardar el nuevo producto
 
@@ -209,7 +213,7 @@ const Inventario = () => {
 
   const abrirModalEliminar = () => {
     const Seleccionados = productosData.filter((p) =>
-      seleccionados.includes(p.id)
+      seleccionados.includes(p.id),
     );
     if (Seleccionados.length === 0) {
       toast.warning("No hay ningun producto seleccionado");
@@ -247,7 +251,7 @@ const Inventario = () => {
 
   const verEdicion = () => {
     const ProdSeleccionado = productosData.filter((p) =>
-      seleccionados.includes(p.id)
+      seleccionados.includes(p.id),
     );
 
     if (ProdSeleccionado.length === 0) {
@@ -319,7 +323,7 @@ const Inventario = () => {
 
     if (name === "categoria") {
       const categoriaSelec = categoriaData.find(
-        (cat) => cat.id === parseInt(value)
+        (cat) => cat.id === parseInt(value),
       );
       setProdEditado((prev) => ({
         ...prev,
@@ -327,7 +331,7 @@ const Inventario = () => {
       }));
     } else if (name === "proveedor") {
       const proveedorSelec = proveedoresData.find(
-        (p) => p.id === parseInt(value)
+        (p) => p.id === parseInt(value),
       );
       setProdEditado((prev) => ({
         ...prev,
@@ -385,22 +389,23 @@ const Inventario = () => {
         <div className="iconoti">
           <h1>INVENTARIO</h1>
           {condicion && (
-            <svg  
-              xmlns="http://www.w3.org/2000/svg"  
-              width="60"  
-              height="60"  
-              viewBox="0 0 24 24"  
-              fill="#ff1818"  
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              fill="#ff1818"
               className="alertIcon"
               onClick={verNoti}
             >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-              <path d="M12 2c5.523 0 10 4.477 10 10a10 
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path
+                d="M12 2c5.523 0 10 4.477 10 10a10 
                 10 0 0 1 -19.995 .324l-.005 -.324l.004 -.28c.148 
                 -5.393 4.566 -9.72 9.996 -9.72zm.01 13l-.127 .007a1 1 0 0 0 0 
                 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 
                 -8a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0
-                1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z" 
+                1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z"
               />
             </svg>
           )}
@@ -413,7 +418,7 @@ const Inventario = () => {
               height="25"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#000000"
+              stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -445,14 +450,54 @@ const Inventario = () => {
                 ))}
             </select>
           </div>
+          <Button variant="verde" onClick={abrirModalAgregar}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="25"
+              height="25"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#6aff00"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="icon icon-tabler icons-tabler-outline icon-tabler-square-rounded-plus"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
+              <path d="M15 12h-6" />
+              <path d="M12 9v6" />
+            </svg>
+            Agregar
+          </Button>
+          <Button variant="azul" onClick={verEdicion}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="25"
+              height="25"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="cyan"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="icon icon-tabler icons-tabler-outline icon-tabler-edit"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+              <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+              <path d="M16 5l3 3" />
+            </svg>
+            Editar
+          </Button>
           <Button variant="rojo" onClick={abrirModalEliminar}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="25"
+              height="25"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="currentColor"
+              stroke="#ff0000"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -466,46 +511,6 @@ const Inventario = () => {
               <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
             </svg>
             Eliminar
-          </Button>
-          <Button variant="azul" onClick={verEdicion}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-tabler icons-tabler-outline icon-tabler-edit"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-              <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-              <path d="M16 5l3 3" />
-            </svg>
-            Editar
-          </Button>
-          <Button variant="verde" onClick={abrirModalAgregar}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-tabler icons-tabler-outline icon-tabler-square-rounded-plus"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
-              <path d="M15 12h-6" />
-              <path d="M12 9v6" />
-            </svg>
-            Agregar
           </Button>
         </div>
         <br />
@@ -524,7 +529,7 @@ const Inventario = () => {
             <tbody>
               {(categoriaSeleccionada
                 ? datosFitrados.filter(
-                    (p) => p.categoria.nombre === categoriaSeleccionada
+                    (p) => p.categoria.nombre === categoriaSeleccionada,
                   )
                 : datosFitrados
               ).map((producto) => (
@@ -538,7 +543,7 @@ const Inventario = () => {
                           setSeleccionados([...seleccionados, producto.id]);
                         } else {
                           setSeleccionados(
-                            seleccionados.filter((id) => id !== producto.id)
+                            seleccionados.filter((id) => id !== producto.id),
                           );
                         }
                       }}
@@ -754,7 +759,8 @@ const Inventario = () => {
             >
               <h2>
                 {" "}
-                ¿Está completamente seguro que desea eliminar el/los productos?{" "}
+                ¿Está completamente seguro que desea eliminar el/los
+                productos?{" "}
               </h2>
               <div id="botoness">
                 <Button variant="verde" onClick={eliminarProdSelec}>
@@ -774,20 +780,20 @@ const Inventario = () => {
           <div className="modal-noti-p" onClick={ocultarNoti}>
             <div className="modal-noti" onClick={(e) => e.stopPropagation()}>
               <div className="modal-noti-header">
-                <svg  
-                  xmlns="http://www.w3.org/2000/svg"  
-                  width="50"  
-                  height="50"  
-                  viewBox="0 0 24 24"  
-                  fill="none"  
-                  stroke="#000000"  
-                  strokeWidth="2"  
-                  strokeLinecap="round"  
-                  strokeLinejoin="round"  
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="50"
+                  height="50"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#000000"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="closeIcon"
                   onClick={ocultarNoti}
                 >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                   <path d="M12 21a9 9 0 0 0 9 -9a9 9 0 0 0 -9 -9a9 9 0 0 0 -9 9a9 9 0 0 0 9 9z" />
                   <path d="M9 8l6 8" />
                   <path d="M15 8l-6 8" />
@@ -798,19 +804,19 @@ const Inventario = () => {
                 {existencias.map((producto) => (
                   <div className="noti-prod" key={producto.producto.id}>
                     <p>{producto.producto.nombre}</p>
-                    <svg  
-                      xmlns="http://www.w3.org/2000/svg"  
-                      width="30"  
-                      height="30"  
-                      viewBox="0 0 24 24"  
-                      fill="none"  
-                      stroke="#000000"  
-                      strokeWidth="2"  
-                      strokeLinecap="round"  
-                      strokeLinejoin="round"  
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="30"
+                      height="30"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#000000"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right"
                     >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                       <path d="M5 12l14 0" />
                       <path d="M13 18l6 -6" />
                       <path d="M13 6l6 6" />

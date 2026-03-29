@@ -10,10 +10,10 @@
 }
 
 :root {
-  --verde:#39FF14;
-  --azul:#06EBF7;
-  --negro:#333;
-  --fondo:linear-gradient(to top, #333, #000000 15%)
+  --verde: #39ff14;
+  --azul: #06ebf7;
+  --negro: #333;
+  --fondo: linear-gradient(to top, #333, #000000 15%);
 }
 
 .inventario h1 {
@@ -35,11 +35,13 @@
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  transition: transform 0.3s ease, fill 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    fill 0.3s ease;
 }
 
 .iconoti .alertIcon:hover {
-  fill:#ff1818;
+  fill: #ff1818;
   transform: translateY(-50%) scale(1.2);
   transform: translateY(-50%) rotate(15deg);
 }
@@ -61,7 +63,9 @@
   transform: translateY(-20%);
   cursor: pointer;
   margin-left: 10px;
-  transition: transform 0.3s ease, stroke 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    stroke 0.3s ease;
 }
 
 .closeIcon:hover {
@@ -154,7 +158,7 @@
   align-items: center;
   gap: 5px;
   border: 2px solid #ffffff;
-  background-color: #333;
+  background-color: black !important;
   border-radius: 10px;
 }
 
@@ -171,6 +175,7 @@
 
 .buscador svg {
   padding-left: 5px;
+  color: #ffffff;
 }
 
 #cont button {
@@ -203,28 +208,28 @@
 #cont-select::after {
   content: "▼";
   font-size: 24px;
-  color: #333;
+  color: #ffffff !important;
   position: absolute;
   right: 15px;
   top: 50%;
   transform: translateY(-53%);
   pointer-events: none;
+  z-index: 1;
 }
 
 #cont-select:hover::after {
-  color: #fff0bd;
+  color: #ffffff;
 }
 
 #select option {
-  background-color: #333;
-  color: #fff0bd;
+  background-color: #ffffff;
+  color: #ffffff;
 }
 
 #select:hover {
   background-color: #333;
-  color: #fff0bd;
+  color: #ffffff;
 }
-
 
 /* Estilos del modal */
 
@@ -493,13 +498,13 @@
 
 .inventario-tabla {
   width: 90%;
-  height: 47%;
-  background-color: #c7db9c;
+  height: 50%;
+  background-color: rgba(0, 0, 0, 0.2);
   padding: 0;
-  border: 15px solid #c7db9c;
+  border: 0.2rem solid #484848;
   border-radius: 15px;
   overflow-x: auto;
-
+  color: #ffffff;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -515,8 +520,10 @@
 }
 
 .tabla thead {
-  background-color: #c7db9c;
-  color: black;
+  background-color: #25282e !important;
+  color: #ffffff !important;
+  border: 0.1rem solid #484848 !important;
+  font-family: Orbital;
 }
 
 .t {
@@ -532,12 +539,13 @@
 }
 
 .tabla td {
-  color: black;
+  color: white !important;
   font-weight: 500;
 }
 
 .tabla tbody tr {
-  background-color: #ffffff;
+  background-color: black !important;
+  color: #ffffff !important;
   transition: background-color 0.3s ease;
 }
 
@@ -675,6 +683,7 @@
     min-width: 100%;
     max-width: 200%;
     margin-left: 0 !important;
+    background-color: black !important;
   }
 
   .buscador input {
@@ -683,7 +692,7 @@
   #cont-select {
     min-width: 100%;
   }
-  #select option{
+  #select option {
     font-size: 0.8rem !important;
     max-width: 10% !important;
   }
@@ -727,4 +736,14 @@
   .formulario input {
     width: 80%;
   }
+}
+
+* {
+  font-family: Orbital;
+}
+
+#select {
+  background-color: #25282e !important;
+  color: #ffffff !important;
+  border: 0.1rem solid #484848 !important;
 }
