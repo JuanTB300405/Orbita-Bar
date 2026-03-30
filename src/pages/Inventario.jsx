@@ -689,7 +689,7 @@ const Inventario = () => {
 
                   <div className="bloque">
                     <label>Proveedor</label>
-                    <div id="cont-select-form">
+                    <div id="cont-select-form-p">
                       <select
                         id="select-form"
                         name="proveedor"
@@ -759,7 +759,7 @@ const Inventario = () => {
             >
               <h2>
                 {" "}
-                ¿Está completamente seguro que desea eliminar el/los
+                ¿Está completamente segur@ que desea eliminar el/los
                 productos?{" "}
               </h2>
               <div id="botoness">

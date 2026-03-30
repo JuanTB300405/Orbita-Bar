@@ -166,11 +166,12 @@
   width: 80%;
   height: 60%;
   outline: none;
-  background-color: #ffffff;
-  border: 1px solid #333;
-  color: #333;
+  background-color: black !important;
+  border: 1px solid #484848 !important;
+  color: #ffffff !important;
   font-size: 15px;
   border-radius: 10px;
+  padding-left: 0.3rem;
 }
 
 .buscador svg {
@@ -247,7 +248,7 @@
 }
 
 .modal-contenedor {
-  background-color: #fff0bd;
+  background-color: rgba(0, 0, 0, 0.6);
   width: 50%;
   height: 75%;
   max-width: 90%;
@@ -262,13 +263,13 @@
 .modal-contenido h2 {
   font-family: sans-serif;
   font-size: 30px;
-  color: #333;
+  color: #ffffff;
   margin-top: 10px;
   margin-bottom: 30px;
 }
 
 .modal-contenido {
-  background: #c7db9c;
+  background: rgba(0, 0, 0, 0.6);
   padding: 20px;
   border-radius: 12px;
   width: 90%;
@@ -276,22 +277,28 @@
   overflow: none;
   position: relative;
   text-align: center;
+  border: 0.1rem solid #484848;
 }
 
 .bloque {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  gap: 10px;
+  gap: 12px;
+  padding: 0 5px;
 }
 
 .bloque label {
-  width: 30%;
+  color: #ffffff !important;
+  width: 130px;
+  min-width: 130px;
+  flex-shrink: 0;
   text-align: start;
 }
 
 .bloque input {
-  width: 60%;
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .formulario {
@@ -316,46 +323,96 @@
 }
 
 .formulario input {
-  padding: 10px 5px;
+  padding: 10px 10px;
   border-radius: 5px;
-  border: none;
-  background-color: #fff0bd;
-  color: #333;
-  width: 50%;
+  border: 1px solid #484848;
+  background-color: black;
+  color: #ffffff;
+  width: 100%;
   font-size: 18px;
   outline: none;
+  box-sizing: border-box;
 }
 
 .formulario input:hover {
   background-color: #333;
-  color: #fff0bd;
+  color: #ffffff;
+}
+
+#cont-select-form {
+  position: relative;
+  flex: 1;
+  min-width: 0;
 }
 
 #cont-select-form select {
   width: 100%;
-  font-size: 19.5px;
-  border-radius: 8px;
-  background-color: #fff0bd;
-  color: #333;
+  font-size: 18px;
+  border-radius: 5px;
+  border: 1px solid #484848;
+  background-color: black;
+  color: #ffffff;
   cursor: pointer;
-  padding: 8px 65px 8px 10px;
-  transition: border-color 0.3s ease;
+  padding: 10px 35px 10px 10px;
   outline: none;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   background-image: none;
+  box-sizing: border-box;
 }
 
 #cont-select-form::after {
   content: "▼";
-  font-size: 24px;
-  color: #333;
+  font-size: 18px;
+  color: #ffffff;
   position: absolute;
-  right: 90px;
-  top: 68%;
-  transform: translateY(-155%);
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   pointer-events: none;
+}
+
+#cont-select-form:hover::after {
+  color: #ffffff;
+}
+
+#cont-select-form-p {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+#cont-select-form-p select {
+  width: 100%;
+  font-size: 18px;
+  border-radius: 5px;
+  border: 1px solid #484848;
+  background-color: black;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 10px 35px 10px 10px;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: none;
+  box-sizing: border-box;
+}
+
+#cont-select-form-p::after {
+  content: "▼";
+  font-size: 18px;
+  color: #ffffff;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+#cont-select-form-p:hover::after {
+  color: #ffffff;
 }
 
 #select-form {
@@ -376,7 +433,7 @@
 
 #select-form:hover {
   background-color: #333;
-  color: #fff0bd;
+  color: #ffffff;
 }
 
 #cont-select-form:hover::after {
@@ -445,11 +502,13 @@
 .modal-contenedor-eliminar {
   width: 620px;
   height: 240px;
-  background-color: #fff0bd;
+  background-image: url(../assets/images/galaxiaModal.png);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-radius: 20px;
+  border-radius: 1rem;
+  border: 0.2rem solid #39ff14 !important;
+  box-shadow: 0rem 0rem 2rem #39ff14;
 }
 
 .modal-contenedor-eliminar h2 {
@@ -461,7 +520,7 @@
   font-size: 30px;
   text-align: center;
   padding-left: 50px;
-  color: #333;
+  color: #ffffff;
 }
 
 #botoness {
@@ -481,10 +540,10 @@
 #select-form-e {
   padding: 3px 10px;
   border-radius: 5px;
-  border: 2px solid #333;
+  border: 0.1rem solid #484848;
   outline: none;
-  color: #333;
-  background-color: #fff0bd;
+  color: #ffffff;
+  background-color: black;
   width: 80%;
   font-size: 20px;
 }
@@ -559,8 +618,26 @@
 
 .tabla input[type="checkbox"] {
   transform: scale(1.3);
-  accent-color: #fff0bd;
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: black;
+  border: 0.1rem solid #484848;
+  border-radius: 3px;
+  position: relative;
+}
+
+.tabla input[type="checkbox"]:checked::after {
+  content: "✓";
+  color: #ffffff;
+  font-size: 13px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
 }
 
 .tabla td,
@@ -574,13 +651,13 @@
   width: 180px;
   height: 30px;
   font-size: 1rem;
-  background-color: #fff0bd;
-  color: #333;
+  background-color: black;
+  color: #ffffff;
   font-weight: 600;
   outline: none;
   font-family: Arial, Helvetica, sans-serif;
   border-radius: 5px;
-  border: 2px solid #333;
+  border: 0.1rem solid #484848;
 }
 
 #botoness-edicion {
@@ -734,7 +811,24 @@
   }
 
   .formulario input {
-    width: 80%;
+    width: 100%;
+  }
+
+  .bloque {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .bloque label {
+    width: 100%;
+    min-width: unset;
+  }
+
+  #cont-select-form,
+  #cont-select-form-p {
+    width: 100%;
+    flex: unset;
   }
 }
 
