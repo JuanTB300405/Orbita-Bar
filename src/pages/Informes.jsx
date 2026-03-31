@@ -49,9 +49,9 @@ const Informes = () => {
 
   if (cargando) {
     return (
-      <div className="modal-cargando">
-        <div className="modal-contenido-c">
-          <div className="loader"></div>
+      <div className="modal-cargando-in">
+        <div className="modal-contenido-in">
+          <div className="loader-in"></div>
         </div>
       </div>
     );

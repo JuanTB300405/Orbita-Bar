@@ -218,9 +218,9 @@ const Categorias = () => {
     
     if (cargando) {
         return (
-            <div className="modal-cargando">
-                <div className="modal-contenido-c">
-                    <div class='loader'></div>
+            <div className="modal-cargando-ca">
+                <div className="modal-contenido-cat">
+                    <div class='loader-ca'></div>
                 </div>
             </div>
         );
@@ -317,7 +317,7 @@ const Categorias = () => {
                 </div>
 
                 {edicion && (
-                    <div id="botoness-edicion">
+                    <div id="botoness-edicion-c">
                         <Button variant="verde"  onClick={GuardarEdicion}>Guardar</Button>
                         <Button variant="rojo" onClick={CancelarEdicion} >Cancelar</Button>
                     </div>

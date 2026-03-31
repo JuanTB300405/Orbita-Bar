@@ -294,9 +294,9 @@
   text-align: center;
 }
 
-#botoness-edicion {
+#botoness-edicion-c {
   width: 100%;
-  margin-right: 75px;
+  margin-right: 6.4rem;
   margin-top: 10px;
   display: flex;
   flex-direction: row;
@@ -305,22 +305,22 @@
   text-align: center;
 }
 
-/* modal de carga */
+/* animacion de carga */
 
-.modal-cargando {
+.modal-cargando-ca{
   position: fixed;
   top: 0;
   left: 320px;
   width: 100%;
   height: 100%;
-  background: #FFF0BD;
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
 }
 
-.modal-contenido-c {
+.modal-contenido-cat {
   width: 80%;
   height: 80%;
   text-align: center;
@@ -328,8 +328,40 @@
   align-content: center;
   justify-items: center;
   margin-right: 320px;
-
 }
+
+/* HTML: <div class="loader"></div> */
+.loader-ca {
+  width: fit-content;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 50px;
+  background: linear-gradient(
+      135deg,
+      #0000 calc(50% - 0.5em),
+      #39ff14  0 calc(50% + 0.5em),
+      #0000 0
+    )
+    right/300% 100%;
+  animation: l22 2s infinite;
+}
+
+.loader-ca::before {
+  content: "Cargando...";
+  color: #fff;
+  padding: 0 5px;
+  background: inherit;
+  background-image: linear-gradient(
+    135deg,
+    #000 calc(50% - 0.5em),
+    #fff 0 calc(50% + 0.5em),
+    #000 0
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/****************************************************************************************************/
 
 @media (max-width: 430px) {
   .categorias {
@@ -400,25 +432,6 @@
   .formulario-c input {
     width: 80%;
   }
-}
-
-/* HTML: <div class="loader"></div> */
-.loader {
-  width: fit-content;
-  font-weight: bold;
-  font-family: monospace;
-  font-size: 50px;
-  background: linear-gradient(135deg,#0000 calc(50% - 0.5em),#000 0 calc(50% + 0.5em),#0000 0) right/300% 100%;
-  animation: l22 2s infinite;
-}
-.loader::before {
-  content: "Cargando...";
-  color: #0000;
-  padding: 0 5px;
-  background: inherit;
-  background-image: linear-gradient(135deg,#000 calc(50% - 0.5em),#fff 0 calc(50% + 0.5em),#000 0);
-  -webkit-background-clip:text;
-          background-clip:text;
 }
 
 @keyframes l22{

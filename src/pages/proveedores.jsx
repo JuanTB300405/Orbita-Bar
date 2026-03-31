@@ -17,7 +17,12 @@ const Proveedores = () => {
 
   const [cargando, setCargando] = useState(true);
   const [busqueda, setBusqueda] = useState("");
+  const [condicion, setCondicion] = useState(false);
   const [proveedoresData, setProveedoresData] = useState([]);
+
+  const verNoti = () => {
+    setNoti(true);
+  };
 
   const datosFitrados = proveedoresData.filter((provedor) =>
     provedor.nombre.toLowerCase().includes(busqueda.toLowerCase())
@@ -207,6 +212,7 @@ const Proveedores = () => {
         obtenerProveedores();
       } else {
         console.log("respuesta :", response);
+        toast.warning("No se pudo actualizar el proveedor");
       }
     } catch (error) {
       console.error("Excepcion al actualizar el proveedor", error);
@@ -230,9 +236,9 @@ const Proveedores = () => {
 
   if (cargando) {
     return (
-      <div className="modal-cargando">
-        <div className="modal-contenido-c">
-          <div class="loader"></div>
+      <div className="modal-cargando-pr">
+        <div className="modal-contenido-pr">
+          <div class="loader-pr"></div>
         </div>
       </div>
     );
@@ -244,6 +250,29 @@ const Proveedores = () => {
     <>
       <section className="proveedores">
         <h1>PROVEEDORES</h1>
+        <div className="proveedores-titulo-linea" >
+          {condicion && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="60"
+              height="60"
+              viewBox="0 0 24 24"
+              fill="#ff1818"
+              className="alertIcon"
+              onClick={verNoti}
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path
+                d="M12 2c5.523 0 10 4.477 10 10a10 
+                10 0 0 1 -19.995 .324l-.005 -.324l.004 -.28c.148 
+                -5.393 4.566 -9.72 9.996 -9.72zm.01 13l-.127 .007a1 1 0 0 0 0 
+                1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 
+                -8a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0
+                1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z"
+              />
+            </svg>
+          )}
+        </div>
         <div id="cont">
           <div className="buscador">
             <svg
@@ -252,7 +281,7 @@ const Proveedores = () => {
               height="25"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#000000"
+              stroke="#ffffff"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -265,6 +294,7 @@ const Proveedores = () => {
             <input
               type="text"
               value={busqueda}
+              placeholder="Buscar proveedor..."
               onChange={(e) => setBusqueda(e.target.value)}
             />
           </div>
@@ -363,7 +393,7 @@ const Proveedores = () => {
                   <td>
                     {proveedorEditando === proveedor.id ? (
                       <input
-                        className="inputss"
+                        className="inputss-p"
                         type="text"
                         name="nombre"
                         value={datosEditados.nombre}
@@ -376,7 +406,7 @@ const Proveedores = () => {
                   <td>
                     {proveedorEditando === proveedor.id ? (
                       <input
-                        className="inputss"
+                        className="inputss-p"
                         type="tel"
                         name="telefono"
                         value={datosEditados.telefono}
@@ -389,7 +419,7 @@ const Proveedores = () => {
                   <td>
                     {proveedorEditando === proveedor.id ? (
                       <input
-                        className="inputss"
+                        className="inputss-p"
                         type="email"
                         name="email"
                         value={datosEditados.email}
@@ -406,7 +436,7 @@ const Proveedores = () => {
         </div>
 
         {edicion && (
-          <div id="botoness-edicion">
+          <div id="botoness-edicion-p">
             <Button variant="verde" onClick={GuardarEdicion}>
               Guardar
             </Button>
@@ -418,12 +448,12 @@ const Proveedores = () => {
 
         {/* Modal de agregar producto */}
         {showModalAgregar && (
-          <div className="modal" onClick={cerrarModalAgregar}>
+          <div className="modal-pr" onClick={cerrarModalAgregar}>
             <div
-              className="modal-contenedor-p"
+              className="modal-contenedor-pro"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="modal-contenido-p">
+              <div className="modal-contenido-pro">
                 <h2>Agregar nuevo proveedor</h2>
                 <form className="formulario-p" onSubmit={handleSubmit}>
                   <div className="bloque-p">
@@ -462,7 +492,7 @@ const Proveedores = () => {
 
                   {error && <p className="error-p">{error}</p>}
 
-                  <div className="botones">
+                  <div className="botones-pr">
                     <Button type="submit" variant="verde" class="btn">
                       Guardar
                     </Button>
@@ -482,7 +512,7 @@ const Proveedores = () => {
 
         {/* Modal de eliminar producto */}
         {showModalEliminar && (
-          <div className="modal" onClick={cerrarModalEliminar}>
+          <div className="modal-pr" onClick={cerrarModalEliminar}>
             <div
               className="modal-contenedor-eliminar-p"
               onClick={(e) => e.stopPropagation()}
@@ -503,6 +533,7 @@ const Proveedores = () => {
           </div>
         )}
       </section>
+      
       <ToastContainer position="top-center" autoClose={3000} />
     </>
   );
