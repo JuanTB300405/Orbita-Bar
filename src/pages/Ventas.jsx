@@ -21,7 +21,7 @@ const Ventas = () => {
   const printRefs = useRef({});
   const [descargarTodo, setDescargarTodo] = useState(false);
   const [Total, setTotal] = useState(0);
-  
+
   const getPrintRef = (id) => {
     if (!printRefs.current[id]) {
       printRefs.current[id] = createRef();
@@ -29,29 +29,33 @@ const Ventas = () => {
     return printRefs.current[id];
   };
 
-  useEffect(() =>{
-     const totalCalculado= ventasFiltradas.filter((venta) => Seleccionados.includes(venta.id)).reduce((acc, venta)=> acc + Number(venta.total),0)
-     setTotal(totalCalculado)
-     if(Seleccionados.length>1){setDescargarTodo(true)}else{setDescargarTodo(false)}
-  }, [Seleccionados,ventasFiltradas])
-
-  
+  useEffect(() => {
+    const totalCalculado = ventasFiltradas
+      .filter((venta) => Seleccionados.includes(venta.id))
+      .reduce((acc, venta) => acc + Number(venta.total), 0);
+    setTotal(totalCalculado);
+    if (Seleccionados.length > 1) {
+      setDescargarTodo(true);
+    } else {
+      setDescargarTodo(false);
+    }
+  }, [Seleccionados, ventasFiltradas]);
 
   const handleDescargarTodo = async () => {
-  if (Seleccionados.length === 0) return;
+    if (Seleccionados.length === 0) return;
 
-  const ventasSeleccionadas = ventasFiltradas.filter(v =>
-    Seleccionados.includes(v.id)
-  );
+    const ventasSeleccionadas = ventasFiltradas.filter((v) =>
+      Seleccionados.includes(v.id),
+    );
 
-  for (const venta of ventasSeleccionadas) {
-    const ref = getPrintRef(venta.id);
+    for (const venta of ventasSeleccionadas) {
+      const ref = getPrintRef(venta.id);
 
-    await new Promise(resolve => {
-      ref.current?.print(resolve);
-    });
-  }
-};
+      await new Promise((resolve) => {
+        ref.current?.print(resolve);
+      });
+    }
+  };
 
   const regitroVentas = async () => {
     try {
@@ -79,11 +83,11 @@ const Ventas = () => {
 
   const CambioSeleccion = (id) => {
     setSeleccionados(
-      (items) => (items.includes(id)) 
-       ? items.filter((item) => item !== id) : 
-            // si en los items esta la id entonces devuelve el array con los items menos ese id
-          [...items, id], // sino esta entonces lo añade
-    
+      (items) =>
+        items.includes(id)
+          ? items.filter((item) => item !== id)
+          : // si en los items esta la id entonces devuelve el array con los items menos ese id
+            [...items, id], // sino esta entonces lo añade
     );
   };
 
@@ -96,134 +100,113 @@ const Ventas = () => {
     }, 200);
   };
 
-// función para mostrar todas las ventas sin filtro
+  // función para mostrar todas las ventas sin filtro
   const aplicarFiltroFechas = () => {
+    if (!fechaDesde || !fechaHasta) return;
 
-  if (!fechaDesde || !fechaHasta) return;
+    const inicio = new Date(fechaDesde);
+    const fin = new Date(fechaHasta);
 
-  const inicio = new Date(fechaDesde);
-  const fin = new Date(fechaHasta);
+    fin.setHours(23, 59, 59, 999);
 
-  fin.setHours(23,59,59,999);
+    const resultado = ventasData.filter((venta) => {
+      const fechaVenta = new Date(venta.fecha);
 
-  const resultado = ventasData.filter((venta) => {
+      return fechaVenta >= inicio && fechaVenta <= fin;
+    });
 
-    const fechaVenta = new Date(venta.fecha);
+    setVentasFiltradas(resultado);
 
-    return fechaVenta >= inicio && fechaVenta <= fin;
+    // reset selección
+    setSeleccionados([]);
+    setSelectAll(false);
+  };
 
-  });
+  const filtrarPorRango = (inicio, fin) => {
+    const resultado = ventasData.filter((venta) => {
+      const fechaVenta = new Date(venta.fecha);
 
-  setVentasFiltradas(resultado);
+      return fechaVenta >= inicio && fechaVenta <= fin;
+    });
 
-  // reset selección
-  setSeleccionados([]);
-  setSelectAll(false);
+    setVentasFiltradas(resultado);
 
-};
+    setSeleccionados([]);
+    setSelectAll(false);
+    setFiltracion(false);
+  };
 
-const filtrarPorRango = (inicio, fin) => {
+  const filtroHoy = () => {
+    const hoy = new Date();
 
-  const resultado = ventasData.filter((venta) => {
+    const inicio = new Date(hoy);
+    inicio.setHours(0, 0, 0, 0);
 
-    const fechaVenta = new Date(venta.fecha);
+    const fin = new Date(hoy);
+    fin.setHours(23, 59, 59, 999);
 
-    return fechaVenta >= inicio && fechaVenta <= fin;
+    filtrarPorRango(inicio, fin);
+  };
 
-  });
+  const filtroAyer = () => {
+    const ayer = new Date();
+    ayer.setDate(ayer.getDate() - 1);
 
-  setVentasFiltradas(resultado);
+    const inicio = new Date(ayer);
+    inicio.setHours(0, 0, 0, 0);
 
-  setSeleccionados([]);
-  setSelectAll(false);
-  setFiltracion(false);
+    const fin = new Date(ayer);
+    fin.setHours(23, 59, 59, 999);
 
-};
+    filtrarPorRango(inicio, fin);
+  };
 
-const filtroHoy = () => {
+  const filtroUltimos7Dias = () => {
+    const hoy = new Date();
 
-  const hoy = new Date();
+    const inicio = new Date();
+    inicio.setDate(hoy.getDate() - 6);
+    inicio.setHours(0, 0, 0, 0);
 
-  const inicio = new Date(hoy);
-  inicio.setHours(0,0,0,0);
+    const fin = new Date();
+    fin.setHours(23, 59, 59, 999);
 
-  const fin = new Date(hoy);
-  fin.setHours(23,59,59,999);
+    filtrarPorRango(inicio, fin);
+  };
 
-  filtrarPorRango(inicio, fin);
+  const filtroEsteMes = () => {
+    const hoy = new Date();
 
-};
+    const inicio = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
 
-const filtroAyer = () => {
+    const fin = new Date();
+    fin.setHours(23, 59, 59, 999);
 
-  const ayer = new Date();
-  ayer.setDate(ayer.getDate() - 1);
+    filtrarPorRango(inicio, fin);
+  };
 
-  const inicio = new Date(ayer);
-  inicio.setHours(0,0,0,0);
+  const filtroMesPasado = () => {
+    const hoy = new Date();
 
-  const fin = new Date(ayer);
-  fin.setHours(23,59,59,999);
+    const inicio = new Date(hoy.getFullYear(), hoy.getMonth() - 1, 1);
 
-  filtrarPorRango(inicio, fin);
+    const fin = new Date(hoy.getFullYear(), hoy.getMonth(), 0);
+    fin.setHours(23, 59, 59, 999);
 
-};
+    filtrarPorRango(inicio, fin);
+  };
 
-const filtroUltimos7Dias = () => {
+  const mostrarTodo = () => {
+    setVentasFiltradas(ventasData);
 
-  const hoy = new Date();
+    setFechaDesde("");
+    setFechaHasta("");
 
-  const inicio = new Date();
-  inicio.setDate(hoy.getDate() - 6);
-  inicio.setHours(0,0,0,0);
-
-  const fin = new Date();
-  fin.setHours(23,59,59,999);
-
-  filtrarPorRango(inicio, fin);
-
-};
-
-const filtroEsteMes = () => {
-
-  const hoy = new Date();
-
-  const inicio = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-
-  const fin = new Date();
-  fin.setHours(23,59,59,999);
-
-  filtrarPorRango(inicio, fin);
-
-};
-
-const filtroMesPasado = () => {
-
-  const hoy = new Date();
-
-  const inicio = new Date(hoy.getFullYear(), hoy.getMonth() - 1, 1);
-
-  const fin = new Date(hoy.getFullYear(), hoy.getMonth(), 0);
-  fin.setHours(23,59,59,999);
-
-  filtrarPorRango(inicio, fin);
-
-};
-
-
-const mostrarTodo = () => {
-
-  setVentasFiltradas(ventasData);
-
-  setFechaDesde("");
-  setFechaHasta("");
-
-  // reset selección
-  setSeleccionados([]);
-  setSelectAll(false);
-  setFiltracion(false);
-
-};
+    // reset selección
+    setSeleccionados([]);
+    setSelectAll(false);
+    setFiltracion(false);
+  };
 
   console.log("esto es lo que agrega el state", Seleccionados);
 
@@ -248,6 +231,7 @@ const mostrarTodo = () => {
     <section className="Ventas">
       <div className="superior">
         <h1>VENTAS</h1>
+        <div className="ventas-titulo-linea" />
 
         <div className="superiorBotones">
           <div
@@ -316,24 +300,23 @@ const mostrarTodo = () => {
             <p>Descargar Todo</p>
           </div>
           <div className="Total">
-           
-          <svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="32"
-  height="32"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="#000000"
-  stroke-width="1"
-  stroke-linecap="round"
-  stroke-linejoin="round"
->
-  <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-  <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-  <path d="M14 11h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" />
-  <path d="M12 17v1m0 -8v1" />
-          </svg>
-           <p>{Total}</p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#000000"
+              stroke-width="1"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+              <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+              <path d="M14 11h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" />
+              <path d="M12 17v1m0 -8v1" />
+            </svg>
+            <p>{Total}</p>
           </div>
         </div>
       </div>
@@ -360,7 +343,7 @@ const mostrarTodo = () => {
           <tbody>
             {ventasFiltradas.map((Venta, index) => (
               <tr key={index} className="tablaTd">
-                <td >
+                <td>
                   <input
                     type="checkbox"
                     id="check"
@@ -389,7 +372,9 @@ const mostrarTodo = () => {
                     Total <span>${VentaSeleccionada.total}</span>
                   </h2>
                   {VentaSeleccionada.devuelta != null && (
-                    <h2>Devuelta <span>${VentaSeleccionada.devuelta}</span></h2>
+                    <h2>
+                      Devuelta <span>${VentaSeleccionada.devuelta}</span>
+                    </h2>
                   )}
                 </div>
 
@@ -447,7 +432,11 @@ const mostrarTodo = () => {
                     </svg>
                   </button>
                   <ImprimirFacturaPOS
-                    ref={VentaSeleccionada ? getPrintRef(VentaSeleccionada.id) : null}
+                    ref={
+                      VentaSeleccionada
+                        ? getPrintRef(VentaSeleccionada.id)
+                        : null
+                    }
                     venta={VentaSeleccionada}
                   />
                 </div>
@@ -493,12 +482,24 @@ const mostrarTodo = () => {
           </div>
 
           <div className="BotonesAtajo">
-            <div className="BA Bhoy"  onClick={filtroHoy}>Hoy</div>
-            <div className="BA Bayer" onClick={filtroAyer}>Ayer</div>
-            <div className="BA B7D"   onClick={filtroUltimos7Dias}>Ultimos 7 dias </div>
-            <div className="BA BEM"   onClick={filtroEsteMes}>Este mes </div>
-            <div className="BA BMP"   onClick={filtroMesPasado}>Mes Pasado</div>
-            <div className="BA BMP"   onClick={mostrarTodo}>Todo</div>
+            <div className="BA Bhoy" onClick={filtroHoy}>
+              Hoy
+            </div>
+            <div className="BA Bayer" onClick={filtroAyer}>
+              Ayer
+            </div>
+            <div className="BA B7D" onClick={filtroUltimos7Dias}>
+              Ultimos 7 dias{" "}
+            </div>
+            <div className="BA BEM" onClick={filtroEsteMes}>
+              Este mes{" "}
+            </div>
+            <div className="BA BMP" onClick={filtroMesPasado}>
+              Mes Pasado
+            </div>
+            <div className="BA BMP" onClick={mostrarTodo}>
+              Todo
+            </div>
           </div>
 
           <div className="PF_Fechas">
@@ -506,24 +507,31 @@ const mostrarTodo = () => {
               <p>Desde</p>
               <div className="Fechas_input">
                 <input
-                 className="Dinput"
-                 type="date"
-                 value={fechaDesde}
-                 onChange={(e) => setFechaDesde(e.target.value)}
-                 />
+                  className="Dinput"
+                  type="date"
+                  value={fechaDesde}
+                  onChange={(e) => setFechaDesde(e.target.value)}
+                />
               </div>
             </div>
 
             <div className="Fechas">
               <p>Hasta</p>
               <div className="Fechas_input">
-                <input className="Dinput" type="date" value={fechaHasta} onChange={(e) => setFechaHasta(e.target.value)} />
+                <input
+                  className="Dinput"
+                  type="date"
+                  value={fechaHasta}
+                  onChange={(e) => setFechaHasta(e.target.value)}
+                />
               </div>
             </div>
           </div>
 
           <div className="ButtonA">
-            <button id="BAplicar" onClick={aplicarFiltroFechas}>Aplicar</button>
+            <button id="BAplicar" onClick={aplicarFiltroFechas}>
+              Aplicar
+            </button>
           </div>
         </div>
       </div>
@@ -532,5 +540,3 @@ const mostrarTodo = () => {
 };
 
 export default Ventas;
-
-

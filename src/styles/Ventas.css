@@ -6,16 +6,44 @@
   flex-direction: column;
   text-align: center;
   align-items: center;
-  overflow-y: auto; /* 🔹 habilita scroll */
-  scroll-behavior: smooth; /* 🔹 scroll suave */
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
-H1 {
-  font-family: monospace;
-  font-size: 80px;
-  color: black;
-  margin: 25px 0px;
-  margin: 0rem;
+/* ── Iconos blancos — override de atributos hardcodeados en JSX ── */
+.Descargar svg,
+.Total svg {
+  stroke: #ffffff;
+}
+
+.BotonFiltro svg {
+  fill: #ffffff;
+}
+
+.Header_Titulo svg {
+  fill: #ffffff;
+}
+
+/* ── Título — scoped, no afecta otras páginas ── */
+.superior h1 {
+  font-family: Orbitron, monospace;
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  color: #ffffff;
+  text-shadow:
+    0 0 10px rgba(57, 255, 20, 0.6),
+    0 0 30px rgba(57, 255, 20, 0.25);
+  margin: 1.5rem 0 0.4rem 0;
+  text-align: center;
+}
+
+.ventas-titulo-linea {
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(to right, transparent, #39ff14, transparent);
+  border-radius: 2px;
+  margin-bottom: 0.4rem;
 }
 
 .Botones {
@@ -51,15 +79,43 @@ H1 {
   border: none;
 }
 
+/* ── Tabla de ventas — dark igual que inventario ── */
 .TablaVentas {
-  background-color: #c7db9c;
+  background-color: rgba(0, 0, 0, 0.2);
   width: 95%;
   margin: 2rem 0;
   margin-top: 0.7rem;
-  padding: 15px;
+  padding: 0;
+  border: 0.2rem solid #484848;
   border-radius: 15px;
   overflow-x: auto;
-  flex-shrink: 0; /* evita que se reduzca al hacer scroll */
+  flex-shrink: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.TablaVentas::-webkit-scrollbar {
+  display: none;
+}
+
+/* botón Ver más dentro de la tabla */
+.TablaVentas button {
+  background-color: transparent;
+  border: 0.1rem solid #484848;
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-family: "Nova Square", sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.TablaVentas button:hover {
+  border-color: #39ff14;
+  color: #39ff14;
 }
 
 .Tabla {
@@ -74,8 +130,6 @@ H1 {
   text-align: center;
 }
 
-
-
 .Tabla th {
   background-color: #c7db9c;
   font-weight: bold;
@@ -85,44 +139,46 @@ H1 {
   min-width: 2rem;
   min-height: 100%;
 }
+
+/* ── Panel detalle de venta — dark ── */
 .panel {
   position: fixed;
   top: 50%;
   left: 62.2%;
-  transform: translate(-50%, -60%); /* <-- CENTRADO REAL */
-  background-color: #e3efc8;
-  color: black;
+  transform: translate(-50%, -60%);
+  background-color: #111111;
+  color: #ffffff;
   width: 35rem;
   height: 30rem;
   padding: 0.9rem;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
   z-index: 2000;
   opacity: 0;
   transition:
     transform 0.3s ease,
     opacity 0.3s ease;
-  border: black 0.2rem solid;
+  border: 0.15rem solid #484848;
   font-family: "Nova Square", sans-serif;
 }
 
-/* Estado oculto */
 .panel-closed {
   transform: translate(-50%, -60%);
   opacity: 0;
   pointer-events: none;
 }
 
-/* Estado visible */
 .panel-open {
   transform: translate(-50%, -50%);
   opacity: 1;
+  border-color: rgba(57, 255, 20, 0.4);
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.12);
 }
 
 .contenidoP {
   display: flex;
   flex-direction: column;
-  background-color: rgb(199, 219, 156);
+  background-color: transparent;
   height: 100%;
 }
 
@@ -140,6 +196,7 @@ H1 {
   padding: 0rem;
   font-family: "monospace";
   margin-bottom: 0.5rem;
+  color: #ffffff;
 }
 
 .contenidoP h2 {
@@ -147,13 +204,16 @@ H1 {
   align-self: flex-start;
   margin: 0rem;
   padding: 0rem;
+  color: rgba(255, 255, 255, 0.75);
 }
+
 .contenidoP h3 {
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   font-size: 1.3rem;
   text-transform: uppercase;
   letter-spacing: 0.125rem;
+  color: #39ff14;
 }
 
 .ListaProductos {
@@ -163,20 +223,23 @@ H1 {
   max-height: 14rem;
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #484848 transparent;
 }
 
 .ListaProductos li:hover {
   transform: scale(1.01);
   transition: 0.2s;
-  background-color: #b0aeaebf;
+  background-color: #222222;
 }
+
 .ListaProductos_producto {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 70%;
-  background-color: #ffffff;
-  border: black 0.1rem solid;
+  background-color: #1a1a1a;
+  border: 0.1rem solid #484848;
   text-align: start;
   padding: 0.5rem 1rem;
   list-style: none;
@@ -184,29 +247,28 @@ H1 {
   font-size: 1.2rem;
   border-radius: 0.5rem;
   margin-bottom: 0.4rem;
-  box-shadow: 10px 10px 10px rgba(11, 10, 10, 0.1);
+  color: #ffffff;
 }
 
-span {
-  color: #19951d;
-  font-weight: bold;
-}
-
+/* scoped — no afecta spans de otras páginas */
 .ListaProductos_producto span {
+  color: #39ff14;
+  font-weight: bold;
   margin-left: auto;
   margin-right: 1rem;
 }
 
-.botones {
+.contenidoP .botones {
   padding-top: 1rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  border-top: 1px solid #484848;
   display: flex;
   flex-direction: row;
   gap: 3rem;
   color: white;
   margin-top: auto;
 }
-.botones button:hover {
+
+.contenidoP .botones button:hover {
   transform: scale(1.05);
   transition: 0.2s;
 }
@@ -233,19 +295,20 @@ span {
 #Total {
   font-size: 1.3rem;
   margin-top: 0.5rem;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 #Total span {
   font-size: 1.8rem;
   font-weight: bold;
-  color: #0b7d12;
+  color: #39ff14;
 }
 
 .headerVenta {
   padding: 0.4rem;
   margin-bottom: 1.2rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid #484848;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -253,42 +316,43 @@ span {
   padding-left: 1rem;
 }
 
+/* ── Botones superiores — sin cambios ── */
 .BotonFiltro {
-  color: black;
+  color: #ffffff;
   align-self: flex-start;
   justify-self: flex-start;
-  background-color: rgb(199, 219, 156);
-  border: #bcda7b 0.2rem solid;
+  background-color: #25282e;
+  border: 0.1rem solid #484848;
   margin-left: 1rem;
   width: 12rem;
   cursor: pointer;
   border-radius: 0.8rem;
   font-weight: bolder;
   font-family: "Nova Square", sans-serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: 0.7rem;
   align-items: center;
   padding-left: 1rem;
-  transition: 0.3s;
+  height: 2.6rem;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    color 0.3s ease;
 }
 
 .BotonFiltro:hover {
+  border-color: #39ff14;
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.25);
+  color: #39ff14;
   transform: scale(1.01);
-  box-shadow: 0.3rem 0.2rem 0.5rem rgb(38, 90, 27);
-  color: rgb(21, 156, 68);
 }
 
 .superior {
   display: flex;
   flex-direction: column;
-  width: 100%;
-}
-
-.superior H1 {
-  justify-self: center;
-  align-self: center;
+  width: 95%;
 }
 
 .superiorBotones {
@@ -301,54 +365,63 @@ span {
 .BotonSeleccion {
   align-self: flex-start;
   justify-self: flex-start;
-  background-color: rgb(199, 219, 156);
-  border: #bcda7b 0.2rem solid;
+  background-color: #25282e;
+  border: 0.1rem solid #484848;
   margin-left: 1rem;
   width: 12rem;
   cursor: pointer;
   border-radius: 0.8rem;
   font-weight: bolder;
   font-family: "Nova Square", sans-serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
+  gap: 0.7rem;
   align-items: center;
-  padding-left: 0.5rem;
-  transition: 0.3s;
-  color: black;
   padding-left: 1.5rem;
+  height: 2.6rem;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    color 0.3s ease;
+  color: #ffffff;
 }
 
 .BotonSeleccion:hover {
+  border-color: #39ff14;
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.25);
+  color: #39ff14;
   transform: scale(1.01);
-  box-shadow: 0.3rem 0.2rem 0.5rem rgb(38, 90, 27);
-  color: rgb(21, 156, 68);
 }
 
 .Cuadro {
-  border: #000 0.15rem solid;
+  border: 0.15rem solid #ffffff;
   width: 0.7rem;
   height: 0.7rem;
+  border-radius: 2px;
+  flex-shrink: 0;
 }
 
 .Cuadro0 {
-  background-color: black;
-  border: gray 0.1rem solid;
+  background-color: #39ff14;
+  border-color: #39ff14;
 }
 
+/* ── Panel de filtro de fechas — dark ── */
 .PanelF {
   display: flex;
   flex-direction: column;
   position: fixed;
-  background-color: rgb(240, 249, 220);
+  background-color: #111111;
+  border: 0.15rem solid rgba(57, 255, 20, 0.3);
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.1);
   height: 50%;
   width: 32%;
   z-index: 100;
   top: 28%;
   border-radius: 1rem;
-  border: black 0.2rem solid;
   font-family: "Nova Square", sans-serif;
+  color: #ffffff;
 }
 
 .PanelO {
@@ -356,10 +429,11 @@ span {
 }
 
 .PF_Header {
-  color: black;
+  color: #ffffff;
   display: flex;
   flex-direction: row;
-  background-color: rgb(199, 219, 156);
+  background-color: #1a1a1a;
+  border-bottom: 0.1rem solid #484848;
   align-self: flex-start;
   width: 100%;
   height: 4rem;
@@ -374,14 +448,15 @@ span {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  background-color: rgb(158, 177, 116);
+  background-color: #25282e;
+  border: 0.1rem solid #484848;
   width: 21rem;
   height: 3rem;
   border-radius: 1rem;
   text-align: center;
   gap: 1rem;
   font-family: "Nova Square", sans-serif;
-  border-radius: 1rem;
+  color: #ffffff;
 }
 
 .BotonesAtajo {
@@ -396,7 +471,8 @@ span {
 }
 
 .BA {
-  background-color: rgb(158, 177, 116);
+  background-color: #25282e;
+  border: 0.1rem solid #484848;
   min-width: 3rem;
   height: 2rem;
   padding: 0 1rem;
@@ -407,51 +483,28 @@ span {
   justify-content: center;
   cursor: pointer;
   transition:
-    transform 0.3s,
-    box-shadow 0.3s;
-  color: #1f2a14;
+    border-color 0.25s ease,
+    color 0.25s ease;
+  color: #ffffff;
   font-weight: bold;
 }
 
 .BA:hover {
-  transform: scale(1.02);
-  box-shadow: 0.4rem 0.3rem 0.5rem rgb(10, 10, 9);
-
-  /* gradiente en el texto */
-  background-image: linear-gradient(
-    90deg,
-    #1f3d1a 0%,
-    #1f3d1a 50%,
-    #0000 50%,
-    #0000 100%
-  );
-
-  background-size: 200% 100%;
-  background-position: 100% 0;
-
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  animation: textoHibrido 0.6s ease forwards;
-}
-
-@keyframes textoHibrido {
-  from {
-    background-position: 0% 0;
-  }
-  to {
-    background-position: 100% 0;
-  }
+  border-color: #39ff14;
+  color: #39ff14;
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.2);
+  transform: scale(1.03);
 }
 
 .PF_Fechas {
-  color: black;
+  color: #ffffff;
   width: 100%;
   height: 4rem;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: flex-start;
+  padding-top: 0.5rem;
 }
 
 .Fechas {
@@ -463,8 +516,10 @@ span {
 
 .Fechas p {
   align-self: flex-start;
-  margin: 0.2rem 0 0 0;
+  margin: 0.2rem 0 0.3rem 0;
   height: auto;
+  color: #ffffff;
+  font-size: 0.9rem;
 }
 
 .Fechas_input {
@@ -474,15 +529,25 @@ span {
 }
 
 #BAplicar {
-  background-color: green;
-  color: white;
+  background-color: #0d3d12;
+  color: #ffffff;
+  border: 0.1rem solid #39ff14;
+  border-radius: 8px;
   width: 6rem;
   height: auto;
   margin-top: 0.5rem;
+  font-family: "Nova Square", sans-serif;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+#BAplicar:hover {
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.35);
 }
 
 .ButtonA {
   margin-top: 0.2rem;
+  margin-bottom: 1rem;
   width: 100%;
   height: auto;
   display: flex;
@@ -491,31 +556,41 @@ span {
 }
 
 .Dinput {
-  background-color: #f7efd6;
-  color: black;
-  border: none;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border: 0.1rem solid #484848;
   height: 2rem;
   width: 9rem;
   border-radius: 0.5rem;
   padding-left: 0.7rem;
-  border: rgb(199, 219, 156) 0.1rem solid;
   font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.Dinput:focus {
+  outline: none;
+  border-color: #39ff14;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
+  filter: invert(1) brightness(2);
   margin-right: 0.5rem;
+  cursor: pointer;
+  opacity: 1;
+}
+
+#CerrarF {
+  cursor: pointer;
+  fill: #ffffff;
+  transition:
+    fill 0.2s ease,
+    transform 0.2s ease;
 }
 
 #CerrarF:hover {
-  transform: translateY(-0.2rem);
-  background-color: red;
+  fill: #ff4444;
+  transform: scale(1.1);
   border-radius: 4rem;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(65%) sepia(20%) saturate(300%) hue-rotate(35deg)
-    brightness(95%);
 }
 
 .Cubierta {
@@ -534,52 +609,60 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .Descargar {
   align-self: flex-start;
   justify-self: flex-start;
-  background-color: rgb(199, 219, 156);
-  border: #bcda7b 0.2rem solid;
+  background-color: #0d3d12;
+  border: 0.1rem solid #39ff14;
   margin-left: 1rem;
   width: 12rem;
   cursor: pointer;
   border-radius: 0.8rem;
   font-weight: bolder;
   font-family: "Nova Square", sans-serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
+  gap: 0.7rem;
   align-items: center;
-  padding-left: 0.5rem;
-  transition: 0.3s;
-  color: black;
   padding-left: 1.5rem;
+  height: 2.6rem;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+  color: #ffffff;
+}
+
+.Descargar:hover {
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.4);
+  transform: scale(1.01);
 }
 
 .DescargarC {
   display: none;
 }
 
-.Total{
+.Total {
   align-self: flex-start;
   justify-self: flex-start;
-  background-color: rgb(199, 219, 156);
-  border: #bcda7b 0.2rem solid;
+  background-color: #25282e;
+  border: 0.1rem solid rgba(57, 255, 20, 0.4);
   margin-left: 1rem;
   width: 8rem;
-  cursor: pointer;
   border-radius: 0.8rem;
   font-weight: bolder;
   font-family: "Nova Square", sans-serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   display: flex;
   flex-direction: row;
-  gap: 0.2rem;
+  gap: 0.4rem;
   align-items: center;
   transition: 0.3s;
-  color: black;
+  color: #39ff14;
   padding-left: 1rem;
+  height: 2.6rem;
 }
 
+/* ── Responsive ── */
 @media (max-width: 430px) {
-  .superior H1 {
+  .superior h1 {
     font-size: 2.2rem;
     margin-top: 2.5rem;
   }

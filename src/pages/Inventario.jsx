@@ -388,6 +388,7 @@ const Inventario = () => {
       <section className="inventario">
         <div className="iconoti">
           <h1>INVENTARIO</h1>
+          <div className="inventario-titulo-linea" />
           {condicion && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
