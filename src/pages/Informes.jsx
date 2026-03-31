@@ -82,7 +82,7 @@ const Informes = () => {
     {
       name: "Entre 31% y 70%",
       value: informesData.filter(
-        (i) => Number(i.estado) > 30 && Number(i.estado) <= 70
+        (i) => Number(i.estado) > 30 && Number(i.estado) <= 70,
       ).length,
     },
     {
@@ -95,6 +95,12 @@ const Informes = () => {
 
   return (
     <section className="informes">
+      {/* Título */}
+      <div className="informes-titulo">
+        <h1>INFORMES</h1>
+        <div className="informes-titulo-linea" />
+      </div>
+
       {/* Tabla de informes */}
       <section className="TablaInformes">
         <table className="tabla">
