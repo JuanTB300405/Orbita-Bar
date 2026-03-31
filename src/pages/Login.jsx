@@ -1,18 +1,14 @@
 import { useState } from "react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/images/orbitafondo.jpeg";
-import galaxia from "../assets/images/galaxia3.png";
 import "../styles/Login.css";
 import { authentication } from "../js/login";
+import alien from "../assets/images/alien.png";
 
 const Login = ({ setAutenticacion }) => {
   const navigate = useNavigate();
-
   const [cargando, setCargando] = useState(false);
-
   const [error, setError] = useState(null);
-
   const ValidacionLogin = async () => {
     setCargando(true);
 
@@ -40,24 +36,19 @@ const Login = ({ setAutenticacion }) => {
 
   return (
     <section className="login">
-      <div className="cont-img">
-        <img src={galaxia} alt="" />
-      </div>
-      {/* este div es de la imagen que parte a la mitad la pantalla*/}
       <div className="cont-rest">
-        <br />
-        <img src={logo} alt="Logo de Q'SaboresS" id="logo" />
-        <br />
-        <br />
+        <div className="AlienIcon">
+          <img src={alien} alt="Alien" />
+        </div>
         <h1>Bienvenido de nuevo!</h1>
         <br />
         <div className="contraseña-vision">
-          <label htmlFor="contrasena">Contraseña</label>
           <input
             type={verContraseña ? "text" : "password"}
-            placeholder="Ingrese su contraseña"
             id="contrasena"
+            placeholder=" "
           />
+          <label htmlFor="contrasena">Contraseña</label>
           <span
             className="icono"
             onClick={() => setverContraseña(!verContraseña)}
@@ -69,7 +60,7 @@ const Login = ({ setAutenticacion }) => {
                 height="30"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#000000"
+                stroke="#ffffff"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -87,7 +78,7 @@ const Login = ({ setAutenticacion }) => {
                 height="30"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#000000"
+                stroke="#ffffff"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -102,7 +93,7 @@ const Login = ({ setAutenticacion }) => {
         </div>
         {error && <h3 className="error-login">{error}</h3>}
         <br />
-        <button onClick={ValidacionLogin}>Iniciar Sesion</button>
+        <button onClick={ValidacionLogin}>Iniciar Sesión</button>
       </div>
       {cargando && (
         <div className="modal-cargando-l">
