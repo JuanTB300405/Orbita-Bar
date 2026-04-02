@@ -416,10 +416,11 @@
   background-color: #111111;
   border: 0.15rem solid rgba(57, 255, 20, 0.3);
   box-shadow: 0 0 20px rgba(57, 255, 20, 0.1);
-  height: 50%;
+  height: auto;
   width: 32%;
   z-index: 100;
-  top: 28%;
+  top: 50%;
+  transform: translateY(-50%);
   border-radius: 1rem;
   font-family: "Nova Square", sans-serif;
   color: #ffffff;
@@ -546,6 +547,49 @@
   box-shadow: 0 0 10px rgba(57, 255, 20, 0.35);
 }
 
+.PF_Mesas {
+  width: 100%;
+  padding: 0.8rem 1.5rem 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.PF_Mesas p {
+  margin: 0 0 0.3rem 0;
+  font-size: 0.9rem;
+  color: #ffffff;
+  text-align: start;
+}
+
+.PF_Mesas select {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border: 0.1rem solid #484848;
+  height: 2rem;
+  width: 90%;
+  border-radius: 0.5rem;
+  padding: 0 0.7rem;
+  font-size: 0.95rem;
+  font-family: "Nova Square", sans-serif;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%2339ff14'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  transition: border-color 0.2s ease;
+}
+
+.PF_Mesas select:focus {
+  outline: none;
+  border-color: #39ff14;
+}
+
+.PF_Mesas select option {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
 .ButtonA {
   margin-top: 0.2rem;
   margin-bottom: 1rem;
@@ -574,7 +618,7 @@
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1) brightness(2);
+  filter: invert(62%) sepia(80%) saturate(500%) hue-rotate(65deg) brightness(120%);
   margin-right: 0.5rem;
   cursor: pointer;
   opacity: 1;

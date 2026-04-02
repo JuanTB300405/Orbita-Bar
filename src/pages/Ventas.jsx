@@ -140,6 +140,7 @@ const Ventas = () => {
     setVentasFiltradas(resultado);
     setSeleccionados([]);
     setSelectAll(false);
+    setFiltracion(false);
   };
 
   const filtrarPorRango = (inicio, fin) => {
@@ -557,6 +558,7 @@ const Ventas = () => {
           </div>
 
           <div className="PF_Mesas">
+            <p>Mesa</p>
             <select
               value={mesaSeleccionada}
               onChange={(e) => setMesaSeleccionada(e.target.value)}
@@ -564,7 +566,7 @@ const Ventas = () => {
               <option value="">Todas las mesas</option>
               {mesasData.map((mesa) => (
                 <option key={mesa.id} value={mesa.id}>
-                  {mesa.numero}
+                  Mesa {mesa.numero}
                 </option>
               ))}
             </select>
