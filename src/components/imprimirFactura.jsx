@@ -69,7 +69,7 @@ const ImprimirFacturaPOS = forwardRef(({ venta }, ref) => {
             </tr>
           </thead>
           <tbody>
-            {venta.detallesVentas.map((d) => (
+            {venta.detallesVentas?.map((d) => (
               <tr key={d.id}>
                 <td>{d.producto.nombre}</td>
                 <td className="centro">{d.cantidad}</td>

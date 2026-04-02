@@ -460,14 +460,6 @@ const Ventas = () => {
                       <path d="M12 4l0 12" />
                     </svg>
                   </button>
-                  <ImprimirFacturaPOS
-                    ref={
-                      VentaSeleccionada
-                        ? getPrintRef(VentaSeleccionada.id)
-                        : null
-                    }
-                    venta={VentaSeleccionada}
-                  />
                 </div>
               </div>
             </div>

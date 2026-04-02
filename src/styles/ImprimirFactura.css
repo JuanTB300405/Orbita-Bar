@@ -9,30 +9,34 @@
   }
 
   html, body {
-    margin: 0 auto;
+    margin: 0;
+    padding: 0;
     background: #fff;
     font-family: "Courier New", monospace;
     font-size: 10px;
     line-height: 1.3;
-    color: #000;
+    color: #000 !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
-  /* Centrar el contenido en la hoja */
   body {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+    display: block;
   }
 
   /* ---------- Contenedor ---------- */
- .factura-container {
+  .factura-container {
     width: 58mm !important;
     max-width: 58mm !important;
-    zoom: 1 !important /* zoom reducido para papel angosto de impresora de carbón */
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #000 !important;
+    background: #fff !important;
+  }
+
+  .factura-container * {
+    color: #000 !important;
+    background: transparent !important;
   }
 
   /* ---------- Encabezado ---------- */
