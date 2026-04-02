@@ -11,8 +11,8 @@ const Categorias = () => {
 
     const [cargando, setCargando] = useState(true);
     const [busqueda, setBusqueda] = useState("");
+    const [condicion, setCondicion] = useState(false);
     const [categoriasData, setCategoriasData] = useState([]);
-
 
     const datosFitrados = categoriasData.filter(
         (categoria) =>
@@ -218,9 +218,9 @@ const Categorias = () => {
     
     if (cargando) {
         return (
-            <div className="modal-cargando">
-                <div className="modal-contenido-c">
-                    <div class='loader'></div>
+            <div className="modal-cargando-ca">
+                <div className="modal-contenido-cat">
+                    <div class='loader-ca'></div>
                 </div>
             </div>
         );
@@ -232,14 +232,15 @@ const Categorias = () => {
         <>
             <section className="categorias">
                 <h1>CATEGORIAS</h1>
+                <div className="categorias-titulo-linea" ></div>
                 <div id="cont">
                     <div className="buscador">
                         <svg xmlns="http://www.w3.org/2000/svg"  width="25"  height="25"  viewBox="0 0 24 24"  
-                            fill="none"  stroke="#000000"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  
+                            fill="none"  stroke="#ffffff"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  
                             class="icon icon-tabler icons-tabler-outline icon-tabler-search"><path stroke="none" d="M0 0h24v24H0z" 
                             fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" />
                         </svg>
-                        <input type="text" value={busqueda} onChange={(e) => setBusqueda(e.target.value)} />
+                        <input type="text" value={busqueda} onChange={(e) => setBusqueda(e.target.value)} placeholder='buscar categoria...'/>
                     </div>
                     <Button variant="rojo" onClick={abrirModalEliminar}>
                         <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  
@@ -317,7 +318,7 @@ const Categorias = () => {
                 </div>
 
                 {edicion && (
-                    <div id="botoness-edicion">
+                    <div id="botoness-edicion-c">
                         <Button variant="verde"  onClick={GuardarEdicion}>Guardar</Button>
                         <Button variant="rojo" onClick={CancelarEdicion} >Cancelar</Button>
                     </div>
@@ -338,7 +339,7 @@ const Categorias = () => {
 
                                     {error && <p className="error-c">{error}</p>}  
 
-                                    <div className="botones">
+                                    <div className="botones-ca">
                                         <Button type="submit" variant="verde" class="btn">Guardar</Button>
                                         <Button variant="rojo" onClick={cerrarModalAgregar} class="btn">Cancelar</Button>
                                     </div>
@@ -353,7 +354,7 @@ const Categorias = () => {
                     <div className="modal" onClick={cerrarModalEliminar}>
                         <div className="modal-contenedor-eliminar-c" onClick={(e) => e.stopPropagation()}>
                             <h2>¿Esta completamente seguro que desea eliminar el/las categorias?</h2>
-                            <div id="botoness">
+                            <div id="botoness-c">
                                 <Button variant="verde" onClick={eliminarCategoriaSelec}>Aceptar</Button>
                                 <Button variant="rojo" onClick={cerrarModalEliminar}>Cancelar</Button>
                             </div>

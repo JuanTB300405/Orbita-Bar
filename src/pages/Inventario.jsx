@@ -18,7 +18,8 @@ const Inventario = () => {
   const [existencias, setExistencias] = useState([]);
   const [proveedoresData, setProveedoresData] = useState([]);
   const [categoriaData, setCategoriaData] = useState([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
+  const [er, setEr] = useState(null);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
 
   console.log("categoria seleccionada", categoriaSeleccionada);
@@ -37,12 +38,12 @@ const Inventario = () => {
       if (Array.isArray(data)) {
         setProductosData(data);
       } else {
-        setError("Error al acceder al inventario");
+        setEr("Error al acceder al inventario");
         console.error("Respuesta inesperada:", data);
       }
-    } catch (err) {
-      setError("Error al consultar el inventario");
-      console.error("Error en la consulta:", err);
+    } catch (er) {
+      setEr("Error al consultar el inventario");
+      console.error("Error en la consulta:", er);
     } finally {
       setCargando(false);
     }
@@ -54,16 +55,16 @@ const Inventario = () => {
       if (Array.isArray(data)) {
         setExistencias(data);
       } else {
-        setError(
+        setEr(
           "Error al acceder a las Existencias de los productos porximos a terminar",
         );
         console.error("Respuesta inesperada:", data);
       }
-    } catch (err) {
-      setError(
+    } catch (er) {
+      setEr(
         "Error al acceder a las Existencias de los productos porximos a terminar",
       );
-      console.error("Error en la consulta:", err);
+      console.error("Error en la consulta:", er);
     }
   };
 
@@ -73,12 +74,12 @@ const Inventario = () => {
       if (Array.isArray(provedoresD)) {
         setProveedoresData(provedoresD);
       } else {
-        setError("Error al acceder a los proveedores");
+        setEr("Error al acceder a los proveedores");
         console.error("Respuesta inesperada:", provedoresD);
       }
-    } catch (error) {
-      setError("Error al consultar los proveedores");
-      console.error("Error en la consulta:", error);
+    } catch (er) {
+      setEr("Error al consultar los proveedores");
+      console.error("Error en la consulta:", er);
     }
   };
 
@@ -88,12 +89,12 @@ const Inventario = () => {
       if (Array.isArray(categorias)) {
         setCategoriaData(categorias);
       } else {
-        setError("Error al acceder a la categoria");
+        setEr("Error al acceder a la categoria");
         console.error("Respuesta inesperada:", categorias);
       }
-    } catch (error) {
-      setError("Error al consultar las categorias");
-      console.error("Error en la consulta:", error);
+    } catch (er) {
+      setEr("Error al consultar las categorias");
+      console.error("Error en la consulta:", er);
     }
   };
 
@@ -162,8 +163,8 @@ const Inventario = () => {
         toast.success("¡Producto guardado exitosamente!");
         obtenerInventario();
       }
-    } catch (error) {
-      console.error("Excepcion al crear el producto", error);
+    } catch (er) {
+      console.error("Excepcion al crear el producto", er);
       toast.error("Error al crear el producto");
     }
 
@@ -179,9 +180,7 @@ const Inventario = () => {
     cerrarModalAgregar();
   };
 
-  // Logica para el cambio de imagen
 
-  const inputRef = useRef(null);
 
   // Logica para el modal de agregar
 
@@ -193,7 +192,6 @@ const Inventario = () => {
 
   const cerrarModalAgregar = () => {
     setShowModalAgregar(false);
-    inputRef.current.value = null;
     setdatosForm({
       nombre: "",
       precio: "",
@@ -231,8 +229,8 @@ const Inventario = () => {
         toast.success("¡Productos eliminados exitosamente!");
         obtenerInventario();
       }
-    } catch (error) {
-      console.error("Excepcion al eliminar el producto", error);
+    } catch (er) {
+      console.error("Excepcion al eliminar el producto", er);
       toast.error("Error al eliminar el producto");
     }
 
@@ -308,8 +306,8 @@ const Inventario = () => {
       } else {
         console.log("respuesta :", response);
       }
-    } catch (error) {
-      console.error("Excepcion al actualizar el producto", error);
+    } catch (er) {
+      console.error("Excepcion al actualizar el producto", er);
       toast.error("Error al actualizar el producto");
     }
 
@@ -373,9 +371,9 @@ const Inventario = () => {
 
   if (cargando) {
     return (
-      <div className="modal-cargando">
-        <div className="modal-contenido-c">
-          <div class="loader"></div>
+      <div className="modal-cargando-i">
+        <div className="modal-contenido-i">
+          <div class="loader-i"></div>
         </div>
       </div>
     );
@@ -632,7 +630,7 @@ const Inventario = () => {
         </div>
 
         {edicion && (
-          <div id="botoness-edicion">
+          <div id="botoness-edicion-i">
             <Button variant="verde" onClick={GuardarEdicion}>
               {" "}
               Guardar{" "}

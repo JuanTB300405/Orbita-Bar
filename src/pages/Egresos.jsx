@@ -376,9 +376,9 @@ const Egresos = () => {
 
   if (cargando) {
     return (
-      <div className="modal-cargando">
-        <div className="modal-contenido-c">
-          <div className="loader"></div>
+      <div className="modal-cargando-eg">
+        <div className="modal-contenido-eg">
+          <div className="loader-eg"></div>
         </div>
       </div>
     );
