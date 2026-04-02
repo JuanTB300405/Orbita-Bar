@@ -218,9 +218,9 @@ const Ventas = () => {
 
   if (cargando) {
     return (
-      <div className="modal-cargando">
-        <div className="modal-contenido-c">
-          <div className="loader"></div>
+      <div className="modal-cargando-ve">
+        <div className="modal-contenido-ve">
+          <div className="loader-ve"></div>
         </div>
       </div>
     );
