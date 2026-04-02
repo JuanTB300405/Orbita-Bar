@@ -9,15 +9,15 @@
 }
   
 .proveedores h1 {
-  font-family: monospace;
-  font-size: 4.5rem;
+  font-family: Orbitron, monospace;
+  font-size: 3.5rem;
   font-weight: 900;
   letter-spacing: 0.25em;
   color: #ffffff;
   text-shadow:
     0 0 10px rgba(57, 255, 20, 0.6),
     0 0 30px rgba(57, 255, 20, 0.25);
-  margin: 2.2rem 0 0.4rem 0;
+  margin: 1.5rem 0 0.4rem 0;
 }
 
 .proveedores-titulo-linea {
@@ -104,7 +104,7 @@
   padding: 12px 10px;
   text-align: center;
   font-family: monospace, sans-serif;
-  font-size: 1.2rem;
+  font-size: 0.95rem;
   color: #ffffff;
   font-weight: 600;
 }
@@ -265,7 +265,7 @@
   font-weight: bold;
   color:#333;
   font-family: monospace, sans-serif;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .formulario-p input {
@@ -293,7 +293,7 @@
 }
 
 .botones-pr .boton.rojo, .botones-pr .boton.verde {
-  font-size: 20px;
+  font-size: 17px;
   outline: none;
 }
 
