@@ -1,12 +1,8 @@
 .gastos-tabla {
-    width: 95%;
-    height: 100%;
-    background-color: #C7DB9C;
-    padding: 0;
-    border: 1rem solid #C7DB9C;
-    border-radius: 15px;
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow-x: auto;
-  
     scrollbar-width: none; 
     -ms-overflow-style: none; 
 }
@@ -18,12 +14,13 @@
 .tabla {
     width: 100%;
     border-collapse: collapse;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: monospace, sans-serif;
 }
   
 .tabla thead {
-    background-color:#C7DB9C;
-    color: black;
+    background-color: #25282e !important;
+    color: #39FF14 !important;
+    border: 0.1rem solid #484848 !important;
 }
   
 .t  {
@@ -33,8 +30,12 @@
 }
   
 .tabla th, .tabla td {
-    padding: 12px 10px;
-    text-align: center;
+  padding: 12px 10px;
+  text-align: center;
+  font-family: monospace, sans-serif;
+  font-size: 1rem;
+  color: #ffffff;
+  font-weight: 500;
 }
   
 .tabla td {
@@ -43,26 +44,37 @@
 }
   
 .tabla tbody tr {
-    background-color: #ffffff;
+    background-color: black !important;
+    color: #ffffff !important;
     transition: background-color 0.3s ease;
 }
   
-.tabla tbody tr:hover {
-    background-color: gray;
-}
-  
 .tabla tbody tr:hover td {
-    color: white;
+  color: white !important;
+  font-weight: 500;
 }
   
 .tabla input[type="checkbox"] {
-    transform: scale(1.3);
-    accent-color: #FFF0BD; 
-    cursor: pointer;
+  transform: scale(1.3);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: black;
+  border: 0.1rem solid #484848;
+  border-radius: 3px;
+  position: relative;
 }
     
-.tabla td, .tabla-P th {
-    border-bottom: 2px solid #333;
+.tabla input[type="checkbox"]:checked::after {
+    content: "✓";
+    color: #ffffff;
+    font-size: 13px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1;
 }
-
 

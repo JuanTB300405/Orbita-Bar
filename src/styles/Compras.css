@@ -1,29 +1,26 @@
-.compras-tabla {
-    width: 95%;
-    height: 100%;
-    background-color: #C7DB9C;
-    padding: 0;
-    border: 1rem solid #C7DB9C;
-    border-radius: 15px;
+.gastos-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow-x: auto;
-  
     scrollbar-width: none; 
     -ms-overflow-style: none; 
 }
 
-.compras-tabla::-webkit-scrollbar {
+.gastos-tabla::-webkit-scrollbar {
     display: none; 
 }
 
 .tabla {
     width: 100%;
     border-collapse: collapse;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: monospace, sans-serif;
 }
   
 .tabla thead {
-    background-color:#C7DB9C;
-    color: black;
+    background-color: #25282e !important;
+    color: #39FF14 !important;
+    border: 0.1rem solid #484848 !important;
 }
   
 .t  {
@@ -33,10 +30,12 @@
 }
   
 .tabla th, .tabla td {
-    /* padding: 12px 10px;
-    text-align: center; */
-     vertical-align: middle;
+  padding: 12px 10px;
   text-align: center;
+  font-family: monospace, sans-serif;
+  font-size: 1rem;
+  color: #ffffff;
+  font-weight: 500;
 }
   
 .tabla td {
@@ -45,134 +44,37 @@
 }
   
 .tabla tbody tr {
-    background-color: #ffffff;
+    background-color: black !important;
+    color: #ffffff !important;
     transition: background-color 0.3s ease;
 }
   
-.tabla tbody tr:hover {
-    background-color: gray;
-}
-  
 .tabla tbody tr:hover td {
-    color: white;
+  color: white !important;
+  font-weight: 500;
 }
   
 .tabla input[type="checkbox"] {
-    transform: scale(1.3);
-    accent-color: #FFF0BD; 
-    cursor: pointer;
+  transform: scale(1.3);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: black;
+  border: 0.1rem solid #484848;
+  border-radius: 3px;
+  position: relative;
 }
     
-.tabla td, .tabla-P th {
-    border-bottom: 2px solid #333;
+.tabla input[type="checkbox"]:checked::after {
+    content: "✓";
+    color: #ffffff;
+    font-size: 13px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1;
 }
 
-.inputss {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 30px;
-  font-size: 1rem;
-  background-color: #FFF0BD;
-  color: #333;
-  font-weight: 600;
-  outline: none;
-  font-family: Arial, Helvetica, sans-serif;
-  border-radius: 5px;
-  border: 2px solid #333;
-}
-
-/* Contenedor general del Select */
-.react-select-container {
-    width: 100%;
-    margin-bottom: 0%;
-}
-
-/* Estilo base del control
-.react-select__control {
-    min-height: 40px;
-    border-radius: 6px;
-    border: 10% solid #ced4da;
-    background-color: #ffffff;
-    box-shadow: none;
-    transition: border-color 0.2s;
-} */
-
-.react-select__control {
-  min-height: 40px !important;
-  height: 40px !important;
-  border-radius: 6px;
-  border: 2px solid #333 !important;
-  background-color: #FFF0BD !important;
-  font-weight: 600;
-}
-.react-select__value-container {
-  padding: 0 8px !important;
-  height: 40px !important;
-  display: flex;
-  align-items: center;
-}
-.react-select__single-value {
-  color: #333 !important;
-  font-size: 1rem;
-}
-
-/* Hover del control */
-.react-select__control:hover {
-    border-color: #a0aec0; /* gris más fuerte */
-}
-
-/* Input interno (el campo de búsqueda) */
-.react-select__input-container {
-    margin: 0;
-    padding: 0;
-}
-
-/* Contenedor del valor seleccionado
-.react-select__value-container {
-    padding: 4px 8px;
-} */
-
-/* Menú desplegable */
-.react-select__menu {
-    z-index: 1000;
-    background-color: gray !important;
-    border-radius: 5%;
-    color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-
-/* Opción cuando está enfocada */
-.react-select__option--is-focused {
-    background-color: #c7db9c !important; /* gris claro */ 
-    color: #1a202c !important;
-}
-
-/* Opción seleccionada */
-.react-select__option--is-selected {
-    background-color: #fff0bd !important; /* azul Bootstrap */
-    color: black !important;
-}
-
-/* Estilo para el select combinado (si usas más de uno juntos) */
-.combined-select {
-    min-width: 200px;
-    width: 100%;
-}
-
-
-/* Asegurar que el ancho de las columnas se mantenga */
-.tabla th:nth-child(2),
-.tabla td:nth-child(2) {
-    min-width: 200px;
-}
-
-.tabla th:nth-child(3),
-.tabla td:nth-child(3) {
-    min-width: 150px;
-}
-
-th {
-    position: sticky;
-}

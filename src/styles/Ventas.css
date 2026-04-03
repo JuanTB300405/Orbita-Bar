@@ -126,12 +126,13 @@
 
 .Tabla th,
 .Tabla td {
-  padding: 0.2rem;
+  padding: 12px 10px;
   text-align: center;
 }
 
 .Tabla th {
-  background-color: #c7db9c;
+  background-color: #25282e;
+  color: #39ff14;
   font-weight: bold;
 }
 

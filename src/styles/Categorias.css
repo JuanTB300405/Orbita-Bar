@@ -9,7 +9,7 @@
 }
   
 .categorias h1 {
-  font-family: Orbitron, monospace;
+  font-family: monospace;
   font-size: 3.5rem;
   font-weight: 900;
   letter-spacing: 0.25em;
@@ -17,7 +17,7 @@
   text-shadow:
     0 0 10px rgba(57, 255, 20, 0.6),
     0 0 30px rgba(57, 255, 20, 0.25);
-  margin: 1.5rem 0 0.4rem 0;
+  margin: 2.2rem 0 0.4rem 0;
 }
 
 .categorias-titulo-linea {
@@ -109,9 +109,9 @@
   padding: 12px 10px;
   text-align: center;
   font-family: monospace, sans-serif;
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .tabla-c tbody tr {
@@ -123,6 +123,7 @@
 .tabla-c td {
   color: white !important;
   font-weight: 500;
+  border-bottom: 0.05rem solid #333;
 }
 
 .tabla-c input[type="checkbox"] {
@@ -273,7 +274,7 @@
   font-weight: bold;
   color:#333;
   font-family: monospace, sans-serif;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .formulario-c input {
@@ -301,7 +302,7 @@
 }
 
 .botones-ca .boton.rojo, .botones-ca .boton.verde {
-  font-size: 17px;
+  font-size: 20px;
   outline: none;
 }
 

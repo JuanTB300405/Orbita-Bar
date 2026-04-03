@@ -4,7 +4,7 @@ import "../styles/Ventas.css";
 import Button from "../components/Button";
 import { ConsultarVentas } from "../js/ventas.js";
 import { consultaMesas } from "../js/mesa.js";
-import Select from "react-select/base";
+import Select from "react-select";
 import ImprimirFacturaPOS from "../components/imprimirFactura";
 
 const Ventas = () => {
