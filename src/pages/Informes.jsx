@@ -37,7 +37,7 @@ const Informes = () => {
       }
     } catch (err) {
       setError("Error al consultar el inventario", err);
-      console.error("Error en la consulta:", error);
+      console.error("Error en la consulta:", err);
     } finally {
       setCargando(false);
     }

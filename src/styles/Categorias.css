@@ -10,7 +10,7 @@
   
 .categorias h1 {
   font-family: monospace;
-  font-size: 4.5rem;
+  font-size: 3.5rem;
   font-weight: 900;
   letter-spacing: 0.25em;
   color: #ffffff;
@@ -109,9 +109,9 @@
   padding: 12px 10px;
   text-align: center;
   font-family: monospace, sans-serif;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .tabla-c tbody tr {
@@ -123,6 +123,7 @@
 .tabla-c td {
   color: white !important;
   font-weight: 500;
+  border-bottom: 0.05rem solid #333;
 }
 
 .tabla-c input[type="checkbox"] {

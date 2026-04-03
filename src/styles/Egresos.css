@@ -10,7 +10,7 @@
 
 .egresos h1 {
   font-family: monospace;
-  font-size: 4.5rem;
+  font-size: 3.5rem;
   font-weight: 900;
   letter-spacing: 0.25em;
   color: #ffffff;
@@ -77,6 +77,10 @@
 }
 
 /* Estilos de la tabla */
+
+#tablas .tabla td {
+  border-bottom: 0.05rem solid #333;
+}
 
 #tablas {
   width: 90%;

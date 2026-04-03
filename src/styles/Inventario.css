@@ -204,7 +204,7 @@
 }
 
 #cont-select select {
-  width: 100%;
+  width: 105%;
   font-size: 23px;
   border: 2px solid #333;
   border-radius: 8px;
@@ -223,10 +223,10 @@
 
 #cont-select::after {
   content: "▼";
-  font-size: 24px;
+  font-size: 1rem;
   color: #ffffff !important;
   position: absolute;
-  right: 15px;
+  right: 0.5rem;
   top: 50%;
   transform: translateY(-53%);
   pointer-events: none;
@@ -596,7 +596,7 @@
 
 .tabla thead {
   background-color: #25282e !important;
-  color: #ffffff !important;
+  color: #39ff14 !important;
   border: 0.1rem solid #484848 !important;
   font-family: Orbital;
 }
@@ -611,6 +611,7 @@
 .tabla td {
   padding: 12px 10px;
   text-align: center;
+  font-size: 1rem;
 }
 
 .tabla td {
@@ -726,7 +727,7 @@
   background: linear-gradient(
       135deg,
       #0000 calc(50% - 0.5em),
-      #39ff14  0 calc(50% + 0.5em),
+      #39ff14 0 calc(50% + 0.5em),
       #0000 0
     )
     right/300% 100%;

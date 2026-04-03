@@ -1,6 +1,6 @@
 import { useReactToPrint } from "react-to-print";
 import { useRef, forwardRef, useImperativeHandle } from "react";
-import "/src/styles/ImprimirFactura.css";
+import "../styles/ImprimirFactura.css";
 
 const ImprimirFacturaPOS = forwardRef(({ venta }, ref) => {
   const contentRef = useRef();
