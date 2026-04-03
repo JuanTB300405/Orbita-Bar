@@ -196,6 +196,7 @@
   border-radius: 8px;
   background-color: #fff0bd;
   color: #333;
+  font-family: monospace, sans-serif;
   cursor: pointer;
   padding: 8px 30px 8px 10px;
   transition: border-color 0.3s ease;
@@ -223,8 +224,9 @@
 }
 
 #select option {
-  background-color: #ffffff;
+  background-color: #505050;
   color: #ffffff;
+  font-family: monospace, sans-serif;
 }
 
 #select:hover {

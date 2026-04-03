@@ -9,22 +9,20 @@
     cursor: pointer;
     transition: all 0.3s ease;
     outline: none;
+    font-family: monospace, sans-serif;
 }
 
 /* Variante neutro*/
 
 .boton.neutro {
-    background-color: #333;
-    color: #ffffff;
-    border-color: #ffffff;
+    background-color: #505050;
+    color: #000;
+    border-color: #000;
 }
 .boton.neutro:hover {
-    background-color: #ffffff;
-    color: #333;
-}
-
-.boton.neutro:hover .icono-boton svg {
-    stroke: #FFF0BD;
+    background-color: #000;
+    color: #505050;
+    border-color: #505050;
 }
 
 
@@ -80,13 +78,13 @@
 /* Variante activa */
 
 .boton.activo {
-    background-color: #ffffff;
-    color: #333;
-    border-color: #333;
+    background-color: #000;
+    color: #505050;
+    border-color: #505050;
 }
 
 .boton.activo:hover {
-    background-color: #333;
-    color: #ffffff;
-    border-color: #ffffff;
+    background-color: #505050;
+    color: #000;
+    border-color: #000;
 }

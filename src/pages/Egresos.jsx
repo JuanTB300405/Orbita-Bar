@@ -243,9 +243,10 @@ const Egresos = () => {
     try {
       const response = await deleteEgreso(vista, seleccionados);
       if (response.status === 204) {
-        toast.success(
+        {/*toast.success(
           `${vista === "gastos" ? "Gasto(s)" : "Compra(s)"} eliminado(s) exitosamente!`,
-        );
+        );*/}
+        toast.success("¡Egreso eliminado exitosamente!");
         obtenerEgresos();
       }
     } catch (error) {
@@ -348,7 +349,7 @@ const Egresos = () => {
       );
 
       if (response.status == 200) {
-        toast.success("¡Cambios guardados exitosamente!");
+        toast.success("¡Egreso actualizado exitosamente!");
         obtenerEgresos();
         cancelarEdicion();
       }
@@ -387,7 +388,8 @@ const Egresos = () => {
   return (
     <>
       <section className="egresos">
-        {/* <h1>EGRESOS</h1> */}
+        <h1>EGRESOS</h1>
+        <div className="egresos-titulo-linea" ></div>
         <div id="cont">
           <div className="buscador">
             <svg
@@ -396,7 +398,7 @@ const Egresos = () => {
               height="25"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#000000"
+              stroke="#ffffff"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -413,12 +415,52 @@ const Egresos = () => {
               onChange={(e) => setBusqueda(e.target.value)}
             />
           </div>
+          <Button variant="verde" onClick={abrirModalAgregar}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="25"
+              height="25"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#6aff00"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="icon icon-tabler icons-tabler-outline icon-tabler-square-rounded-plus"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
+              <path d="M15 12h-6" />
+              <path d="M12 9v6" />
+            </svg>
+            Agregar
+          </Button>
+          <Button variant="azul" onClick={verEdicion}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="25"
+              height="25"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="cyan"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="icon icon-tabler icons-tabler-outline icon-tabler-edit"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+              <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+              <path d="M16 5l3 3" />
+            </svg>
+            Editar
+          </Button>
           <Button
             variant="rojo"
             onClick={() =>
               seleccionados.length > 0
                 ? setShowModalEliminar(true)
-                : toast.warning(
+                : toast.warning(  
                     `Seleccione ${vista === "gastos" ? "gastos" : "compras"} para eliminar`,
                   )
             }
@@ -429,7 +471,7 @@ const Egresos = () => {
               height="24"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="currentColor"
+              stroke="#ff0000"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -443,46 +485,6 @@ const Egresos = () => {
               <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
             </svg>
             Eliminar
-          </Button>
-          <Button variant="azul" onClick={verEdicion}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-tabler icons-tabler-outline icon-tabler-edit"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-              <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-              <path d="M16 5l3 3" />
-            </svg>
-            Editar
-          </Button>
-          <Button variant="verde" onClick={abrirModalAgregar}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-tabler icons-tabler-outline icon-tabler-square-rounded-plus"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
-              <path d="M15 12h-6" />
-              <path d="M12 9v6" />
-            </svg>
-            Agregar
           </Button>
         </div>
         <div id="botones-tablas">
@@ -523,7 +525,7 @@ const Egresos = () => {
         </div>
 
         {edicion && (
-          <div id="botoness-edicion">
+          <div id="botoness-edicion-e">
             <Button variant="verde" onClick={guardarEdicion}>
               Guardar
             </Button>
@@ -537,14 +539,14 @@ const Egresos = () => {
         {showModalEliminar && (
           <div className="modal" onClick={() => setShowModalEliminar(false)}>
             <div
-              className="modal-contenedor-eliminar-p"
+              className="modal-contenedor-eliminar-e"
               onClick={(e) => e.stopPropagation()}
             >
               <h2>
                 ¿Está completamente seguro que desea eliminar el/los{" "}
                 {vista === "gastos" ? "gasto(s)" : "compra(s)"} seleccionado(s)?
               </h2>
-              <div id="botoness">
+              <div id="botoness-e">
                 <Button variant="verde" onClick={eliminarEgresoSeleccionado}>
                   Aceptar
                 </Button>
@@ -571,7 +573,7 @@ const Egresos = () => {
                   <h2>Agregar {vista === "gastos" ? "Gasto" : "Compra"}</h2>
                   {vista === "gastos" ? (
                     <>
-                      <div className="bloque-p">
+                      <div className="bloque-pe">
                         <label>
                           {vista === "gastos"
                             ? "Nombre del gasto"
@@ -591,7 +593,7 @@ const Egresos = () => {
                         />
                       </div>
 
-                      <div className="bloque-p">
+                      <div className="bloque-pe">
                         <label>Precio</label>
                         <input
                           type="number"
@@ -603,21 +605,24 @@ const Egresos = () => {
                           required
                         />
                       </div>
-                      <div className="bloque-p">
+                      <div className="bloque-pe">
                         <label>Estado</label>
-                        <select
-                          name="estado"
-                          value={datosForm.estado}
-                          onChange={handleChange}
-                          required
-                        >
-                          <option value="">Seleccione...</option>
-                          <option value="Fijo">Fijo</option>
-                          <option value="Variable">Variable</option>
-                        </select>
+                        <div id="cont-select-egresos">
+                          <select
+                            id="select-egresos"
+                            name="estado"
+                            value={datosForm.estado}
+                            onChange={handleChange}
+                            required
+                          >
+                            <option value="">Seleccione...</option>
+                            <option value="Fijo">Fijo</option>
+                            <option value="Variable">Variable</option>
+                          </select>
+                        </div>
                       </div>
 
-                      <div className="bloque-p">
+                      <div className="bloque-pe">
                         <label>Fecha de pago</label>
                         <input
                           type="date"
@@ -630,32 +635,33 @@ const Egresos = () => {
                     </>
                   ) : (
                     <>
-                      <div className="bloque-p">
+                      <div className="bloque-pe">
                         <label>Producto</label>
-                        <Select
-                          className="react-select-container"
-                          classNamePrefix="react-select"
-                          menuPlacement="auto"
-                          options={productosOptions}
-                          value={productoSeleccionado}
-                          onChange={(selectedOption) => {
-                            setProductoSeleccionado(selectedOption);
-                            setDatosForm((prev) => ({
-                              ...prev,
-                              idproducto: selectedOption.value,
-                              nombre: selectedOption.nombre,
-                              proveedor: selectedOption.proveedor,
-                            }));
-                          }}
-                          placeholder="Buscar producto..."
-                          isSearchable
-                          noOptionsMessage={() => "No se encontraron productos"}
-                          components={animatedComponents}
-                          required
-                        />
+                        <div className="bloque-pe-compra">
+                          <Select
+                            className="selecompra"
+                            menuPlacement="auto"
+                            options={productosOptions}
+                            value={productoSeleccionado}
+                            onChange={(selectedOption) => {
+                              setProductoSeleccionado(selectedOption);
+                              setDatosForm((prev) => ({
+                                ...prev,
+                                idproducto: selectedOption.value,
+                                nombre: selectedOption.nombre,
+                                proveedor: selectedOption.proveedor,
+                              }));
+                            }}
+                            placeholder="Buscar producto..."
+                            isSearchable
+                            noOptionsMessage={() => "No se encontraron productos"}
+                            components={animatedComponents}
+                            required
+                          />
+                        </div>
                       </div>
 
-                      <div className="bloque-p">
+                      <div className="bloque-pe">
                         <label>Subtotal</label>
                         <input
                           type="number"
@@ -668,7 +674,7 @@ const Egresos = () => {
                         />
                       </div>
 
-                      <div className="bloque-p">
+                      <div className="bloque-pe">
                         <label>Cantidad</label>
                         <input
                           type="text"
@@ -682,7 +688,7 @@ const Egresos = () => {
                         />
                       </div>
 
-                      <div className="bloque-p">
+                      <div className="bloque-pe">
                         <label>Fecha de compra</label>
                         <input
                           type="date"
