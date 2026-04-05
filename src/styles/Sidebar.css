@@ -14,30 +14,30 @@
 }
 
 .sidebar img {
-  width: 18rem;
-  height: 8rem;
-  margin-bottom: 20px;
+  width: 16rem;
+  height: 7rem;
+  margin-bottom: 10px;
   border-radius: 25px;
   mask-image: radial-gradient(circle, black 50%, transparent 100%);
   -webkit-mask-image: radial-gradient(circle, black 50%, transparent 100%);
 }
 #logoOrbita {
   position: relative;
-  width: 18rem;
-  height: 8rem;
+  width: 16rem;
+  height: 7rem;
   margin-left: 1rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.6rem;
 }
 
 #logoOrbita::before {
   content: "";
   position: absolute;
-  width: 6rem;
-  height: 6rem;
+  width: 5.5rem;
+  height: 5.5rem;
   top: 50%;
   left: 54%;
-  margin-top: -4.5rem;
-  margin-left: -4.5rem;
+  margin-top: -4rem;
+  margin-left: -4rem;
   border-radius: 50%;
   border: 0.3rem solid #39ff14;
   border-top-color: transparent;
@@ -86,12 +86,35 @@
 .sidebar nav {
   text-align: center;
   width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(57, 255, 20, 0.1) transparent;
+}
+
+.sidebar nav::-webkit-scrollbar {
+  width: 2px;
+}
+
+.sidebar nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar nav::-webkit-scrollbar-thumb {
+  background-color: rgba(57, 255, 20, 0.1);
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar nav:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(57, 255, 20, 0.25);
 }
 
 .sidebar ul {
   list-style: none;
   padding: 0;
-  margin-bottom: 0;
+  margin-bottom: 0.5rem;
   width: 100%;
   margin-top: 1.2rem;
 }
@@ -131,7 +154,7 @@
   width: 80%;
   font-family: "Nova Square", sans-serif;
   color: #ffffff;
-  font-size: 1.06rem;
+  font-size: 1.05rem;
 }
 .sidebar li:hover {
   border-bottom: 0.1rem solid #39ff14;
