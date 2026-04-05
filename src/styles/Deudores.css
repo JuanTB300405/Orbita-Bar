@@ -1,0 +1,524 @@
+/* ===================== DEUDORES ===================== */
+
+.deudores {
+  flex-grow: 1;
+  height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+.deudores h1 {
+  font-family: monospace;
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  color: #ffffff;
+  text-shadow:
+    0 0 10px rgba(57, 255, 20, 0.6),
+    0 0 30px rgba(57, 255, 20, 0.25);
+  margin: 2.2rem 0 0.4rem 0;
+}
+
+.deudores-titulo-linea {
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(to right, transparent, #39ff14, transparent);
+  border-radius: 2px;
+  margin-bottom: 1.2rem;
+}
+
+/* ===================== CONTROLES ===================== */
+
+#cont-d {
+  width: 97%;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+}
+
+.buscador-d {
+  width: 300px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 0.1rem solid #484848;
+  margin-left: 1rem;
+  background-color: black;
+  border-radius: 6px;
+}
+
+.buscador-d input {
+  width: 80%;
+  height: 60%;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 15px;
+  font-family: monospace, sans-serif;
+  border: 0.1rem solid #484848;
+  border-radius: 0.5rem;
+}
+
+.buscador-d input::placeholder {
+  color: #888;
+}
+
+.buscador-d svg {
+  padding-left: 8px;
+}
+
+/* ===================== TABLA ===================== */
+
+.deudores-tabla {
+  width: 95%;
+  height: 50%;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0;
+  border: 0.2rem solid #484848;
+  border-radius: 15px;
+  overflow-x: auto;
+  color: #ffffff;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.deudores-tabla::-webkit-scrollbar {
+  display: none;
+}
+
+.tabla-D {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: monospace, sans-serif;
+}
+
+.tabla-D thead {
+  background-color: #25282e !important;
+  color: #ffffff !important;
+  border: 0.1rem solid #484848;
+}
+
+.t-D {
+  position: sticky;
+  top: 0;
+  z-index: 9;
+}
+
+.tabla-D th {
+  padding: 12px 10px;
+  text-align: center;
+  font-family: monospace, sans-serif;
+  font-size: 1rem;
+  color: #ffffff !important;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.tabla-D td {
+  padding: 12px 10px;
+  text-align: center;
+  font-family: monospace, sans-serif;
+  font-size: 1rem;
+  color: #ffffff !important;
+  font-weight: 500;
+  border-bottom: 0.05rem solid #484848;
+}
+
+.table-Nombre {
+  text-align: left !important;
+}
+
+.tabla-D tbody tr {
+  background-color: #0d0500 !important;
+  transition: background-color 0.25s ease;
+}
+
+.tabla-D tbody tr:hover {
+  background-color: black !important;
+}
+
+/* Checkbox de selección */
+.tabla-D input[type="checkbox"] {
+  transform: scale(1.3);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: #0d0500;
+  border: 0.1rem solid #484848;
+  border-radius: 3px;
+  position: relative;
+}
+
+.tabla-D input[type="checkbox"]:checked::after {
+  content: "✓";
+  color: #ffffff;
+  font-size: 13px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+}
+
+/* Monto de deuda */
+.deuda-monto {
+  color: red;
+  font-weight: 700;
+}
+
+/* Badges sí/no */
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: monospace, sans-serif;
+}
+
+.badge-si {
+  background-color: rgba(57, 255, 20, 0.15);
+  color: #39ff14;
+  border: 1px solid #39ff14;
+}
+
+.badge-no {
+  background-color: black;
+  color: #ffffff;
+  border: 1px solid #ff4444;
+}
+
+/* ===================== EDICIÓN INLINE ===================== */
+
+.inputss-d {
+  margin: 0;
+  padding: 0 6px;
+  width: 140px;
+  height: 30px;
+  font-size: 0.95rem;
+  background-color: #0d0500;
+  color: #ffffff;
+  font-weight: 400;
+  outline: none;
+  font-family: monospace, sans-serif;
+  border-radius: 5px;
+  border: 0.1rem solid #484848;
+}
+
+#botoness-edicion-d {
+  width: 100%;
+  margin-right: 6.4rem;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  justify-content: right;
+}
+
+#botoness-edicion-d .boton.verde,
+#botoness-edicion-d .boton.rojo {
+  font-size: 15px;
+}
+
+/* ===================== MODAL BASE ===================== */
+
+.modal-d {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(90, 90, 90, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* ===================== MODAL AGREGAR ===================== */
+
+.modal-contenedor-d {
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 45%;
+  max-width: 90%;
+  padding: 25px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  border-radius: 1rem;
+}
+
+.modal-contenido-form-d {
+  width: 100%;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 1rem;
+  border: 0.1rem solid #484848;
+}
+
+.modal-contenido-form-d h2 {
+  font-family: monospace, sans-serif;
+  font-size: 1.6rem;
+  color: #ffffff;
+  margin-top: 0;
+  margin-bottom: 25px;
+  text-shadow: 0rem 0.1rem 0.9rem rgb(255, 255, 255);
+}
+
+.formulario-d {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bloque-d {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 5px;
+}
+
+.bloque-d label {
+  color: #ffffff !important;
+  width: 120px;
+  min-width: 120px;
+  flex-shrink: 0;
+  text-align: start;
+  font-family: monospace, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.bloque-d input[type="text"],
+.bloque-d input[type="tel"],
+.bloque-d input[type="number"] {
+  flex: 1;
+  min-width: 0;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #484848;
+  background-color: #0d0500;
+  color: #ffffff;
+  font-size: 1rem;
+  outline: none;
+  font-family: monospace, sans-serif;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.bloque-d input[type="text"]:hover,
+.bloque-d input[type="tel"]:hover,
+.bloque-d input[type="number"]:hover {
+  background-color: #333;
+}
+
+/* Bloque especial para checkbox */
+.bloque-check {
+  align-items: center;
+}
+
+.checkbox-d {
+  width: 22px !important;
+  height: 22px !important;
+  cursor: pointer;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-color: #0d0500 !important;
+  border: 0.12rem solid #ffffff !important;
+  border-radius: 4px !important;
+  position: relative;
+  flex: none !important;
+  padding: 0 !important;
+}
+
+.checkbox-d:checked {
+  background-color: #39ff14 !important;
+}
+
+.checkbox-d:checked::after {
+  content: "✓";
+  color: #ffffff;
+  font-size: 14px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+}
+
+.error-d {
+  color: #ff4444;
+  font-weight: bold;
+  font-size: 0.95rem;
+  margin: 0;
+  font-family: monospace, sans-serif;
+}
+
+.botones-d {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 20px;
+}
+
+.botones-d .boton.rojo,
+.botones-d .boton.verde {
+  font-size: 1.1rem;
+}
+
+/* ===================== MODAL ELIMINAR ===================== */
+
+.modal-contenedor-eliminar-d {
+  width: 620px;
+  height: 240px;
+  background-image: url(../assets/images/galaxiaModal.png);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 1rem;
+  border: 0.2rem solid #39ff14 !important;
+  box-shadow: 0rem 0rem 2rem #39ff14;
+  gap: 3rem;
+}
+
+.modal-contenedor-eliminar-d h2 {
+  font-family: monospace, sans-serif;
+  font-size: 1.4rem;
+  text-align: center;
+  color: #ffffff;
+  margin: 0;
+}
+
+#botoness-d {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  justify-content: center;
+}
+
+/* ===================== ANIMACIÓN DE CARGA ===================== */
+
+.modal-cargando-d {
+  position: fixed;
+  top: 0;
+  left: 320px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-contenido-d {
+  width: 80%;
+  height: 80%;
+  text-align: center;
+  align-content: center;
+  justify-items: center;
+  margin-right: 320px;
+}
+
+.loader-d {
+  width: fit-content;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 50px;
+  background: linear-gradient(
+      135deg,
+      #0000 calc(50% - 0.5em),
+      #ff4500 0 calc(50% + 0.5em),
+      #0000 0
+    )
+    right/300% 100%;
+  animation: l22-d 2s infinite;
+}
+
+.loader-d::before {
+  content: "Cargando...";
+  color: #fff;
+  padding: 0 5px;
+  background: inherit;
+  background-image: linear-gradient(
+    135deg,
+    #000 calc(50% - 0.5em),
+    #fff 0 calc(50% + 0.5em),
+    #000 0
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@keyframes l22-d {
+  100% {
+    background-position: left;
+  }
+}
+
+/* ===================== RESPONSIVE ===================== */
+
+@media (max-width: 430px) {
+  .deudores {
+    overflow-y: auto;
+  }
+
+  .deudores h1 {
+    font-size: 2.5rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  #cont-d {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .buscador-d {
+    min-width: 90%;
+    margin-left: 0;
+  }
+
+  #cont-d button {
+    min-width: 90%;
+  }
+
+  .deudores-tabla {
+    width: 95%;
+  }
+
+  .modal-contenedor-d {
+    width: 90%;
+  }
+
+  .modal-contenedor-eliminar-d {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .modal-contenedor-eliminar-d h2 {
+    font-size: 1.1rem;
+  }
+
+  #botoness-edicion-d {
+    margin-right: 0;
+    justify-content: center;
+  }
+
+  .modal-cargando-d {
+    left: 0;
+  }
+
+  .modal-contenido-d {
+    margin-right: 0;
+  }
+}

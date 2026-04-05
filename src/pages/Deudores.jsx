@@ -1,35 +1,32 @@
 import React from "react";
 import Button from "../components/Button";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../styles/proveedores.css";
+import "../styles/Deudores.css";
 import {
-  consultaProveedores,
-  crearProveedores,
-  editarProveedor,
-  eliminarProveedores,
-} from "../js/proveedores";
+  consultarDeudores,
+  crearDeudores,
+  editarDeudores,
+  eliminarDeudores,
+} from "../js/deudores";
 
-const Proveedores = () => {
-  // Lista de proveedores
-
+const Deudores = () => {
   const [cargando, setCargando] = useState(true);
   const [busqueda, setBusqueda] = useState("");
-  const [proveedoresData, setProveedoresData] = useState([]);
+  const [deudoresData, setDeudoresData] = useState([]);
 
-  const datosFitrados = proveedoresData.filter((provedor) =>
-    provedor.nombre.toLowerCase().includes(busqueda.toLowerCase()),
+  const datosFiltrados = deudoresData.filter((deudor) =>
+    deudor.nombre.toLowerCase().includes(busqueda.toLowerCase()),
   );
 
-  const obtenerProveedores = async () => {
+  const obtenerDeudores = async () => {
     try {
-      const provedoresD = await consultaProveedores();
-      if (Array.isArray(provedoresD)) {
-        setProveedoresData(provedoresD);
+      const data = await consultarDeudores();
+      if (Array.isArray(data)) {
+        setDeudoresData(data);
       } else {
-        console.error("Respuesta inesperada:", provedoresD);
+        console.error("Respuesta inesperada:", data);
       }
     } catch (error) {
       console.error("Error en la consulta:", error);
@@ -39,215 +36,197 @@ const Proveedores = () => {
   };
 
   useEffect(() => {
-    obtenerProveedores();
+    obtenerDeudores();
   }, []);
 
-  // Logica para verificar los cambios del formulario & guardar los datos
-
-  const [datosForm, setdatosForm] = useState({
-    id: "",
+  // Formulario agregar
+  const [datosForm, setDatosForm] = useState({
     nombre: "",
-    telefono: "",
-    email: "",
+    celular: "",
+    deuda: "",
+    autorizacion: false,
   });
 
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setdatosForm((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setDatosForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { nombre, celular, deuda } = datosForm;
 
-    // Validación de campos
-    const { nombre, telefono, email } = datosForm;
-
-    if (!nombre || !telefono || !email) {
-      setError("Por favor complete todos los campos.");
+    if (!nombre || !celular || !deuda) {
+      setError("Por favor complete todos los campos obligatorios.");
       return;
     }
 
-    // Agregar el proveedor a la tabla
-
-    const nuevoProveedor = {
-      nombre: nombre,
-      telefono: telefono,
-      email: email,
+    const nuevoDeudor = {
+      nombre,
+      celular,
+      deuda: parseFloat(deuda),
+      autorizacion: datosForm.autorizacion,
     };
 
     try {
-      const response = await crearProveedores(nuevoProveedor);
+      const response = await crearDeudores(nuevoDeudor);
       if (response.status === 201) {
-        toast.success("¡Proveedor guardado exitosamente!");
-        obtenerProveedores();
+        toast.success("¡Deudor registrado exitosamente!");
+        obtenerDeudores();
       }
     } catch (error) {
-      console.error("Excepcion al crear el pproveedor", error);
-      toast.error("Error al crear el proveedor");
+      console.error("Excepción al crear el deudor:", error);
+      toast.error("Error al registrar el deudor");
     }
 
-    // Reset
-    setdatosForm({ nombre: "", telefono: "", email: "" });
+    setDatosForm({ nombre: "", celular: "", deuda: "", autorizacion: false });
     setError("");
     cerrarModalAgregar();
   };
 
-  // Logica para el modal de agregar nuevo proveedor
-
+  // Modal agregar
   const [showModalAgregar, setShowModalAgregar] = useState(false);
 
-  const abrirModalAgregar = () => {
-    setShowModalAgregar(true);
-  };
+  const abrirModalAgregar = () => setShowModalAgregar(true);
 
   const cerrarModalAgregar = () => {
     setShowModalAgregar(false);
-    setdatosForm({ nombre: "", telefono: "", email: "" });
+    setDatosForm({ nombre: "", celular: "", deuda: "", autorizacion: false });
     setError("");
   };
 
-  // Filas de tabla seleccionadas
-
+  // Selección de filas
   const [seleccionados, setSeleccionados] = useState([]);
 
-  // Logica para el modal de eliminar
-
+  // Modal eliminar
   const [showModalEliminar, setShowModalEliminar] = useState(false);
 
   const abrirModalEliminar = () => {
-    const Seleccionados = proveedoresData.filter((p) =>
-      seleccionados.includes(p.id),
-    );
-    if (Seleccionados.length === 0) {
-      toast.warning("No hay ningun producto seleccionado");
+    if (seleccionados.length === 0) {
+      toast.warning("No hay ningún deudor seleccionado");
       return;
-    } else {
-      setShowModalEliminar(true);
     }
+    setShowModalEliminar(true);
   };
 
-  const eliminarProveeSelec = async () => {
+  const eliminarDeudoresSelec = async () => {
     try {
       const data = { ids: seleccionados };
-      const response = await eliminarProveedores(data);
+      const response = await eliminarDeudores(data);
       if (response.status === 204) {
-        toast.success("¡Proveedores eliminados exitosamente!");
-        obtenerProveedores();
+        toast.success("¡Deudores eliminados exitosamente!");
+        setSeleccionados([]);
+        obtenerDeudores();
       }
     } catch (error) {
-      console.error("Excepcion al eliminar el proveedores", error);
-      toast.error("Error al eliminar el proveedores");
+      console.error("Excepción al eliminar deudores:", error);
+      toast.error("Error al eliminar los deudores");
     }
-
     cerrarModalEliminar();
   };
 
-  const cerrarModalEliminar = () => {
-    setShowModalEliminar(false);
-  };
+  const cerrarModalEliminar = () => setShowModalEliminar(false);
 
-  // Logica para la edicion de los proveedores
-
+  // Edición inline
   const [edicion, setEdicion] = useState(false);
-  const [proveedorEditando, setProveedorEditando] = useState(null);
+  const [deudorEditando, setDeudorEditando] = useState(null);
   const [datosEditados, setDatosEditados] = useState({});
 
   const verEdicion = () => {
-    const Seleccionados = proveedoresData.filter((p) =>
-      seleccionados.includes(p.id),
-    );
+    const selec = deudoresData.filter((d) => seleccionados.includes(d.id));
 
-    if (Seleccionados.length === 0) {
-      toast.warning("No hay ningun proveedor seleccionado");
+    if (selec.length === 0) {
+      toast.warning("No hay ningún deudor seleccionado");
       return;
     }
-
-    if (Seleccionados.length > 1) {
-      toast.warning("Selecciona solo un proveedor para editar");
+    if (selec.length > 1) {
+      toast.warning("Selecciona solo un deudor para editar");
       return;
     }
-
-    const proveedorSeleccionado = Seleccionados[0];
 
     setEdicion(true);
-    Editar(proveedorSeleccionado);
-  };
-
-  const ocultarEdicion = () => {
-    setEdicion(false);
-  };
-
-  const Editar = (proveedor) => {
-    setProveedorEditando(proveedor.id);
-    setDatosEditados({ ...proveedor });
+    setDeudorEditando(selec[0].id);
+    setDatosEditados({ ...selec[0] });
   };
 
   const CancelarEdicion = () => {
-    setProveedorEditando(null);
+    setDeudorEditando(null);
     setDatosEditados({});
-    ocultarEdicion();
-    toast.info("Cancelado con exito!");
+    setEdicion(false);
+    toast.info("Cancelado con éxito");
   };
 
   const GuardarEdicion = async () => {
-    const proveedorE = {
+    const deudorE = {
       nombre: datosEditados.nombre,
-      telefono: datosEditados.telefono,
-      email: datosEditados.email,
+      celular: datosEditados.celular,
+      deuda: parseFloat(datosEditados.deuda),
+      autorizacion: datosEditados.autorizacion,
+      pagado: datosEditados.pagado,
     };
 
-    console.log("proveedor editado", proveedorE);
-
     try {
-      const response = await editarProveedor(proveedorE, proveedorEditando);
+      const response = await editarDeudores(deudorE, deudorEditando);
       if (response.status === 200) {
-        toast.success("¡Proveedor actualizado exitosamente!");
-        obtenerProveedores();
+        toast.success("¡Deudor actualizado exitosamente!");
+        obtenerDeudores();
       } else {
-        console.log("respuesta :", response);
-        toast.warning("No se pudo actualizar el proveedor");
+        toast.warning("No se pudo actualizar el deudor");
       }
     } catch (error) {
-      console.error("Excepcion al actualizar el proveedor", error);
-      toast.error("Error al actualizar el proveedor");
+      console.error("Excepción al actualizar el deudor:", error);
+      toast.error("Error al actualizar el deudor");
     }
 
-    setProveedorEditando(null);
+    setDeudorEditando(null);
     setDatosEditados({});
-    ocultarEdicion();
+    setEdicion(false);
+    console.log("datos enviados al back", deudorE);
   };
 
   const handleChangeEdicion = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setDatosEditados((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  // //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const formatFecha = (fechaStr) => {
+    const d = new Date(fechaStr);
+    return d.toLocaleDateString("es-CO", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
+  // //////////////////////////////////////////////////////////////////////
 
   if (cargando) {
     return (
-      <div className="modal-cargando-pr">
-        <div className="modal-contenido-pr">
-          <div class="loader-pr"></div>
+      <div className="modal-cargando-d">
+        <div className="modal-contenido-d">
+          <div className="loader-d"></div>
         </div>
       </div>
     );
   }
 
-  // /////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////////////////////
 
   return (
     <>
-      <section className="proveedores">
+      <section className="deudores">
         <h1>DEUDORES</h1>
-        <div className="proveedores-titulo-linea"></div>
-        <div id="cont">
-          <div className="buscador">
+        <div className="deudores-titulo-linea"></div>
+        <div id="cont-d">
+          <div className="buscador-d">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="25"
@@ -255,10 +234,9 @@ const Proveedores = () => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="#ffffff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-search"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
@@ -267,7 +245,7 @@ const Proveedores = () => {
             <input
               type="text"
               value={busqueda}
-              placeholder="Buscar proveedor..."
+              placeholder="Buscar deudor..."
               onChange={(e) => setBusqueda(e.target.value)}
             />
           </div>
@@ -279,10 +257,9 @@ const Proveedores = () => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="#6aff00"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-square-rounded-plus"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
@@ -299,10 +276,9 @@ const Proveedores = () => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="cyan"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-edit"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
@@ -319,10 +295,9 @@ const Proveedores = () => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="#ff0000"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M4 7l16 0" />
@@ -335,71 +310,110 @@ const Proveedores = () => {
           </Button>
         </div>
         <br />
-        <div className="proveedores-tabla">
-          <table class="tabla-P">
-            <thead className="t-P">
+        <div className="deudores-tabla">
+          <table className="tabla-D">
+            <thead className="t-D">
               <tr>
                 <th></th>
                 <th>Nombre</th>
-                <th>Telefono</th>
-                <th>Email</th>
+                <th>Celular</th>
+                <th>Deuda</th>
+                <th>Fecha</th>
+                <th>Autorizado</th>
+                <th>Pagado</th>
               </tr>
             </thead>
             <tbody>
-              {datosFitrados.map((proveedor) => (
-                <tr key={proveedor.id}>
+              {datosFiltrados.map((deudor) => (
+                <tr key={deudor.id}>
                   <td>
                     <input
                       type="checkbox"
-                      checked={seleccionados.includes(proveedor.id)}
+                      checked={seleccionados.includes(deudor.id)}
                       onChange={(e) => {
                         if (e.target.checked) {
-                          setSeleccionados([...seleccionados, proveedor.id]);
+                          setSeleccionados([...seleccionados, deudor.id]);
                         } else {
                           setSeleccionados(
-                            seleccionados.filter((id) => id !== proveedor.id),
+                            seleccionados.filter((id) => id !== deudor.id),
                           );
                         }
                       }}
                     />
                   </td>
-                  <td>
-                    {proveedorEditando === proveedor.id ? (
+                  <td className="table-Nombre">
+                    {deudorEditando === deudor.id ? (
                       <input
-                        className="inputss-p"
+                        className="inputss-d"
                         type="text"
                         name="nombre"
                         value={datosEditados.nombre}
                         onChange={handleChangeEdicion}
                       />
                     ) : (
-                      proveedor.nombre
+                      deudor.nombre
                     )}
                   </td>
                   <td>
-                    {proveedorEditando === proveedor.id ? (
+                    {deudorEditando === deudor.id ? (
                       <input
-                        className="inputss-p"
+                        className="inputss-d"
                         type="tel"
-                        name="telefono"
-                        value={datosEditados.telefono}
+                        name="celular"
+                        value={datosEditados.celular}
                         onChange={handleChangeEdicion}
                       />
                     ) : (
-                      proveedor.telefono
+                      deudor.celular
                     )}
                   </td>
                   <td>
-                    {proveedorEditando === proveedor.id ? (
+                    {deudorEditando === deudor.id ? (
                       <input
-                        className="inputss-p"
-                        type="email"
-                        name="email"
-                        value={datosEditados.email}
+                        className="inputss-d"
+                        type="number"
+                        name="deuda"
+                        step="0.01"
+                        value={datosEditados.deuda}
                         onChange={handleChangeEdicion}
                       />
                     ) : (
-                      proveedor.email
+                      <span className="deuda-monto">
+                        ${parseFloat(deudor.deuda).toLocaleString("es-CO")}
+                      </span>
+                    )}
+                  </td>
+                  <td>{formatFecha(deudor.fecha)}</td>
+                  <td>
+                    {deudorEditando === deudor.id ? (
+                      <input
+                        type="checkbox"
+                        name="autorizacion"
+                        checked={datosEditados.autorizacion}
+                        onChange={handleChangeEdicion}
+                      />
+                    ) : (
+                      <span
+                        className={`badge ${deudor.autorizacion ? "badge-si" : "badge-no"}`}
+                      >
+                        {deudor.autorizacion ? "Sí" : "No"}
+                      </span>
+                    )}
+                  </td>
+                  <td>
+                    {deudorEditando === deudor.id ? (
+                      <input
+                        type="checkbox"
+                        name="pagado"
+                        checked={datosEditados.pagado}
+                        onChange={handleChangeEdicion}
+                      />
+                    ) : (
+                      <span
+                        className={`badge ${deudor.pagado ? "badge-si" : "badge-no"}`}
+                      >
+                        {deudor.pagado ? "SI" : "NO"}
+                      </span>
                     )}
                   </td>
                 </tr>
@@ -409,7 +423,7 @@ const Proveedores = () => {
         </div>
 
         {edicion && (
-          <div id="botoness-edicion-p">
+          <div id="botoness-edicion-d">
             <Button variant="verde" onClick={GuardarEdicion}>
               Guardar
             </Button>
@@ -419,61 +433,68 @@ const Proveedores = () => {
           </div>
         )}
 
-        {/* Modal de agregar producto */}
+        {/* Modal agregar deudor */}
         {showModalAgregar && (
-          <div className="modal-pr" onClick={cerrarModalAgregar}>
+          <div className="modal-d" onClick={cerrarModalAgregar}>
             <div
-              className="modal-contenedor-pro"
+              className="modal-contenedor-d"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="modal-contenido-pro">
-                <h2>Agregar nuevo proveedor</h2>
-                <form className="formulario-p" onSubmit={handleSubmit}>
-                  <div className="bloque-p">
+              <div className="modal-contenido-form-d">
+                <h2>Registrar nuevo deudor</h2>
+                <form className="formulario-d" onSubmit={handleSubmit}>
+                  <div className="bloque-d">
                     <label>Nombre</label>
                     <input
                       type="text"
-                      placeholder="Nombre del proovedor"
+                      placeholder="Nombre completo"
                       name="nombre"
                       value={datosForm.nombre}
                       onChange={handleChange}
                     />
                   </div>
 
-                  <div className="bloque-p">
-                    <label>Telefono</label>
+                  <div className="bloque-d">
+                    <label>Celular</label>
                     <input
                       type="tel"
-                      placeholder="Numero de contacto"
-                      name="telefono"
-                      value={datosForm.telefono}
+                      placeholder="Número de celular"
+                      name="celular"
+                      value={datosForm.celular}
                       onChange={handleChange}
                     />
                   </div>
 
-                  <div className="bloque-p">
-                    <label>Email</label>
+                  <div className="bloque-d">
+                    <label>Deuda ($)</label>
                     <input
-                      type="email"
+                      type="number"
                       step="0.01"
-                      placeholder="Email del proveedor"
-                      name="email"
-                      value={datosForm.email}
+                      placeholder="Monto de la deuda"
+                      name="deuda"
+                      value={datosForm.deuda}
                       onChange={handleChange}
                     />
                   </div>
 
-                  {error && <p className="error-p">{error}</p>}
+                  <div className="bloque-d bloque-check">
+                    <label>Autorizado</label>
+                    <input
+                      type="checkbox"
+                      name="autorizacion"
+                      checked={datosForm.autorizacion}
+                      onChange={handleChange}
+                      className="checkbox-d"
+                    />
+                  </div>
 
-                  <div className="botones-pr">
-                    <Button type="submit" variant="verde" class="btn">
+                  {error && <p className="error-d">{error}</p>}
+
+                  <div className="botones-d">
+                    <Button type="submit" variant="verde">
                       Guardar
                     </Button>
-                    <Button
-                      variant="rojo"
-                      onClick={cerrarModalAgregar}
-                      class="btn"
-                    >
+                    <Button variant="rojo" onClick={cerrarModalAgregar}>
                       Cancelar
                     </Button>
                   </div>
@@ -483,19 +504,16 @@ const Proveedores = () => {
           </div>
         )}
 
-        {/* Modal de eliminar producto */}
+        {/* Modal eliminar */}
         {showModalEliminar && (
-          <div className="modal-pr" onClick={cerrarModalEliminar}>
+          <div className="modal-d" onClick={cerrarModalEliminar}>
             <div
-              className="modal-contenedor-eliminar-p"
+              className="modal-contenedor-eliminar-d"
               onClick={(e) => e.stopPropagation()}
             >
-              <h2>
-                ¿Esta completamente seguro que desea eliminar el/los
-                proveedores?
-              </h2>
-              <div id="botoness">
-                <Button variant="verde" onClick={eliminarProveeSelec}>
+              <h2>¿Está seguro que desea eliminar el/los deudores?</h2>
+              <div id="botoness-d">
+                <Button variant="verde" onClick={eliminarDeudoresSelec}>
                   Aceptar
                 </Button>
                 <Button variant="rojo" onClick={cerrarModalEliminar}>
@@ -512,4 +530,4 @@ const Proveedores = () => {
   );
 };
 
-export default Proveedores;
+export default Deudores;

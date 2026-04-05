@@ -17,11 +17,10 @@ const Proveedores = () => {
 
   const [cargando, setCargando] = useState(true);
   const [busqueda, setBusqueda] = useState("");
-  const [condicion, setCondicion] = useState(false);
   const [proveedoresData, setProveedoresData] = useState([]);
 
   const datosFitrados = proveedoresData.filter((provedor) =>
-    provedor.nombre.toLowerCase().includes(busqueda.toLowerCase())
+    provedor.nombre.toLowerCase().includes(busqueda.toLowerCase()),
   );
 
   const obtenerProveedores = async () => {
@@ -119,7 +118,7 @@ const Proveedores = () => {
 
   const abrirModalEliminar = () => {
     const Seleccionados = proveedoresData.filter((p) =>
-      seleccionados.includes(p.id)
+      seleccionados.includes(p.id),
     );
     if (Seleccionados.length === 0) {
       toast.warning("No hay ningun producto seleccionado");
@@ -157,7 +156,7 @@ const Proveedores = () => {
 
   const verEdicion = () => {
     const Seleccionados = proveedoresData.filter((p) =>
-      seleccionados.includes(p.id)
+      seleccionados.includes(p.id),
     );
 
     if (Seleccionados.length === 0) {
@@ -246,7 +245,7 @@ const Proveedores = () => {
     <>
       <section className="proveedores">
         <h1>PROVEEDORES</h1>
-        <div className="proveedores-titulo-linea" ></div>
+        <div className="proveedores-titulo-linea"></div>
         <div id="cont">
           <div className="buscador">
             <svg
@@ -358,7 +357,7 @@ const Proveedores = () => {
                           setSeleccionados([...seleccionados, proveedor.id]);
                         } else {
                           setSeleccionados(
-                            seleccionados.filter((id) => id !== proveedor.id)
+                            seleccionados.filter((id) => id !== proveedor.id),
                           );
                         }
                       }}
@@ -507,7 +506,7 @@ const Proveedores = () => {
           </div>
         )}
       </section>
-      
+
       <ToastContainer position="top-center" autoClose={3000} />
     </>
   );
