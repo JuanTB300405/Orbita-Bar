@@ -15,7 +15,6 @@ import Proveedores from "./pages/proveedores";
 import Egresos from "./pages/Egresos";
 import Categorias from "./pages/Categoria";
 import Ventas from "./pages/Ventas";
-import Deudores from "./pages/Deudores";
 
 function App() {
   const [Autenticacion, setAutenticacion] = useState(false);
@@ -43,7 +42,6 @@ function App() {
               <Route path="/egresos" element={<Egresos />} />
               <Route path="/categorias" element={<Categorias />} />
               <Route path="/ventas" element={<Ventas />} />
-              <Route path="/deudores" element={<Deudores />} />
             </Route>
           </Routes>
         </Router>

@@ -3,8 +3,6 @@ import { useState, useEffect, useRef, createRef } from "react";
 import "../styles/Ventas.css";
 import Button from "../components/Button";
 import { ConsultarVentas } from "../js/ventas.js";
-import { consultaMesas } from "../js/mesa.js";
-import Select from "react-select";
 import ImprimirFacturaPOS from "../components/imprimirFactura";
 
 const Ventas = () => {
@@ -22,8 +20,6 @@ const Ventas = () => {
   const printRefs = useRef({});
   const [descargarTodo, setDescargarTodo] = useState(false);
   const [Total, setTotal] = useState(0);
-  const [mesasData, setMesasData] = useState([]);
-  const [mesaSeleccionada, setMesaSeleccionada] = useState("");
 
   const getPrintRef = (id) => {
     if (!printRefs.current[id]) {
@@ -78,23 +74,6 @@ const Ventas = () => {
     }
   };
 
-  const registroMesas = async () => {
-    try {
-      const response = await consultaMesas();
-      if (Array.isArray(response.data)) {
-        setMesasData(response.data);
-      } else {
-        setError("Error: formato inesperado en mesas");
-        console.error("Respuesta inesperada:", response);
-      }
-    } catch (err) {
-      setError("Error al consultar las ventas");
-      console.error("Error en la consulta:", err);
-    } finally {
-      setCargando(false); // <-- Desactivar loader cuando termina
-    }
-  };
-  console.log("MesasData:", mesasData);
 
   const DetallesVenta = (Venta) => {
     console.log(Venta);
@@ -129,12 +108,7 @@ const Ventas = () => {
 
     const resultado = ventasData.filter((venta) => {
       const fechaVenta = new Date(venta.fecha);
-      const dentroFecha =
-        (!inicio || fechaVenta >= inicio) && (!fin || fechaVenta <= fin);
-      const coincideMesa =
-        mesaSeleccionada === "" || venta.mesa?.id == mesaSeleccionada;
-
-      return dentroFecha && coincideMesa;
+      return (!inicio || fechaVenta >= inicio) && (!fin || fechaVenta <= fin);
     });
 
     setVentasFiltradas(resultado);
@@ -146,11 +120,7 @@ const Ventas = () => {
   const filtrarPorRango = (inicio, fin) => {
     const resultado = ventasData.filter((venta) => {
       const fechaVenta = new Date(venta.fecha);
-      const dentroFecha = fechaVenta >= inicio && fechaVenta <= fin;
-      const coincideMesa =
-        mesaSeleccionada === "" || venta.mesa?.id == mesaSeleccionada;
-
-      return dentroFecha && coincideMesa;
+      return fechaVenta >= inicio && fechaVenta <= fin;
     });
 
     setVentasFiltradas(resultado);
@@ -225,7 +195,6 @@ const Ventas = () => {
 
     setFechaDesde("");
     setFechaHasta("");
-    setMesaSeleccionada("");
 
     // reset selección
     setSeleccionados([]);
@@ -233,11 +202,8 @@ const Ventas = () => {
     setFiltracion(false);
   };
 
-  console.log("esto es lo que agrega el state", Seleccionados);
-
   useEffect(() => {
     regitroVentas();
-    registroMesas();
   }, []);
 
   //console.log("Ventas cargadas:", ventasData);
@@ -363,7 +329,6 @@ const Ventas = () => {
               <th>ID</th>
               <th>Fecha</th>
               <th>Total Ganancia</th>
-              <th>Mesa</th>
               <th>Ver más</th>
             </tr>
           </thead>
@@ -382,7 +347,6 @@ const Ventas = () => {
                 <td>{Venta.id}</td>
                 <td>{new Date(Venta.fecha).toLocaleString()}</td>
                 <td>{Venta.total}</td>
-                <td>{Venta.mesa ? Venta.mesa.numero : "N/A"}</td>
                 <td>
                   <button onClick={() => DetallesVenta(Venta)}>Ver mas</button>
                 </td>
@@ -547,21 +511,6 @@ const Ventas = () => {
                 />
               </div>
             </div>
-          </div>
-
-          <div className="PF_Mesas">
-            <p>Mesa</p>
-            <select
-              value={mesaSeleccionada}
-              onChange={(e) => setMesaSeleccionada(e.target.value)}
-            >
-              <option value="">Todas las mesas</option>
-              {mesasData.map((mesa) => (
-                <option key={mesa.id} value={mesa.id}>
-                  Mesa {mesa.numero}
-                </option>
-              ))}
-            </select>
           </div>
 
           <div className="ButtonA">
