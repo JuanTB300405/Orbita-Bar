@@ -1,0 +1,454 @@
+.ingresos-externos {
+  flex-grow: 1;
+  height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+.ingresos-externos h1 {
+  font-family: monospace;
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  color: #ffffff;
+  text-shadow:
+    0 0 10px rgba(57, 255, 20, 0.6),
+    0 0 30px rgba(57, 255, 20, 0.25);
+  margin: 2.2rem 0 0.4rem 0;
+}
+
+.ingresos-externos-titulo-linea {
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(to right, transparent, #39ff14, transparent);
+  border-radius: 2px;
+  margin-bottom: 1.2rem;
+}
+
+#cont {
+  width: 97%;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+}
+
+.buscador {
+  width: 300px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 2px solid #333;
+  margin-left: 1rem;
+}
+
+.buscador input {
+  width: 80%;
+  height: 60%;
+  outline: none;
+  background-color: #ffffff;
+  border: 1px solid #333;
+  color: #333;
+  font-size: 15px;
+  border-radius: 10px;
+  font-family: monospace, sans-serif;
+}
+
+.buscador svg {
+  padding-left: 5px;
+}
+
+/* Estilos de la tabla */
+
+.ingresos-externos-tabla {
+  width: 90%;
+  height: 50%;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0;
+  border: 0.2rem solid #484848;
+  border-radius: 15px;
+  overflow-x: auto;
+  color: #ffffff;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.ingresos-externos-tabla::-webkit-scrollbar {
+  display: none;
+}
+
+.tabla-IE {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: monospace, sans-serif;
+}
+
+.tabla-IE thead {
+  background-color: #25282e !important;
+  color: #39ff14 !important;
+  border: 0.1rem solid #484848 !important;
+}
+
+.t-IE {
+  position: sticky;
+  top: 0;
+  z-index: 9;
+}
+
+.tabla-IE th,
+.tabla-IE td {
+  padding: 12px 10px;
+  text-align: center;
+  font-family: monospace, sans-serif;
+  font-size: 1rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.tabla-IE tbody tr {
+  background-color: black !important;
+  color: #ffffff !important;
+  transition: background-color 0.3s ease;
+}
+
+.tabla-IE td {
+  color: white !important;
+  font-weight: 500;
+  border-bottom: 0.05rem solid #333;
+}
+
+.tabla-IE input[type="checkbox"] {
+  transform: scale(1.3);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: black;
+  border: 0.1rem solid #484848;
+  border-radius: 3px;
+  position: relative;
+}
+
+.tabla-IE input[type="checkbox"]:checked::after {
+  content: "✓";
+  color: #ffffff;
+  font-size: 13px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+}
+
+/* Estilos tabla en edicion */
+
+.inputss-ie {
+  margin: 0;
+  padding: 0;
+  width: 180px;
+  height: 30px;
+  font-size: 1rem;
+  background-color: black;
+  color: #ffffff;
+  font-weight: 400;
+  outline: none;
+  font-family: monospace, sans-serif;
+  border-radius: 5px;
+  border: 0.1rem solid #484848;
+}
+
+#botoness-edicion-ie {
+  width: 100%;
+  margin-right: 6.4rem;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  justify-content: right;
+  text-align: center;
+}
+
+#botoness-edicion-ie .boton.verde,
+#botoness-edicion-ie .boton.rojo {
+  font-size: 15px;
+}
+
+/* Estilos del modal */
+
+.modal-ie {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(90, 90, 90, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-contenedor-ie {
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 45%;
+  height: 55%;
+  max-width: 90%;
+  max-height: 90%;
+  padding: 20px;
+  position: relative;
+  justify-items: center;
+  border-radius: 15px;
+}
+
+.modal-contenido-ie {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  height: 90%;
+  position: relative;
+  text-align: center;
+  border: 0.1rem solid #484848;
+}
+
+.modal-contenido-ie h2 {
+  font-family: monospace, sans-serif;
+  font-size: 30px;
+  color: #ffffff;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.bloque-ie {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 5px;
+}
+
+.bloque-ie label {
+  color: #ffffff !important;
+  width: 150px;
+  min-width: 150px;
+  flex-shrink: 0;
+  text-align: start;
+  font-family: monospace, sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.bloque-ie input {
+  flex: 1;
+  min-width: 0;
+  font-family: monospace, sans-serif;
+  box-sizing: border-box;
+}
+
+.formulario-ie {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formulario-ie input {
+  padding: 10px 10px;
+  border-radius: 5px;
+  border: 1px solid #484848;
+  background-color: black;
+  color: #ffffff;
+  width: 100%;
+  font-size: 18px;
+  outline: none;
+  box-sizing: border-box;
+  font-family: monospace, sans-serif;
+}
+
+.formulario-ie input:hover {
+  background-color: #333;
+  color: #ffffff;
+}
+
+.error-ie {
+  color: red;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.botones-ie {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 17.5px;
+}
+
+.botones-ie .boton.rojo,
+.botones-ie .boton.verde {
+  font-size: 20px;
+  outline: none;
+}
+
+/* Modal Eliminar */
+
+.modal-contenedor-eliminar-ie {
+  width: 620px;
+  height: 250px;
+  background-image: url(../assets/images/galaxiaModal.png);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  border: 0.2rem solid #39ff14 !important;
+  box-shadow: 0rem 0rem 2rem #39ff14;
+}
+
+.modal-contenedor-eliminar-ie h2 {
+  width: 500px;
+  padding: 0 30px;
+  margin: 0;
+  font-family: monospace, sans-serif;
+  font-size: 22px;
+  text-align: center;
+  color: #ffffff;
+}
+
+#botoness {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Animacion de carga */
+
+.modal-cargando-ie {
+  position: fixed;
+  top: 0;
+  left: 320px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-contenido-cargando-ie {
+  width: 80%;
+  height: 80%;
+  text-align: center;
+  font-weight: 500;
+  align-content: center;
+  justify-items: center;
+  margin-right: 320px;
+}
+
+.loader-ie {
+  width: fit-content;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 50px;
+  background: linear-gradient(
+      135deg,
+      #0000 calc(50% - 0.5em),
+      #39ff14 0 calc(50% + 0.5em),
+      #0000 0
+    )
+    right/300% 100%;
+  animation: l22-ie 2s infinite;
+}
+
+.loader-ie::before {
+  content: "Cargando...";
+  color: #fff;
+  padding: 0 5px;
+  background: inherit;
+  background-image: linear-gradient(
+    135deg,
+    #000 calc(50% - 0.5em),
+    #fff 0 calc(50% + 0.5em),
+    #000 0
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/****************************************************************************************************/
+
+@media (max-width: 430px) {
+  .ingresos-externos {
+    overflow-y: auto;
+  }
+
+  .ingresos-externos h1 {
+    font-size: 2rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  #cont {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .buscador {
+    min-width: 90%;
+    margin-left: 0;
+  }
+
+  #cont button {
+    min-width: 90%;
+  }
+
+  .ingresos-externos-tabla {
+    width: 95%;
+  }
+
+  .modal-contenedor-ie {
+    width: 90%;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-contenido-ie {
+    height: auto;
+  }
+
+  .modal-contenedor-eliminar-ie {
+    width: 90%;
+    height: auto;
+    padding: 20px;
+  }
+
+  .modal-contenedor-eliminar-ie h2 {
+    width: 100%;
+    font-size: 18px;
+  }
+
+  #botoness-edicion-ie {
+    margin-right: 0;
+  }
+
+  .modal-cargando-ie {
+    left: 0;
+  }
+}
+
+@keyframes l22-ie {
+  100% {
+    background-position: left;
+  }
+}

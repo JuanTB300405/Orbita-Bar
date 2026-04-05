@@ -93,7 +93,7 @@
   padding: 0;
   margin-bottom: 0;
   width: 100%;
-  margin-top: 0.4rem;
+  margin-top: 1.2rem;
 }
 @keyframes levitar {
   0% {
@@ -107,7 +107,8 @@
   }
 }
 .sidebar li {
-  margin: 0.45rem 8px 0.2rem 2.5rem;
+  margin: 0.1rem 8px 0.1rem 2.5rem;
+  padding: 0.2rem 0;
   width: 78%;
   text-align: left;
   display: flex;
@@ -120,8 +121,8 @@
   flex-direction: row;
   padding-right: 5px;
   flex-shrink: 0;
-  width: 26px;
-  height: 26px;
+  width: 23px;
+  height: 23px;
 }
 .slidebar svg:hover {
   animation: levitar 0.5s ease-in-out infinite;
@@ -130,7 +131,7 @@
   width: 80%;
   font-family: "Nova Square", sans-serif;
   color: #ffffff;
-  font-size: 1.2rem;
+  font-size: 1.06rem;
 }
 .sidebar li:hover {
   border-bottom: 0.1rem solid #39ff14;
