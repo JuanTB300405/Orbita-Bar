@@ -1,6 +1,12 @@
 import React from 'react';
 import "../styles/Gastos.css";
 
+const parsearFecha = (fechaStr) => {
+  if (!fechaStr) return null;
+  const [y, m, d] = fechaStr.slice(0, 10).split('-').map(Number);
+  return new Date(y, m - 1, d);
+};
+
 const Gastos = ({ seleccionados, setSeleccionados, gastosData, itemEditando, datosEditados, handleChangeEdicion }) => {
     const handleSeleccion = (id) => {
         setSeleccionados(prev => 
@@ -89,7 +95,7 @@ const Gastos = ({ seleccionados, setSeleccionados, gastosData, itemEditando, dat
                                             onChange={handleChangeEdicion}
                                         />
                                     ) : (
-                                        gasto.fecha_de_pago ? new Date(gasto.fecha_de_pago).toLocaleDateString('es-ES', { timeZone: 'UTC' }) : 'N/A'
+                                        gasto.fecha_de_pago ? new Date(gasto.fecha_de_pago.slice(0, 10) + 'T00:00:00').toLocaleDateString('es-CO', { timeZone: 'America/Bogota' }) : 'N/A'
                                     )}
                                 </td>
                             </tr>
