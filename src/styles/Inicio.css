@@ -1,0 +1,476 @@
+/* ════════════════════════════════════════
+   DASHBOARD – TERMINAL DE CONTROL
+   ════════════════════════════════════════ */
+
+.dashboard {
+  width: 100%;
+  min-height: 100%;
+  padding: 1.5rem 1.5rem 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+/* ── Header ── */
+.db-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.db-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
+}
+
+.db-status-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #9cff93;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #9cff93;
+  animation: titilar 0.9s linear infinite;
+}
+
+@keyframes titilar {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.db-status-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.65rem;
+  color: #9cff93;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.db-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #f1f3fc;
+}
+
+.db-header-right {
+  text-align: right;
+}
+
+.db-fecha-label {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  color: #a8abb3;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0 0 0.2rem 0;
+}
+
+.db-fecha-valor {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0eeafd;
+  margin: 0;
+}
+
+/* ── Metric Cards ── */
+.db-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+@media (max-width: 1100px) {
+  .db-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .db-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.db-card {
+  position: relative;
+  padding: 1.2rem;
+  overflow: hidden;
+  background: #151a21;
+}
+
+/* Corner accents */
+.db-card::before,
+.db-card::after {
+  content: "";
+  position: absolute;
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+/* ── Verde ── */
+.db-card--verde {
+  border: 1px solid rgba(156, 255, 147, 0.2);
+  box-shadow: 0 0 15px rgba(156, 255, 147, 0.07);
+}
+.db-card--verde::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid #9cff93;
+  border-left: 2px solid #9cff93;
+}
+.db-card--verde::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid #9cff93;
+  border-right: 2px solid #9cff93;
+}
+
+/* ── Cyan ── */
+.db-card--cyan {
+  border: 1px solid rgba(14, 234, 253, 0.2);
+}
+.db-card--cyan::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid #0eeafd;
+  border-left: 2px solid #0eeafd;
+}
+.db-card--cyan::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid #0eeafd;
+  border-right: 2px solid #0eeafd;
+}
+
+/* ── Rojo ── */
+.db-card--rojo {
+  border: 1px solid rgba(255, 77, 79, 0.2);
+}
+.db-card--rojo::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid #ff4d4f;
+  border-left: 2px solid #ff4d4f;
+}
+.db-card--rojo::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid #ff4d4f;
+  border-right: 2px solid #ff4d4f;
+}
+
+/* ── Amarillo/Secondary ── */
+.db-card--amarillo {
+  border: 1px solid rgba(137, 250, 170, 0.2);
+}
+.db-card--amarillo::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid #89faaa;
+  border-left: 2px solid #89faaa;
+}
+.db-card--amarillo::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid #89faaa;
+  border-right: 2px solid #89faaa;
+}
+
+.db-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.8rem;
+}
+
+.db-card-id {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+}
+
+.db-card-id--verde {
+  color: #9cff93;
+}
+.db-card-id--cyan {
+  color: #0eeafd;
+}
+.db-card-id--rojo {
+  color: #ff4d4f;
+}
+.db-card-id--amarillo {
+  color: #89faaa;
+}
+
+.db-card-label {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a8abb3;
+  margin: 0 0 0.3rem 0;
+}
+
+.db-card-valor {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+  font-weight: 700;
+  color: #f1f3fc;
+  margin: 0 0 0.8rem 0;
+}
+
+.db-card-bar-track {
+  height: 3px;
+  background: #20262f;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.db-card-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+.db-card-bar-fill--verde {
+  background: #9cff93;
+}
+
+.db-card-sub {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0.8rem 0 0 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.db-card-sub--cyan {
+  color: #0eeafd;
+  font-style: italic;
+}
+.db-card-sub--rojo {
+  color: #ff4d4f;
+}
+.db-card-sub--amarillo {
+  color: #89faaa;
+}
+
+/* ── Bottom: Chart + Ops ── */
+.db-bottom {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .db-bottom {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Chart Panel ── */
+.db-chart-panel {
+  background: #151a21;
+  border: 1px solid rgba(68, 72, 79, 0.4);
+  padding: 1.5rem;
+}
+
+.db-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.db-chart-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.2rem 0;
+  color: #f1f3fc;
+}
+
+.db-chart-sub {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: #a8abb3;
+  margin: 0;
+}
+
+.db-chart-legend {
+  display: flex;
+  gap: 1rem;
+}
+
+.db-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.db-legend-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+}
+.db-legend-dot--cyan {
+  background: #0eeafd;
+}
+.db-legend-dot--rojo {
+  background: #ff4d4f;
+}
+
+.db-legend-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #a8abb3;
+}
+
+.db-chart-area {
+  width: 100%;
+}
+
+/* Custom Tooltip */
+.db-chart-tooltip {
+  background: #20262f;
+  border: 1px solid rgba(156, 255, 147, 0.2);
+  padding: 0.5rem 0.75rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.7rem;
+}
+
+.db-chart-tooltip-label {
+  color: #9cff93;
+  font-weight: 700;
+  margin: 0 0 0.3rem 0;
+  letter-spacing: 0.1em;
+}
+
+.db-chart-tooltip p {
+  margin: 0.15rem 0;
+}
+
+/* ── Operations Panel ── */
+.db-ops-panel {
+  background: #1b2028;
+  border: 1px solid rgba(68, 72, 79, 0.5);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.db-ops-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin: 0 0 1.2rem 0;
+  color: #f1f3fc;
+}
+
+.db-ops-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.db-op-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(10, 14, 20, 0.5);
+  border-left: 3px solid transparent;
+}
+
+.db-op-item--verde {
+  border-left-color: #9cff93;
+}
+.db-op-item--cyan {
+  border-left-color: #0eeafd;
+}
+.db-op-item--rojo {
+  border-left-color: #ff4d4f;
+}
+
+.db-op-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.db-op-name {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #f1f3fc;
+  margin: 0 0 0.15rem 0;
+}
+
+.db-op-detail {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  color: #a8abb3;
+  margin: 0;
+}
+
+.db-op-badge {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.5rem;
+}
+
+.db-op-badge--verde {
+  color: #9cff93;
+  background: rgba(156, 255, 147, 0.1);
+}
+.db-op-badge--cyan {
+  color: #0eeafd;
+  background: rgba(14, 234, 253, 0.1);
+}
+.db-op-badge--rojo {
+  color: #ff4d4f;
+  background: rgba(255, 77, 79, 0.1);
+}
+
+.db-op-badge--pulsar {
+  animation: pulsar 1.2s ease-in-out infinite;
+}
+
+@keyframes pulsar {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

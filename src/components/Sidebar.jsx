@@ -73,7 +73,7 @@ const Sidebar = () => {
               <path d="M17 17h-11v-14h-2" />
               <path d="M6 5l14 1l-1 7h-13" />
             </svg>
-            <Link className="link" to="/">
+            <Link className="link" to="/home">
               Ventas
             </Link>
           </li>
@@ -301,7 +301,7 @@ const Sidebar = () => {
           <path d="M15 12h-12l3 -3" />
           <path d="M6 15l-3 -3" />
         </svg>
-        Cerrar Sesion
+        <p>Cerrar Sesion</p>
       </button>
 
       {modal && (

@@ -1,5 +1,5 @@
 .sidebar {
-  width: 320px;
+  width: 220px;
   height: 100vh;
   background: linear-gradient(to left, rgba(0, 255, 106, 0.08), #000000 10%);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
@@ -14,8 +14,8 @@
 }
 
 .sidebar img {
-  width: 16rem;
-  height: 7rem;
+  width: 11rem;
+  height: 5rem;
   margin-bottom: 10px;
   border-radius: 25px;
   mask-image: radial-gradient(circle, black 50%, transparent 100%);
@@ -23,8 +23,8 @@
 }
 #logoOrbita {
   position: relative;
-  width: 16rem;
-  height: 7rem;
+  width: 11rem;
+  height: 5rem;
   margin-left: 1rem;
   margin-bottom: 0.6rem;
 }
@@ -53,11 +53,11 @@
   }
 }
 .slogan {
-  padding-left: 3rem;
+  padding-left: 1.5rem;
   text-align: start;
   margin: 0;
   font-weight: bold;
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-family: Orbitron;
   border-top: 0.1rem solid rgba(0, 255, 106, 0.3);
   padding-top: 0.4rem;
@@ -130,7 +130,7 @@
   }
 }
 .sidebar li {
-  margin: 0.1rem 8px 0.1rem 2.5rem;
+  margin: 0.1rem 8px 0.1rem 1.2rem;
   padding: 0.2rem 0;
   width: 78%;
   text-align: left;
@@ -154,7 +154,7 @@
   width: 80%;
   font-family: "Nova Square", sans-serif;
   color: #ffffff;
-  font-size: 1.05rem;
+  font-size: 0.85rem;
 }
 .sidebar li:hover {
   border-bottom: 0.1rem solid #39ff14;
@@ -183,7 +183,13 @@
 
 .logout {
   margin-bottom: 1.5rem;
-  width: 54%;
+  width: 70%;
+  display: flex;
+  align-items: center;
+}
+
+.logout p {
+  font-size: 0.7rem;
 }
 
 .logout:hover {

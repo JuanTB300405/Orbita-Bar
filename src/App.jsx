@@ -17,6 +17,7 @@ import Categorias from "./pages/Categoria";
 import Ventas from "./pages/Ventas";
 import Deudores from "./pages/Deudores";
 import IngresosExternos from "./pages/IngresosExternos";
+import Inicio from "./pages/Inicio";
 
 function App() {
   const [Autenticacion, setAutenticacion] = useState(false);
@@ -37,7 +38,8 @@ function App() {
               path="/"
               element={Autenticacion ? <Layout /> : <Navigate to="/login" />}
             >
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Inicio />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/inventario" element={<Inventario />} />
               <Route path="/informes" element={<Informes />} />
               <Route path="/proveedores" element={<Proveedores />} />

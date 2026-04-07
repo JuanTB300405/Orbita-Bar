@@ -7,7 +7,7 @@
 .contenido {
   flex-grow: 1;
   height: 100vh;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .menu {
