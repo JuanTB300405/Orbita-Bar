@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "../components/Button";
 import "../styles/Egresos.css";
 import { useState, useEffect } from "react";
 import Gastos from "./Gastos";
@@ -18,17 +17,17 @@ import makeAnimated from "react-select/animated";
 
 const normalizarTexto = (texto) => {
   return texto
-    .normalize("NFD") // Descompone los caracteres con tilde
-    .replace(/[\u0300-\u036f]/g, "") // Elimina las tildes
-    .toLowerCase(); // Pasa a minúsculas
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
 };
 
 const formatearFechaHumana = (fecha) => {
   if (!fecha) return "";
   const opciones = { year: "numeric", month: "long", day: "numeric" };
   const fechaObj = new Date(fecha);
-  if (isNaN(fechaObj)) return ""; // Maneja fechas inválidas
-  return fechaObj.toLocaleDateString("es-ES", opciones); // Ej: "24 de julio de 2025"
+  if (isNaN(fechaObj)) return "";
+  return fechaObj.toLocaleDateString("es-ES", opciones);
 };
 
 const Egresos = () => {
@@ -46,14 +45,12 @@ const Egresos = () => {
 
   const animatedComponents = makeAnimated();
 
-  // Modificar el estado inicial
   const [productosOptions, setProductosOptions] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
-  // Agregar esta función para obtener productos
   const obtenerProductos = async () => {
     try {
-      const productos = await getProductos(); // Asume que tienes este endpoint
+      const productos = await getProductos();
       const options = productos.map((producto) => ({
         value: producto.id,
         label: `${producto.nombre} (${producto.proveedor.nombre})`,
@@ -69,8 +66,6 @@ const Egresos = () => {
 
   const filtrarEgresos = () => {
     const termino = normalizarTexto(busqueda.trim());
-
-    // Detectar si el usuario quiere filtrar por campo específico
     const matchCampo = termino.match(/^(\w+)=(.*)$/);
 
     return egresoData.filter((item) => {
@@ -79,8 +74,8 @@ const Egresos = () => {
         item.proveedor || item.producto?.proveedor?.nombre || "";
       const estado = item.estado || "";
       const fecha = item.fecha || "";
-      const fechaNormal = normalizarTexto(fecha); // 2025-07-24
-      const fechaHumana = normalizarTexto(formatearFechaHumana(fecha)); // 24 de julio de 2025
+      const fechaNormal = normalizarTexto(fecha);
+      const fechaHumana = normalizarTexto(formatearFechaHumana(fecha));
 
       if (matchCampo) {
         const campo = matchCampo[1];
@@ -101,11 +96,10 @@ const Egresos = () => {
               fechaHumana.includes(normalizarTexto(valor))
             );
           default:
-            return true; // Si el campo no es reconocido, muestra todo
+            return true;
         }
       }
 
-      // Filtro general si no hay campo específico
       return (
         normalizarTexto(nombre).includes(termino) ||
         normalizarTexto(proveedor).includes(termino) ||
@@ -115,25 +109,20 @@ const Egresos = () => {
     });
   };
 
-  // Formulario dinámico según vista
   const [datosForm, setDatosForm] = useState({
     nombre: "",
     precio: "",
-    // Campos para gastos
     estado: "",
     fecha_de_pago: "",
-    // Campos para compras
     cantidad: "",
     proveedor: "",
     fecha_de_compra: "",
   });
 
-  // Obtener datos según la vista actual
   const obtenerEgresos = async () => {
     try {
       setCargando(true);
       const data = await getEgresos(vista);
-      // console.log("data", data)
       const datosNormalizados = data.map((item) => ({
         id: item.id || "",
         nombre: item.nombre || "",
@@ -166,17 +155,14 @@ const Egresos = () => {
     }
   };
 
-  // Manejar cambio en inputs del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDatosForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Manejar envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validación básica
     if (
       vista === "gastos" &&
       (!datosForm.nombre ||
@@ -210,7 +196,6 @@ const Egresos = () => {
           fecha_de_pago: datosForm.fecha_de_pago,
         };
       } else {
-        // compras
         dataToSend = {
           subtotal: datosForm.precio,
           fecha: datosForm.fecha_de_compra,
@@ -230,7 +215,7 @@ const Egresos = () => {
         );
         obtenerEgresos();
         cerrarModalAgregar();
-        setProductoSeleccionado(null); // Limpiar selección
+        setProductoSeleccionado(null);
       }
     } catch (error) {
       toast.error(`Error al crear ${vista === "gastos" ? "gasto" : "compra"}`);
@@ -238,14 +223,10 @@ const Egresos = () => {
     }
   };
 
-  // Manejar eliminación de egresos
   const eliminarEgresoSeleccionado = async () => {
     try {
       const response = await deleteEgreso(vista, seleccionados);
       if (response.status === 204) {
-        {/*toast.success(
-          `${vista === "gastos" ? "Gasto(s)" : "Compra(s)"} eliminado(s) exitosamente!`,
-        );*/}
         toast.success("¡Egreso eliminado exitosamente!");
         obtenerEgresos();
       }
@@ -257,11 +238,11 @@ const Egresos = () => {
 
   const obtenerFechaColombia = () => {
     const hoy = new Date();
-    const offsetColombia = hoy.getTimezoneOffset() + 300; // getTimezoneOffset() ya da en minutos
-    hoy.setMinutes(hoy.getMinutes() - offsetColombia); // restamos para ajustar a UTC-5
-    return hoy.toISOString().slice(0, 10); // YYYY-MM-DD
+    const offsetColombia = hoy.getTimezoneOffset() + 300;
+    hoy.setMinutes(hoy.getMinutes() - offsetColombia);
+    return hoy.toISOString().slice(0, 10);
   };
-  // Funciones para manejar modales
+
   const abrirModalAgregar = () => {
     setDatosForm({
       nombre: "",
@@ -281,7 +262,6 @@ const Egresos = () => {
     setShowModalAgregar(false);
   };
 
-  // Lógica para edición
   const verEdicion = () => {
     const itemsSeleccionados = egresoData.filter((item) =>
       seleccionados.includes(item.id),
@@ -326,7 +306,6 @@ const Egresos = () => {
           fecha_de_pago: datosEditados.fecha_de_pago,
         };
       } else {
-        // compras
         datosActualizados = {
           id: datosEditados.id,
           subtotal: Number(datosEditados.precio),
@@ -364,7 +343,6 @@ const Egresos = () => {
     setDatosEditados((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Cargar datos cuando cambia la vista
   useEffect(() => {
     if (vista === "compras") {
       obtenerProductos();
@@ -377,32 +355,104 @@ const Egresos = () => {
 
   if (cargando) {
     return (
-      <div className="modal-cargando-eg">
-        <div className="modal-contenido-eg">
-          <div className="loader-eg"></div>
+      <div className="eg-loading-overlay">
+        <div className="eg-loading-inner">
+          <div className="eg-loader" />
+          <span className="eg-loading-text">
+            Cargando {vista}...
+          </span>
         </div>
       </div>
     );
   }
 
+  const egFiltrados = filtrarEgresos();
+  const totalMonto = egFiltrados.reduce(
+    (sum, item) => sum + Number(item.precio || 0),
+    0,
+  );
+
   return (
-    <>
-      <section className="egresos">
-        <h1>EGRESOS</h1>
-        <div className="egresos-titulo-linea" ></div>
-        <div id="cont">
-          <div className="buscador">
+    <section className="eg-page">
+      {/* Header */}
+      <div className="eg-header">
+        <div className="eg-header-accent" />
+        <div className="eg-header-content">
+          <h1 className="eg-title">EGRESOS</h1>
+          <p className="eg-subtitle">
+            {vista === "gastos"
+              ? "Registro de gastos fijos y variables"
+              : "Registro de compras y proveedores"}
+          </p>
+        </div>
+        <div className={`eg-header-badge eg-header-badge--${vista}`}>
+          {vista === "gastos" ? "GASTOS" : "COMPRAS"}
+        </div>
+      </div>
+
+      {/* View Tabs */}
+      <div className="eg-tabs">
+        <button
+          className={`eg-tab${vista === "gastos" ? " eg-tab--active" : ""}`}
+          onClick={() => setVista("gastos")}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M7 9m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+            <path d="M14 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+            <path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2" />
+          </svg>
+          Gastos
+        </button>
+        <button
+          className={`eg-tab${vista === "compras" ? " eg-tab--active" : ""}`}
+          onClick={() => setVista("compras")}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+            <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+            <path d="M17 17h-11v-14h-2" />
+            <path d="M6 5l14 1l-1 7h-13" />
+          </svg>
+          Compras
+        </button>
+      </div>
+
+      {/* Toolbar */}
+      <div className="eg-toolbar">
+        <div className="eg-toolbar-left">
+          <div className="eg-search-wrap">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
+              width="14"
+              height="14"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#ffffff"
+              stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="icon icon-tabler icons-tabler-outline icon-tabler-search"
             >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
@@ -410,319 +460,398 @@ const Egresos = () => {
             </svg>
             <input
               type="text"
+              className="eg-search-input"
               placeholder={`Buscar ${vista === "gastos" ? "gastos" : "compras"}...`}
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
             />
           </div>
-          <Button variant="verde" onClick={abrirModalAgregar}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#6aff00"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-tabler icons-tabler-outline icon-tabler-square-rounded-plus"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
-              <path d="M15 12h-6" />
-              <path d="M12 9v6" />
-            </svg>
-            Agregar
-          </Button>
-          <Button variant="azul" onClick={verEdicion}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="cyan"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-tabler icons-tabler-outline icon-tabler-edit"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-              <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-              <path d="M16 5l3 3" />
-            </svg>
-            Editar
-          </Button>
-          <Button
-            variant="rojo"
-            onClick={() =>
-              seleccionados.length > 0
-                ? setShowModalEliminar(true)
-                : toast.warning(  
-                    `Seleccione ${vista === "gastos" ? "gastos" : "compras"} para eliminar`,
-                  )
-            }
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#ff0000"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-tabler icons-tabler-outline icon-tabler-trash"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M4 7l16 0" />
-              <path d="M10 11l0 6" />
-              <path d="M14 11l0 6" />
-              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-            </svg>
-            Eliminar
-          </Button>
         </div>
-        <div id="botones-tablas">
-          <Button
-            variant={vista === "gastos" ? "activo" : "neutro"}
-            onClick={() => setVista("gastos")}
-          >
-            Ver Gastos
-          </Button>
-          <Button
-            variant={vista === "compras" ? "activo" : "neutro"}
-            onClick={() => setVista("compras")}
-          >
-            Ver Compras
-          </Button>
-        </div>
-        <div id="tablas">
-          {vista === "gastos" && (
-            <Gastos
-              seleccionados={seleccionados}
-              setSeleccionados={setSeleccionados}
-              gastosData={filtrarEgresos()}
-              itemEditando={itemEditando}
-              datosEditados={datosEditados}
-              handleChangeEdicion={handleChangeEdicion}
-            />
+        <div className="eg-toolbar-right">
+          {!edicion ? (
+            <>
+              <button className="eg-btn eg-btn--add" onClick={abrirModalAgregar}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
+                  <path d="M15 12h-6" />
+                  <path d="M12 9v6" />
+                </svg>
+                AGREGAR
+              </button>
+              <button className="eg-btn eg-btn--edit" onClick={verEdicion}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                  <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                  <path d="M16 5l3 3" />
+                </svg>
+                EDITAR
+              </button>
+              <button
+                className="eg-btn eg-btn--del"
+                onClick={() =>
+                  seleccionados.length > 0
+                    ? setShowModalEliminar(true)
+                    : toast.warning(
+                        `Seleccione ${vista === "gastos" ? "gastos" : "compras"} para eliminar`,
+                      )
+                }
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M4 7l16 0" />
+                  <path d="M10 11l0 6" />
+                  <path d="M14 11l0 6" />
+                  <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                  <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                </svg>
+                ELIMINAR
+              </button>
+            </>
+          ) : (
+            <>
+              <div className="eg-edit-active-badge">
+                <span className="eg-edit-dot" />
+                MODO EDICIÓN
+              </div>
+              <button className="eg-btn eg-btn--save" onClick={guardarEdicion}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                  <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                  <path d="M14 4l0 4l-6 0l0 -4" />
+                </svg>
+                GUARDAR
+              </button>
+              <button
+                className="eg-btn eg-btn--cancel"
+                onClick={cancelarEdicion}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M18 6l-12 12" />
+                  <path d="M6 6l12 12" />
+                </svg>
+                CANCELAR
+              </button>
+            </>
           )}
-          {vista === "compras" && (
-            <Compras
-              seleccionados={seleccionados}
-              setSeleccionados={setSeleccionados}
-              comprasData={filtrarEgresos()}
-              itemEditando={itemEditando}
-              datosEditados={datosEditados}
-              handleChangeEdicion={handleChangeEdicion}
-            />
-          )}
         </div>
+      </div>
 
-        {edicion && (
-          <div id="botoness-edicion-e">
-            <Button variant="verde" onClick={guardarEdicion}>
-              Guardar
-            </Button>
-            <Button variant="rojo" onClick={cancelarEdicion}>
-              Cancelar
-            </Button>
-          </div>
+      {/* Info Bar */}
+      <div className="eg-info-bar">
+        <span className="eg-info-item">
+          <span className="eg-info-label">
+            {vista === "gastos" ? "GASTOS" : "COMPRAS"}
+          </span>
+          <span className="eg-info-value">{egFiltrados.length}</span>
+        </span>
+        {seleccionados.length > 0 && (
+          <span className="eg-info-item eg-info-item--sel">
+            <span className="eg-info-label">SELECCIONADOS</span>
+            <span className="eg-info-value">{seleccionados.length}</span>
+          </span>
         )}
+        <span className="eg-info-item eg-info-item--total">
+          <span className="eg-info-label">TOTAL</span>
+          <span className="eg-info-value eg-info-monto">
+            $
+            {totalMonto.toLocaleString("es-CO", {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })}
+          </span>
+        </span>
+      </div>
 
-        {/* Modal de eliminar */}
-        {showModalEliminar && (
-          <div className="modal" onClick={() => setShowModalEliminar(false)}>
-            <div
-              className="modal-contenedor-eliminar-e"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h2>
-                ¿Está completamente seguro que desea eliminar el/los{" "}
-                {vista === "gastos" ? "gasto(s)" : "compra(s)"} seleccionado(s)?
+      {/* Table Panel */}
+      <div className="eg-table-panel">
+        {vista === "gastos" && (
+          <Gastos
+            seleccionados={seleccionados}
+            setSeleccionados={setSeleccionados}
+            gastosData={egFiltrados}
+            itemEditando={itemEditando}
+            datosEditados={datosEditados}
+            handleChangeEdicion={handleChangeEdicion}
+          />
+        )}
+        {vista === "compras" && (
+          <Compras
+            seleccionados={seleccionados}
+            setSeleccionados={setSeleccionados}
+            comprasData={egFiltrados}
+            itemEditando={itemEditando}
+            datosEditados={datosEditados}
+            handleChangeEdicion={handleChangeEdicion}
+          />
+        )}
+      </div>
+
+      {/* Delete Modal */}
+      {showModalEliminar && (
+        <div
+          className="eg-overlay"
+          onClick={() => setShowModalEliminar(false)}
+        >
+          <div
+            className="eg-modal eg-modal--danger"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="eg-modal-corner eg-modal-corner--tl" />
+            <div className="eg-modal-corner eg-modal-corner--br" />
+            <div className="eg-modal-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#f87171"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M12 9v4" />
+                <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.871l-8.106 -13.534a1.914 1.914 0 0 0 -3.274 0z" />
+                <path d="M12 16h.01" />
+              </svg>
+            </div>
+            <h2 className="eg-modal-title">Confirmar eliminación</h2>
+            <p className="eg-modal-body">
+              ¿Eliminar {seleccionados.length}{" "}
+              {vista === "gastos" ? "gasto(s)" : "compra(s)"} seleccionado(s)?
+              Esta acción no se puede deshacer.
+            </p>
+            <div className="eg-modal-actions">
+              <button
+                className="eg-btn eg-btn--del"
+                onClick={eliminarEgresoSeleccionado}
+              >
+                Confirmar
+              </button>
+              <button
+                className="eg-btn eg-btn--cancel"
+                onClick={() => setShowModalEliminar(false)}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Modal */}
+      {showModalAgregar && (
+        <div className="eg-overlay" onClick={cerrarModalAgregar}>
+          <div
+            className="eg-modal eg-modal--form"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="eg-modal-corner eg-modal-corner--tl" />
+            <div className="eg-modal-corner eg-modal-corner--br" />
+            <form className="eg-form" onSubmit={handleSubmit}>
+              <h2 className="eg-modal-title">
+                Agregar {vista === "gastos" ? "Gasto" : "Compra"}
               </h2>
-              <div id="botoness-e">
-                <Button variant="verde" onClick={eliminarEgresoSeleccionado}>
-                  Aceptar
-                </Button>
-                <Button
-                  variant="rojo"
-                  onClick={() => setShowModalEliminar(false)}
+
+              {vista === "gastos" ? (
+                <>
+                  <div className="eg-form-row">
+                    <label className="eg-form-label">Nombre del gasto</label>
+                    <input
+                      className="eg-form-input"
+                      type="text"
+                      placeholder="Ej: Arriendo"
+                      name="nombre"
+                      value={datosForm.nombre}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="eg-form-row">
+                    <label className="eg-form-label">Precio</label>
+                    <input
+                      className="eg-form-input"
+                      type="number"
+                      placeholder="Ej: 500000"
+                      name="precio"
+                      value={datosForm.precio}
+                      onChange={handleChange}
+                      min="0"
+                      required
+                    />
+                  </div>
+                  <div className="eg-form-row">
+                    <label className="eg-form-label">Estado</label>
+                    <div className="eg-select-wrap">
+                      <select
+                        className="eg-form-select"
+                        name="estado"
+                        value={datosForm.estado}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">Seleccione...</option>
+                        <option value="Fijo">Fijo</option>
+                        <option value="Variable">Variable</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="eg-form-row">
+                    <label className="eg-form-label">Fecha de pago</label>
+                    <input
+                      className="eg-form-input"
+                      type="date"
+                      name="fecha_de_pago"
+                      value={datosForm.fecha_de_pago}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="eg-form-row">
+                    <label className="eg-form-label">Producto</label>
+                    <div className="eg-select-wrap eg-select-wrap--react">
+                      <Select
+                        className="eg-react-select"
+                        classNamePrefix="eg-rs"
+                        menuPlacement="auto"
+                        options={productosOptions}
+                        value={productoSeleccionado}
+                        onChange={(selectedOption) => {
+                          setProductoSeleccionado(selectedOption);
+                          setDatosForm((prev) => ({
+                            ...prev,
+                            idproducto: selectedOption.value,
+                            nombre: selectedOption.nombre,
+                            proveedor: selectedOption.proveedor,
+                          }));
+                        }}
+                        placeholder="Buscar producto..."
+                        isSearchable
+                        noOptionsMessage={() => "No se encontraron productos"}
+                        components={animatedComponents}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="eg-form-row">
+                    <label className="eg-form-label">Subtotal</label>
+                    <input
+                      className="eg-form-input"
+                      type="number"
+                      placeholder="Ej: 500000"
+                      name="precio"
+                      value={datosForm.precio}
+                      onChange={handleChange}
+                      min="0"
+                      required
+                    />
+                  </div>
+                  <div className="eg-form-row">
+                    <label className="eg-form-label">Cantidad</label>
+                    <input
+                      className="eg-form-input"
+                      type="text"
+                      pattern="[0-9]*"
+                      placeholder="Ej: 100"
+                      name="cantidad"
+                      value={datosForm.cantidad}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="eg-form-row">
+                    <label className="eg-form-label">Fecha de compra</label>
+                    <input
+                      className="eg-form-input"
+                      type="date"
+                      name="fecha_de_compra"
+                      value={datosForm.fecha_de_compra}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </>
+              )}
+
+              {error && <p className="eg-form-error">{error}</p>}
+
+              <div className="eg-modal-actions">
+                <button type="submit" className="eg-btn eg-btn--add">
+                  Guardar
+                </button>
+                <button
+                  type="button"
+                  className="eg-btn eg-btn--cancel"
+                  onClick={cerrarModalAgregar}
                 >
                   Cancelar
-                </Button>
+                </button>
               </div>
-            </div>
+            </form>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Modal de agregar */}
-        {showModalAgregar && (
-          <div className="modal" onClick={cerrarModalAgregar}>
-            <div
-              className="modal-contenedor-p"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="modal-contenido-p">
-                <form className="formulario-p" onSubmit={handleSubmit}>
-                  <h2>Agregar {vista === "gastos" ? "Gasto" : "Compra"}</h2>
-                  {vista === "gastos" ? (
-                    <>
-                      <div className="bloque-pe">
-                        <label>
-                          {vista === "gastos"
-                            ? "Nombre del gasto"
-                            : "Nombre del producto"}
-                        </label>
-                        <input
-                          type="text"
-                          placeholder={
-                            vista === "gastos"
-                              ? "Ej: Arriendo"
-                              : "Ej: Bon Bon Bum"
-                          }
-                          name="nombre"
-                          value={datosForm.nombre}
-                          onChange={handleChange}
-                          required
-                        />
-                      </div>
-
-                      <div className="bloque-pe">
-                        <label>Precio</label>
-                        <input
-                          type="number"
-                          placeholder="Ej: 500000"
-                          name="precio"
-                          value={datosForm.precio}
-                          onChange={handleChange}
-                          min="0"
-                          required
-                        />
-                      </div>
-                      <div className="bloque-pe">
-                        <label>Estado</label>
-                        <div id="cont-select-egresos">
-                          <select
-                            id="select-egresos"
-                            name="estado"
-                            value={datosForm.estado}
-                            onChange={handleChange}
-                            required
-                          >
-                            <option value="">Seleccione...</option>
-                            <option value="Fijo">Fijo</option>
-                            <option value="Variable">Variable</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="bloque-pe">
-                        <label>Fecha de pago</label>
-                        <input
-                          type="date"
-                          name="fecha_de_pago"
-                          value={datosForm.fecha_de_pago}
-                          onChange={handleChange}
-                          required
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="bloque-pe">
-                        <label>Producto</label>
-                        <div className="bloque-pe-compra">
-                          <Select
-                            className="selecompra"
-                            menuPlacement="auto"
-                            options={productosOptions}
-                            value={productoSeleccionado}
-                            onChange={(selectedOption) => {
-                              setProductoSeleccionado(selectedOption);
-                              setDatosForm((prev) => ({
-                                ...prev,
-                                idproducto: selectedOption.value,
-                                nombre: selectedOption.nombre,
-                                proveedor: selectedOption.proveedor,
-                              }));
-                            }}
-                            placeholder="Buscar producto..."
-                            isSearchable
-                            noOptionsMessage={() => "No se encontraron productos"}
-                            components={animatedComponents}
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div className="bloque-pe">
-                        <label>Subtotal</label>
-                        <input
-                          type="number"
-                          placeholder="Ej: 500000"
-                          name="precio"
-                          value={datosForm.precio}
-                          onChange={handleChange}
-                          min="0"
-                          required
-                        />
-                      </div>
-
-                      <div className="bloque-pe">
-                        <label>Cantidad</label>
-                        <input
-                          type="text"
-                          pattern="[0-9]*"
-                          placeholder="Ej: 100"
-                          name="cantidad"
-                          value={datosForm.cantidad}
-                          onChange={handleChange}
-                          // min="1"
-                          required
-                        />
-                      </div>
-
-                      <div className="bloque-pe">
-                        <label>Fecha de compra</label>
-                        <input
-                          type="date"
-                          name="fecha_de_compra"
-                          value={datosForm.fecha_de_compra}
-                          onChange={handleChange}
-                          required
-                        />
-                      </div>
-                    </>
-                  )}
-                  {error && <p className="error-p">{error}</p>}
-
-                  <div className="botones">
-                    <Button type="submit" variant="verde" className="btn">
-                      Guardar
-                    </Button>
-                    <Button
-                      variant="rojo"
-                      onClick={cerrarModalAgregar}
-                      className="btn"
-                    >
-                      Cancelar
-                    </Button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <ToastContainer position="top-center" autoClose={3000} />
-      </section>
-    </>
+      <ToastContainer position="top-center" autoClose={3000} />
+    </section>
   );
 };
 

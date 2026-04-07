@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "../components/Button";
 import { useState } from "react";
 import { useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
@@ -14,7 +13,6 @@ import {
 
 const IngresosExternos = () => {
   // Lista de ingresos externos
-
   const [cargando, setCargando] = useState(true);
   const [busqueda, setBusqueda] = useState("");
   const [ingresosData, setIngresosData] = useState([]);
@@ -43,7 +41,6 @@ const IngresosExternos = () => {
   }, []);
 
   // Logica para verificar los cambios del formulario & guardar los datos
-
   const [datosForm, setdatosForm] = useState({
     tipoIngreso: "",
     ganancia: "",
@@ -95,7 +92,6 @@ const IngresosExternos = () => {
   };
 
   // Logica para el modal de agregar nuevo ingreso externo
-
   const [showModalAgregar, setShowModalAgregar] = useState(false);
 
   const abrirModalAgregar = () => {
@@ -109,11 +105,9 @@ const IngresosExternos = () => {
   };
 
   // Filas de tabla seleccionadas
-
   const [seleccionados, setSeleccionados] = useState([]);
 
   // Logica para el modal de eliminar
-
   const [showModalEliminar, setShowModalEliminar] = useState(false);
 
   const abrirModalEliminar = () => {
@@ -153,7 +147,6 @@ const IngresosExternos = () => {
   };
 
   // Logica para la edicion de los ingresos externos
-
   const [edicion, setEdicion] = useState(false);
   const [ingresoEditando, setIngresoEditando] = useState(null);
   const [datosEditados, setDatosEditados] = useState({});
@@ -256,252 +249,454 @@ const IngresosExternos = () => {
     });
   };
 
-  // //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ── Loading ───────────────────────────────────────────────────────────────
 
   if (cargando) {
     return (
-      <div className="modal-cargando-ie">
-        <div className="modal-contenido-cargando-ie">
-          <div className="loader-ie"></div>
-        </div>
+      <div className="ie-loading">
+        <div className="ie-loader"></div>
+        <p className="ie-loading-text">CARGANDO INGRESOS...</p>
       </div>
     );
   }
 
-  // /////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ── Render ────────────────────────────────────────────────────────────────
 
   return (
     <>
-      <section className="ingresos-externos">
-        <h1>INGRESOS EXTERNOS</h1>
-        <div className="ingresos-externos-titulo-linea"></div>
-        <div id="cont">
-          <div className="buscador">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#ffffff"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-              <path d="M21 21l-6 -6" />
-            </svg>
-            <input
-              type="text"
-              value={busqueda}
-              placeholder="Buscar tipo de ingreso..."
-              onChange={(e) => setBusqueda(e.target.value)}
-            />
+      <section className="ie-page">
+
+        {/* ── Header ── */}
+        <div className="ie-header">
+          <div className="ie-header-left">
+            <div className="ie-status">
+              <span className="ie-status-dot"></span>
+              <span className="ie-status-text">MÓDULO ACTIVO</span>
+            </div>
+            <h1 className="ie-title">INGRESOS EXTERNOS</h1>
           </div>
-          <Button variant="verde" onClick={abrirModalAgregar}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#6aff00"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
-              <path d="M15 12h-6" />
-              <path d="M12 9v6" />
-            </svg>
-            Agregar
-          </Button>
-          <Button variant="azul" onClick={verEdicion}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="cyan"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-              <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-              <path d="M16 5l3 3" />
-            </svg>
-            Editar
-          </Button>
-          <Button variant="rojo" onClick={abrirModalEliminar}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#ff0000"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M4 7l16 0" />
-              <path d="M10 11l0 6" />
-              <path d="M14 11l0 6" />
-              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-            </svg>
-            Eliminar
-          </Button>
         </div>
-        <br />
-        <div className="ingresos-externos-tabla">
-          <table className="tabla-IE">
-            <thead className="t-IE">
-              <tr>
-                <th></th>
-                <th>Tipo de Ingreso</th>
-                <th>Ganancia</th>
-                <th>Fecha</th>
-              </tr>
-            </thead>
-            <tbody>
-              {datosFiltrados.map((ingreso) => (
-                <tr key={ingreso.id}>
-                  <td>
+
+        {/* ── Toolbar ── */}
+        <div className="ie-toolbar">
+          <div className="ie-toolbar-left">
+            <div className="ie-search-wrap">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#a8abb3"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                className="ie-search"
+                type="text"
+                value={busqueda}
+                placeholder="BUSCAR TIPO DE INGRESO..."
+                onChange={(e) => setBusqueda(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="ie-toolbar-right">
+            {edicion ? (
+              <>
+                <span className="ie-edit-active-badge">MODO EDICIÓN</span>
+                <button className="ie-btn ie-btn--verde" onClick={GuardarEdicion}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12l5 5l10 -10" />
+                  </svg>
+                  GUARDAR
+                </button>
+                <button className="ie-btn ie-btn--rojo" onClick={CancelarEdicion}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 6l-12 12" />
+                    <path d="M6 6l12 12" />
+                  </svg>
+                  CANCELAR
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="ie-btn ie-btn--verde" onClick={abrirModalAgregar}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  AGREGAR
+                </button>
+                <button className="ie-btn ie-btn--cyan" onClick={verEdicion}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                  </svg>
+                  EDITAR
+                </button>
+                <button className="ie-btn ie-btn--rojo" onClick={abrirModalEliminar}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                    <path d="M10 11v6M14 11v6" />
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                  </svg>
+                  ELIMINAR
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* ── Info bar ── */}
+        <div className="ie-info-bar">
+          <span className="ie-info-count">
+            <span className="ie-info-num">{datosFiltrados.length}</span> de{" "}
+            {ingresosData.length} ingresos
+          </span>
+          {seleccionados.length > 0 && (
+            <span className="ie-sel-badge">
+              {seleccionados.length} seleccionado(s)
+            </span>
+          )}
+          {edicion && (
+            <span className="ie-edit-badge">MODO EDICIÓN ACTIVO</span>
+          )}
+        </div>
+
+        {/* ── Tabla ── */}
+        <div className="ie-table-panel">
+          <div className="ie-table-wrap">
+            <table className="ie-table">
+              <thead>
+                <tr>
+                  <th className="ie-th ie-th--check">
                     <input
+                      className="ie-checkbox"
                       type="checkbox"
-                      checked={seleccionados.includes(ingreso.id)}
+                      title="Seleccionar todos"
+                      checked={
+                        datosFiltrados.length > 0 &&
+                        datosFiltrados.every((i) => seleccionados.includes(i.id))
+                      }
                       onChange={(e) => {
                         if (e.target.checked) {
-                          setSeleccionados([...seleccionados, ingreso.id]);
+                          setSeleccionados(datosFiltrados.map((i) => i.id));
                         } else {
-                          setSeleccionados(
-                            seleccionados.filter((id) => id !== ingreso.id),
-                          );
+                          setSeleccionados([]);
                         }
                       }}
                     />
-                  </td>
-                  <td>
-                    {ingresoEditando === ingreso.id ? (
-                      <input
-                        className="inputss-ie"
-                        type="text"
-                        name="tipoIngreso"
-                        value={datosEditados.tipoIngreso}
-                        onChange={handleChangeEdicion}
-                      />
-                    ) : (
-                      ingreso.tipoIngreso
-                    )}
-                  </td>
-                  <td>
-                    {ingresoEditando === ingreso.id ? (
-                      <input
-                        className="inputss-ie"
-                        type="number"
-                        name="ganancia"
-                        value={datosEditados.ganancia}
-                        onChange={handleChangeEdicion}
-                        min="0"
-                        step="0.01"
-                      />
-                    ) : (
-                      formatearGanancia(ingreso.ganancia)
-                    )}
-                  </td>
-                  <td>{formatearFecha(ingreso.fecha)}</td>
+                  </th>
+                  <th className="ie-th ie-th--idx">#</th>
+                  <th className="ie-th">TIPO DE INGRESO</th>
+                  <th className="ie-th">GANANCIA</th>
+                  <th className="ie-th">FECHA</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {datosFiltrados.map((ingreso, idx) => {
+                  const estaSeleccionado = seleccionados.includes(ingreso.id);
+                  const estaEditando = ingresoEditando === ingreso.id;
+                  return (
+                    <tr
+                      key={ingreso.id}
+                      className={[
+                        "ie-tr",
+                        estaSeleccionado ? "ie-tr--sel" : "",
+                        estaEditando ? "ie-tr--editando" : "",
+                        !edicion ? "ie-tr--clickable" : "",
+                      ].join(" ")}
+                      onClick={(e) => {
+                        if (edicion) return;
+                        if (["INPUT", "BUTTON"].includes(e.target.tagName)) return;
+                        setSeleccionados((prev) =>
+                          estaSeleccionado
+                            ? prev.filter((id) => id !== ingreso.id)
+                            : [...prev, ingreso.id],
+                        );
+                      }}
+                    >
+                      <td className="ie-td ie-td--check">
+                        <input
+                          className="ie-checkbox"
+                          type="checkbox"
+                          checked={estaSeleccionado}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSeleccionados([...seleccionados, ingreso.id]);
+                            } else {
+                              setSeleccionados(
+                                seleccionados.filter((id) => id !== ingreso.id),
+                              );
+                            }
+                          }}
+                        />
+                      </td>
+                      <td className="ie-td ie-td--idx">{idx + 1}</td>
+                      <td className="ie-td ie-td--nombre">
+                        {estaEditando ? (
+                          <input
+                            className="ie-input-edit"
+                            type="text"
+                            name="tipoIngreso"
+                            value={datosEditados.tipoIngreso}
+                            onChange={handleChangeEdicion}
+                            autoFocus
+                          />
+                        ) : (
+                          ingreso.tipoIngreso
+                        )}
+                      </td>
+                      <td className="ie-td">
+                        {estaEditando ? (
+                          <input
+                            className="ie-input-edit ie-input-edit--sm"
+                            type="number"
+                            name="ganancia"
+                            value={datosEditados.ganancia}
+                            onChange={handleChangeEdicion}
+                            min="0"
+                            step="0.01"
+                          />
+                        ) : (
+                          <span className="ie-precio-txt">
+                            {formatearGanancia(ingreso.ganancia)}
+                          </span>
+                        )}
+                      </td>
+                      <td className="ie-td ie-td--fecha">
+                        {formatearFecha(ingreso.fecha)}
+                      </td>
+                    </tr>
+                  );
+                })}
+                {datosFiltrados.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="ie-td--empty">
+                      SIN REGISTROS
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        {edicion && (
-          <div id="botoness-edicion-ie">
-            <Button variant="verde" onClick={GuardarEdicion}>
-              Guardar
-            </Button>
-            <Button variant="rojo" onClick={CancelarEdicion}>
-              Cancelar
-            </Button>
-          </div>
-        )}
-
-        {/* Modal de agregar ingreso externo */}
+        {/* ── Modal agregar ingreso externo ── */}
         {showModalAgregar && (
-          <div className="modal-ie" onClick={cerrarModalAgregar}>
+          <div className="ie-overlay" onClick={cerrarModalAgregar}>
             <div
-              className="modal-contenedor-ie"
+              className="ie-modal"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="modal-contenido-ie">
-                <h2>Agregar ingreso externo</h2>
-                <form className="formulario-ie" onSubmit={handleSubmit}>
-                  <div className="bloque-ie">
-                    <label>Tipo de Ingreso</label>
-                    <input
-                      type="text"
-                      placeholder="Ej: Propina, Descorche..."
-                      name="tipoIngreso"
-                      value={datosForm.tipoIngreso}
-                      onChange={handleChange}
-                    />
-                  </div>
+              <span className="ie-corner ie-corner--tl"></span>
+              <span className="ie-corner ie-corner--br"></span>
 
-                  <div className="bloque-ie">
-                    <label>Ganancia</label>
-                    <input
-                      type="number"
-                      placeholder="Valor en pesos"
-                      name="ganancia"
-                      value={datosForm.ganancia}
-                      onChange={handleChange}
-                      min="0"
-                      step="0.01"
-                    />
-                  </div>
-
-                  {error && <p className="error-ie">{error}</p>}
-
-                  <div className="botones-ie">
-                    <Button type="submit" variant="verde">
-                      Guardar
-                    </Button>
-                    <Button variant="rojo" onClick={cerrarModalAgregar}>
-                      Cancelar
-                    </Button>
-                  </div>
-                </form>
+              <div className="ie-modal-header">
+                <p className="ie-modal-title">NUEVO INGRESO EXTERNO</p>
+                <button className="ie-close-btn" onClick={cerrarModalAgregar}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 6l-12 12" />
+                    <path d="M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
+
+              <form className="ie-form" onSubmit={handleSubmit}>
+                <div className="ie-field">
+                  <label className="ie-label">Tipo de Ingreso</label>
+                  <input
+                    className="ie-input"
+                    type="text"
+                    placeholder="Ej: Propina, Descorche..."
+                    name="tipoIngreso"
+                    value={datosForm.tipoIngreso}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="ie-field">
+                  <label className="ie-label">Ganancia</label>
+                  <input
+                    className="ie-input"
+                    type="number"
+                    placeholder="Valor en pesos"
+                    name="ganancia"
+                    value={datosForm.ganancia}
+                    onChange={handleChange}
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+                {error && <p className="ie-error">{error}</p>}
+                <div className="ie-modal-footer">
+                  <button
+                    type="button"
+                    className="ie-btn ie-btn--ghost"
+                    onClick={cerrarModalAgregar}
+                  >
+                    CANCELAR
+                  </button>
+                  <button type="submit" className="ie-btn ie-btn--verde">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M5 12l5 5l10 -10" />
+                    </svg>
+                    GUARDAR
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
 
-        {/* Modal de eliminar ingresos externos */}
+        {/* ── Modal eliminar ingresos externos ── */}
         {showModalEliminar && (
-          <div className="modal-ie" onClick={cerrarModalEliminar}>
+          <div className="ie-overlay" onClick={cerrarModalEliminar}>
             <div
-              className="modal-contenedor-eliminar-ie"
+              className="ie-modal ie-modal--danger"
               onClick={(e) => e.stopPropagation()}
             >
-              <h2>
-                ¿Esta completamente seguro que desea eliminar el/los ingresos
-                externos seleccionados?
-              </h2>
-              <div id="botoness">
-                <Button variant="verde" onClick={eliminarIngresosSelec}>
-                  Aceptar
-                </Button>
-                <Button variant="rojo" onClick={cerrarModalEliminar}>
-                  Cancelar
-                </Button>
+              <span className="ie-corner ie-corner--tl ie-corner--rojo"></span>
+              <span className="ie-corner ie-corner--br ie-corner--rojo"></span>
+
+              <div className="ie-modal-header ie-modal-header--danger">
+                <div className="ie-modal-danger-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#ff4d4f"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+                </div>
+                <p className="ie-modal-title ie-modal-title--danger">
+                  CONFIRMAR ELIMINACIÓN
+                </p>
+              </div>
+
+              <div className="ie-modal-body">
+                <p className="ie-confirm-text">
+                  ¿Está completamente seguro que desea eliminar el/los ingresos
+                  externos seleccionados?
+                </p>
+                <p className="ie-confirm-count">
+                  <span>{seleccionados.length}</span> registro(s) serán
+                  eliminados permanentemente.
+                </p>
+              </div>
+
+              <div className="ie-modal-footer">
+                <button
+                  className="ie-btn ie-btn--ghost"
+                  onClick={cerrarModalEliminar}
+                >
+                  CANCELAR
+                </button>
+                <button
+                  className="ie-btn ie-btn--rojo"
+                  onClick={eliminarIngresosSelec}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                    <path d="M10 11v6M14 11v6" />
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                  </svg>
+                  CONFIRMAR
+                </button>
               </div>
             </div>
           </div>

@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "../components/Button";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -206,319 +205,572 @@ const Deudores = () => {
     });
   };
 
-  // //////////////////////////////////////////////////////////////////////
+  // ── Loading ──────────────────────────────────────────────────────────────
 
   if (cargando) {
     return (
-      <div className="modal-cargando-d">
-        <div className="modal-contenido-d">
-          <div className="loader-d"></div>
-        </div>
+      <div className="de-loading">
+        <div className="de-loader"></div>
+        <p className="de-loading-text">CARGANDO DEUDORES...</p>
       </div>
     );
   }
 
-  // //////////////////////////////////////////////////////////////////////
+  // ── Render ───────────────────────────────────────────────────────────────
 
   return (
     <>
-      <section className="deudores">
-        <h1>DEUDORES</h1>
-        <div className="deudores-titulo-linea"></div>
-        <div id="cont-d">
-          <div className="buscador-d">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#ffffff"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-              <path d="M21 21l-6 -6" />
-            </svg>
-            <input
-              type="text"
-              value={busqueda}
-              placeholder="Buscar deudor..."
-              onChange={(e) => setBusqueda(e.target.value)}
-            />
+      <section className="de-page">
+
+        {/* ── Header ── */}
+        <div className="de-header">
+          <div className="de-header-left">
+            <div className="de-status">
+              <span className="de-status-dot"></span>
+              <span className="de-status-text">MÓDULO ACTIVO</span>
+            </div>
+            <h1 className="de-title">DEUDORES</h1>
           </div>
-          <Button variant="verde" onClick={abrirModalAgregar}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#6aff00"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
-              <path d="M15 12h-6" />
-              <path d="M12 9v6" />
-            </svg>
-            Agregar
-          </Button>
-          <Button variant="azul" onClick={verEdicion}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="25"
-              height="25"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="cyan"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-              <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-              <path d="M16 5l3 3" />
-            </svg>
-            Editar
-          </Button>
-          <Button variant="rojo" onClick={abrirModalEliminar}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#ff0000"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M4 7l16 0" />
-              <path d="M10 11l0 6" />
-              <path d="M14 11l0 6" />
-              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-            </svg>
-            Eliminar
-          </Button>
         </div>
-        <br />
-        <div className="deudores-tabla">
-          <table className="tabla-D">
-            <thead className="t-D">
-              <tr>
-                <th></th>
-                <th>Nombre</th>
-                <th>Celular</th>
-                <th>Deuda</th>
-                <th>Fecha</th>
-                <th>Autorizado</th>
-                <th>Pagado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {datosFiltrados.map((deudor) => (
-                <tr key={deudor.id}>
-                  <td>
+
+        {/* ── Toolbar ── */}
+        <div className="de-toolbar">
+          <div className="de-toolbar-left">
+            <div className="de-search-wrap">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#a8abb3"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                className="de-search"
+                type="text"
+                value={busqueda}
+                placeholder="BUSCAR DEUDOR..."
+                onChange={(e) => setBusqueda(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="de-toolbar-right">
+            {edicion ? (
+              <>
+                <span className="de-edit-active-badge">MODO EDICIÓN</span>
+                <button className="de-btn de-btn--verde" onClick={GuardarEdicion}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12l5 5l10 -10" />
+                  </svg>
+                  GUARDAR
+                </button>
+                <button className="de-btn de-btn--rojo" onClick={CancelarEdicion}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 6l-12 12" />
+                    <path d="M6 6l12 12" />
+                  </svg>
+                  CANCELAR
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="de-btn de-btn--verde" onClick={abrirModalAgregar}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  AGREGAR
+                </button>
+                <button className="de-btn de-btn--cyan" onClick={verEdicion}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                  </svg>
+                  EDITAR
+                </button>
+                <button className="de-btn de-btn--rojo" onClick={abrirModalEliminar}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                    <path d="M10 11v6M14 11v6" />
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                  </svg>
+                  ELIMINAR
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* ── Info bar ── */}
+        <div className="de-info-bar">
+          <span className="de-info-count">
+            <span className="de-info-num">{datosFiltrados.length}</span> de{" "}
+            {deudoresData.length} deudores
+          </span>
+          {seleccionados.length > 0 && (
+            <span className="de-sel-badge">
+              {seleccionados.length} seleccionado(s)
+            </span>
+          )}
+          {edicion && (
+            <span className="de-edit-badge">MODO EDICIÓN ACTIVO</span>
+          )}
+          {/* Contador de deudas pendientes */}
+          {deudoresData.filter((d) => !d.pagado).length > 0 && (
+            <span className="de-deuda-badge">
+              {deudoresData.filter((d) => !d.pagado).length} deuda(s) pendiente(s)
+            </span>
+          )}
+        </div>
+
+        {/* ── Tabla ── */}
+        <div className="de-table-panel">
+          <div className="de-table-wrap">
+            <table className="de-table">
+              <thead>
+                <tr>
+                  <th className="de-th de-th--check">
                     <input
+                      className="de-checkbox"
                       type="checkbox"
-                      checked={seleccionados.includes(deudor.id)}
+                      title="Seleccionar todos"
+                      checked={
+                        datosFiltrados.length > 0 &&
+                        datosFiltrados.every((d) => seleccionados.includes(d.id))
+                      }
                       onChange={(e) => {
                         if (e.target.checked) {
-                          setSeleccionados([...seleccionados, deudor.id]);
+                          setSeleccionados(datosFiltrados.map((d) => d.id));
                         } else {
-                          setSeleccionados(
-                            seleccionados.filter((id) => id !== deudor.id),
-                          );
+                          setSeleccionados([]);
                         }
                       }}
                     />
-                  </td>
-                  <td className="table-Nombre">
-                    {deudorEditando === deudor.id ? (
-                      <input
-                        className="inputss-d"
-                        type="text"
-                        name="nombre"
-                        value={datosEditados.nombre}
-                        onChange={handleChangeEdicion}
-                      />
-                    ) : (
-                      deudor.nombre
-                    )}
-                  </td>
-                  <td>
-                    {deudorEditando === deudor.id ? (
-                      <input
-                        className="inputss-d"
-                        type="tel"
-                        name="celular"
-                        value={datosEditados.celular}
-                        onChange={handleChangeEdicion}
-                      />
-                    ) : (
-                      deudor.celular
-                    )}
-                  </td>
-                  <td>
-                    {deudorEditando === deudor.id ? (
-                      <input
-                        className="inputss-d"
-                        type="number"
-                        name="deuda"
-                        step="0.01"
-                        value={datosEditados.deuda}
-                        onChange={handleChangeEdicion}
-                      />
-                    ) : (
-                      <span className="deuda-monto">
-                        ${parseFloat(deudor.deuda).toLocaleString("es-CO")}
-                      </span>
-                    )}
-                  </td>
-                  <td>{formatFecha(deudor.fecha)}</td>
-                  <td>
-                    {deudorEditando === deudor.id ? (
-                      <input
-                        type="checkbox"
-                        name="autorizacion"
-                        checked={datosEditados.autorizacion}
-                        onChange={handleChangeEdicion}
-                      />
-                    ) : (
-                      <span
-                        className={`badge ${deudor.autorizacion ? "badge-si" : "badge-no"}`}
-                      >
-                        {deudor.autorizacion ? "Sí" : "No"}
-                      </span>
-                    )}
-                  </td>
-                  <td>
-                    {deudorEditando === deudor.id ? (
-                      <input
-                        type="checkbox"
-                        name="pagado"
-                        checked={datosEditados.pagado}
-                        onChange={handleChangeEdicion}
-                      />
-                    ) : (
-                      <span
-                        className={`badge ${deudor.pagado ? "badge-si" : "badge-no"}`}
-                      >
-                        {deudor.pagado ? "SI" : "NO"}
-                      </span>
-                    )}
-                  </td>
+                  </th>
+                  <th className="de-th de-th--idx">#</th>
+                  <th className="de-th">NOMBRE</th>
+                  <th className="de-th">CELULAR</th>
+                  <th className="de-th">DEUDA</th>
+                  <th className="de-th">FECHA</th>
+                  <th className="de-th de-th--center">AUTORIZADO</th>
+                  <th className="de-th de-th--center">PAGADO</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {datosFiltrados.map((deudor, idx) => {
+                  const estaSeleccionado = seleccionados.includes(deudor.id);
+                  const estaEditando = deudorEditando === deudor.id;
+                  return (
+                    <tr
+                      key={deudor.id}
+                      className={[
+                        "de-tr",
+                        estaSeleccionado ? "de-tr--sel" : "",
+                        estaEditando ? "de-tr--editando" : "",
+                        deudor.pagado && !estaEditando ? "de-tr--pagado" : "",
+                        !edicion ? "de-tr--clickable" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                      onClick={(e) => {
+                        if (edicion) return;
+                        if (["INPUT", "BUTTON"].includes(e.target.tagName))
+                          return;
+                        setSeleccionados((prev) =>
+                          estaSeleccionado
+                            ? prev.filter((id) => id !== deudor.id)
+                            : [...prev, deudor.id],
+                        );
+                      }}
+                    >
+                      {/* Checkbox */}
+                      <td className="de-td de-td--check">
+                        <input
+                          className="de-checkbox"
+                          type="checkbox"
+                          checked={estaSeleccionado}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSeleccionados([...seleccionados, deudor.id]);
+                            } else {
+                              setSeleccionados(
+                                seleccionados.filter((id) => id !== deudor.id),
+                              );
+                            }
+                          }}
+                        />
+                      </td>
+
+                      {/* Índice */}
+                      <td className="de-td de-td--idx">{idx + 1}</td>
+
+                      {/* Nombre */}
+                      <td className="de-td de-td--nombre">
+                        {estaEditando ? (
+                          <input
+                            className="de-input-edit"
+                            type="text"
+                            name="nombre"
+                            value={datosEditados.nombre}
+                            onChange={handleChangeEdicion}
+                            autoFocus
+                          />
+                        ) : (
+                          <span className="de-nombre-txt">
+                            {!deudor.pagado && (
+                              <span className="de-deuda-dot" title="Deuda pendiente" />
+                            )}
+                            {deudor.nombre}
+                          </span>
+                        )}
+                      </td>
+
+                      {/* Celular */}
+                      <td className="de-td de-td--celular">
+                        {estaEditando ? (
+                          <input
+                            className="de-input-edit"
+                            type="tel"
+                            name="celular"
+                            value={datosEditados.celular}
+                            onChange={handleChangeEdicion}
+                          />
+                        ) : (
+                          deudor.celular
+                        )}
+                      </td>
+
+                      {/* Deuda */}
+                      <td className="de-td">
+                        {estaEditando ? (
+                          <input
+                            className="de-input-edit de-input-edit--sm"
+                            type="number"
+                            name="deuda"
+                            step="0.01"
+                            value={datosEditados.deuda}
+                            onChange={handleChangeEdicion}
+                          />
+                        ) : (
+                          <span className="de-deuda-txt">
+                            ${parseFloat(deudor.deuda).toLocaleString("es-CO")}
+                          </span>
+                        )}
+                      </td>
+
+                      {/* Fecha */}
+                      <td className="de-td de-td--fecha">
+                        {formatFecha(deudor.fecha)}
+                      </td>
+
+                      {/* Autorizado */}
+                      <td className="de-td de-td--center">
+                        {estaEditando ? (
+                          <input
+                            className="de-checkbox de-checkbox--edit"
+                            type="checkbox"
+                            name="autorizacion"
+                            checked={datosEditados.autorizacion}
+                            onChange={handleChangeEdicion}
+                          />
+                        ) : (
+                          <span
+                            className={`de-badge ${
+                              deudor.autorizacion
+                                ? "de-badge--si"
+                                : "de-badge--no"
+                            }`}
+                          >
+                            {deudor.autorizacion ? "SÍ" : "NO"}
+                          </span>
+                        )}
+                      </td>
+
+                      {/* Pagado */}
+                      <td className="de-td de-td--center">
+                        {estaEditando ? (
+                          <input
+                            className="de-checkbox de-checkbox--edit"
+                            type="checkbox"
+                            name="pagado"
+                            checked={datosEditados.pagado}
+                            onChange={handleChangeEdicion}
+                          />
+                        ) : (
+                          <span
+                            className={`de-badge ${
+                              deudor.pagado ? "de-badge--pagado" : "de-badge--pendiente"
+                            }`}
+                          >
+                            {deudor.pagado ? "PAGADO" : "PENDIENTE"}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+                {datosFiltrados.length === 0 && (
+                  <tr>
+                    <td colSpan={8} className="de-td--empty">
+                      SIN REGISTROS
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        {edicion && (
-          <div id="botoness-edicion-d">
-            <Button variant="verde" onClick={GuardarEdicion}>
-              Guardar
-            </Button>
-            <Button variant="rojo" onClick={CancelarEdicion}>
-              Cancelar
-            </Button>
-          </div>
-        )}
-
-        {/* Modal agregar deudor */}
+        {/* ── Modal agregar deudor ── */}
         {showModalAgregar && (
-          <div className="modal-d" onClick={cerrarModalAgregar}>
+          <div className="de-overlay" onClick={cerrarModalAgregar}>
             <div
-              className="modal-contenedor-d"
+              className="de-modal"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="modal-contenido-form-d">
-                <h2>Registrar nuevo deudor</h2>
-                <form className="formulario-d" onSubmit={handleSubmit}>
-                  <div className="bloque-d">
-                    <label>Nombre</label>
-                    <input
-                      type="text"
-                      placeholder="Nombre completo"
-                      name="nombre"
-                      value={datosForm.nombre}
-                      onChange={handleChange}
-                    />
-                  </div>
+              <span className="de-corner de-corner--tl"></span>
+              <span className="de-corner de-corner--br"></span>
 
-                  <div className="bloque-d">
-                    <label>Celular</label>
-                    <input
-                      type="tel"
-                      placeholder="Número de celular"
-                      name="celular"
-                      value={datosForm.celular}
-                      onChange={handleChange}
-                    />
-                  </div>
+              <div className="de-modal-header">
+                <p className="de-modal-title">REGISTRAR NUEVO DEUDOR</p>
+                <button className="de-close-btn" onClick={cerrarModalAgregar}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 6l-12 12" />
+                    <path d="M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
 
-                  <div className="bloque-d">
-                    <label>Deuda ($)</label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      placeholder="Monto de la deuda"
-                      name="deuda"
-                      value={datosForm.deuda}
-                      onChange={handleChange}
-                    />
-                  </div>
+              <form className="de-form" onSubmit={handleSubmit}>
+                <div className="de-field">
+                  <label className="de-label">Nombre completo</label>
+                  <input
+                    className="de-input"
+                    type="text"
+                    placeholder="Ej: Juan Pérez"
+                    name="nombre"
+                    value={datosForm.nombre}
+                    onChange={handleChange}
+                  />
+                </div>
 
-                  <div className="bloque-d bloque-check">
-                    <label>Autorizado</label>
+                <div className="de-field">
+                  <label className="de-label">Celular</label>
+                  <input
+                    className="de-input"
+                    type="tel"
+                    placeholder="Número de celular"
+                    name="celular"
+                    value={datosForm.celular}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="de-field">
+                  <label className="de-label">Deuda ($)</label>
+                  <input
+                    className="de-input"
+                    type="number"
+                    step="0.01"
+                    placeholder="Monto de la deuda"
+                    name="deuda"
+                    value={datosForm.deuda}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="de-field de-field--toggle">
+                  <span className="de-label">Autorizado</span>
+                  <label className="de-toggle">
                     <input
                       type="checkbox"
                       name="autorizacion"
                       checked={datosForm.autorizacion}
                       onChange={handleChange}
-                      className="checkbox-d"
+                      className="de-toggle-input"
                     />
-                  </div>
+                    <span className="de-toggle-track">
+                      <span className="de-toggle-thumb"></span>
+                    </span>
+                    <span className="de-toggle-text">
+                      {datosForm.autorizacion ? "SÍ" : "NO"}
+                    </span>
+                  </label>
+                </div>
 
-                  {error && <p className="error-d">{error}</p>}
+                {error && <p className="de-error">{error}</p>}
 
-                  <div className="botones-d">
-                    <Button type="submit" variant="verde">
-                      Guardar
-                    </Button>
-                    <Button variant="rojo" onClick={cerrarModalAgregar}>
-                      Cancelar
-                    </Button>
-                  </div>
-                </form>
-              </div>
+                <div className="de-modal-footer">
+                  <button
+                    type="button"
+                    className="de-btn de-btn--ghost"
+                    onClick={cerrarModalAgregar}
+                  >
+                    CANCELAR
+                  </button>
+                  <button type="submit" className="de-btn de-btn--verde">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M5 12l5 5l10 -10" />
+                    </svg>
+                    GUARDAR
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
 
-        {/* Modal eliminar */}
+        {/* ── Modal eliminar ── */}
         {showModalEliminar && (
-          <div className="modal-d" onClick={cerrarModalEliminar}>
+          <div className="de-overlay" onClick={cerrarModalEliminar}>
             <div
-              className="modal-contenedor-eliminar-d"
+              className="de-modal de-modal--danger"
               onClick={(e) => e.stopPropagation()}
             >
-              <h2>¿Está seguro que desea eliminar el/los deudores?</h2>
-              <div id="botoness-d">
-                <Button variant="verde" onClick={eliminarDeudoresSelec}>
-                  Aceptar
-                </Button>
-                <Button variant="rojo" onClick={cerrarModalEliminar}>
-                  Cancelar
-                </Button>
+              <span className="de-corner de-corner--tl de-corner--rojo"></span>
+              <span className="de-corner de-corner--br de-corner--rojo"></span>
+
+              <div className="de-modal-header de-modal-header--danger">
+                <div className="de-modal-danger-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#ff4d4f"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+                </div>
+                <p className="de-modal-title de-modal-title--danger">
+                  CONFIRMAR ELIMINACIÓN
+                </p>
+              </div>
+
+              <div className="de-modal-body">
+                <p className="de-confirm-text">
+                  ¿Está seguro que desea eliminar el/los deudores seleccionados?
+                  Esta acción no se puede deshacer.
+                </p>
+                <p className="de-confirm-count">
+                  <span>{seleccionados.length}</span> deudor(es) serán
+                  eliminados permanentemente.
+                </p>
+              </div>
+
+              <div className="de-modal-footer">
+                <button
+                  className="de-btn de-btn--ghost"
+                  onClick={cerrarModalEliminar}
+                >
+                  CANCELAR
+                </button>
+                <button
+                  className="de-btn de-btn--rojo"
+                  onClick={eliminarDeudoresSelec}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                    <path d="M10 11v6M14 11v6" />
+                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                  </svg>
+                  CONFIRMAR
+                </button>
               </div>
             </div>
           </div>
