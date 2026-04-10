@@ -18,6 +18,7 @@ import Ventas from "./pages/Ventas";
 import Deudores from "./pages/Deudores";
 import IngresosExternos from "./pages/IngresosExternos";
 import Inicio from "./pages/Inicio";
+import Mesa from "./pages/Mesa";
 
 function App() {
   const [Autenticacion, setAutenticacion] = useState(false);
@@ -48,6 +49,7 @@ function App() {
               <Route path="/ventas" element={<Ventas />} />
               <Route path="/deudores" element={<Deudores />} />
               <Route path="/ingresosExternos" element={<IngresosExternos />} />
+              <Route path="/mesa" element={<Mesa />} />
             </Route>
           </Routes>
         </Router>

@@ -81,8 +81,8 @@ const Ventas = () => {
   const registroMesas = async () => {
     try {
       const response = await consultaMesas();
-      if (Array.isArray(response.data)) {
-        setMesasData(response.data);
+      if (response != null) {
+        setMesasData(response);
       } else {
         setError("Error: formato inesperado en mesas");
         console.error("Respuesta inesperada:", response);
@@ -103,11 +103,8 @@ const Ventas = () => {
   };
 
   const CambioSeleccion = (id) => {
-    setSeleccionados(
-      (items) =>
-        items.includes(id)
-          ? items.filter((item) => item !== id)
-          : [...items, id],
+    setSeleccionados((items) =>
+      items.includes(id) ? items.filter((item) => item !== id) : [...items, id],
     );
   };
 
@@ -230,7 +227,6 @@ const Ventas = () => {
 
   return (
     <section className="vt-page">
-
       {/* Componentes de impresión ocultos */}
       {ventasFiltradas.map((v) => (
         <ImprimirFacturaPOS key={v.id} ref={getPrintRef(v.id)} venta={v} />
@@ -277,7 +273,10 @@ const Ventas = () => {
 
         <div className="vt-toolbar-right">
           {descargarTodo && (
-            <button className="vt-btn vt-btn--verde" onClick={handleDescargarTodo}>
+            <button
+              className="vt-btn vt-btn--verde"
+              onClick={handleDescargarTodo}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="13"
@@ -361,7 +360,8 @@ const Ventas = () => {
                     key={index}
                     className={`vt-tr vt-tr--clickable ${estaSeleccionado ? "vt-tr--sel" : ""}`}
                     onClick={(e) => {
-                      if (["BUTTON", "INPUT"].includes(e.target.tagName)) return;
+                      if (["BUTTON", "INPUT"].includes(e.target.tagName))
+                        return;
                       CambioSeleccion(Venta.id);
                     }}
                   >
@@ -462,7 +462,10 @@ const Ventas = () => {
             </div>
 
             <div className="vt-modal-footer">
-              <button className="vt-btn vt-btn--rojo" onClick={() => setPanel(false)}>
+              <button
+                className="vt-btn vt-btn--rojo"
+                onClick={() => setPanel(false)}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="13"
@@ -531,7 +534,10 @@ const Ventas = () => {
                 </svg>
                 <p className="vt-filter-title">FILTRAR VENTAS</p>
               </div>
-              <button className="vt-close-btn" onClick={() => setFiltracion(false)}>
+              <button
+                className="vt-close-btn"
+                onClick={() => setFiltracion(false)}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -552,12 +558,24 @@ const Ventas = () => {
             <div className="vt-filter-body">
               <p className="vt-filter-section-label">Acceso rápido</p>
               <div className="vt-quick-filters">
-                <button className="vt-quick-btn" onClick={filtroHoy}>Hoy</button>
-                <button className="vt-quick-btn" onClick={filtroAyer}>Ayer</button>
-                <button className="vt-quick-btn" onClick={filtroUltimos7Dias}>7 días</button>
-                <button className="vt-quick-btn" onClick={filtroEsteMes}>Este mes</button>
-                <button className="vt-quick-btn" onClick={filtroMesPasado}>Mes pasado</button>
-                <button className="vt-quick-btn" onClick={mostrarTodo}>Todo</button>
+                <button className="vt-quick-btn" onClick={filtroHoy}>
+                  Hoy
+                </button>
+                <button className="vt-quick-btn" onClick={filtroAyer}>
+                  Ayer
+                </button>
+                <button className="vt-quick-btn" onClick={filtroUltimos7Dias}>
+                  7 días
+                </button>
+                <button className="vt-quick-btn" onClick={filtroEsteMes}>
+                  Este mes
+                </button>
+                <button className="vt-quick-btn" onClick={filtroMesPasado}>
+                  Mes pasado
+                </button>
+                <button className="vt-quick-btn" onClick={mostrarTodo}>
+                  Todo
+                </button>
               </div>
 
               <p className="vt-filter-section-label">Rango de fechas</p>

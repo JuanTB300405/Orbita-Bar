@@ -2,30 +2,30 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../styles/proveedores.css";
+import "../styles/Mesas.css";
 import {
-  consultaProveedores,
-  crearProveedores,
-  editarProveedor,
-  eliminarProveedores,
-} from "../js/proveedores";
+  consultaMesas,
+  crearMesas,
+  editarMesas,
+  eliminarMesas,
+} from "../js/mesa";
 
-const Proveedores = () => {
+const Mesa = () => {
   const [cargando, setCargando] = useState(true);
   const [busqueda, setBusqueda] = useState("");
-  const [proveedoresData, setProveedoresData] = useState([]);
+  const [MesasData, setMesasData] = useState([]);
 
-  const datosFitrados = proveedoresData.filter((provedor) =>
-    provedor.nombre.toLowerCase().includes(busqueda.toLowerCase()),
+  const datosFitrados = MesasData.filter((mesa) =>
+    mesa.numero.toLowerCase().includes(busqueda.toLowerCase()),
   );
 
-  const obtenerProveedores = async () => {
+  const obtenerMesas = async () => {
     try {
-      const provedoresD = await consultaProveedores();
-      if (Array.isArray(provedoresD)) {
-        setProveedoresData(provedoresD);
+      const MesasD = await consultaMesas();
+      if (MesasD != null) {
+        setMesasData(MesasD);
       } else {
-        console.error("Respuesta inesperada:", provedoresD);
+        console.error("Respuesta inesperada:", MesasD);
       }
     } catch (error) {
       console.error("Error en la consulta:", error);
@@ -35,51 +35,59 @@ const Proveedores = () => {
   };
 
   useEffect(() => {
-    obtenerProveedores();
+    obtenerMesas();
   }, []);
 
   const [datosForm, setdatosForm] = useState({
     id: "",
-    nombre: "",
-    telefono: "",
-    email: "",
+    numero: "",
+    capacidad: "",
+    disponible: "",
   });
 
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setdatosForm((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setdatosForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { nombre, telefono, email } = datosForm;
+    const { numero, capacidad, disponible } = datosForm;
 
-    if (!nombre || !telefono || !email) {
+    if (!numero || !capacidad) {
       setError("Por favor complete todos los campos.");
       return;
     }
 
-    const nuevoProveedor = {
-      nombre: nombre,
-      telefono: telefono,
-      email: email,
+    if (MesasData.some((m) => m.numero == numero)) {
+      toast.warning("Ya existe una mesa con ese número");
+      return;
+    }
+    const nuevaMesa = {
+      numero: numero,
+      capacidad: capacidad,
+      disponible: disponible,
     };
+    console.log("nueva mesa", nuevaMesa);
 
     try {
-      const response = await crearProveedores(nuevoProveedor);
+      const response = await crearMesas(nuevaMesa);
       if (response.status === 201) {
-        toast.success("¡Proveedor guardado exitosamente!");
-        obtenerProveedores();
+        toast.success("¡Mesa guardada exitosamente!");
+        obtenerMesas();
       }
     } catch (error) {
-      console.error("Excepcion al crear el pproveedor", error);
-      toast.error("Error al crear el proveedor");
+      console.error("Excepcion al crear la mesa", error);
+      toast.error("Error al crear la mesa");
     }
 
-    setdatosForm({ nombre: "", telefono: "", email: "" });
+    setdatosForm({ numero: "", capacidad: "", disponible: "" });
     setError("");
     cerrarModalAgregar();
   };
@@ -101,9 +109,7 @@ const Proveedores = () => {
   const [showModalEliminar, setShowModalEliminar] = useState(false);
 
   const abrirModalEliminar = () => {
-    const Seleccionados = proveedoresData.filter((p) =>
-      seleccionados.includes(p.id),
-    );
+    const Seleccionados = MesasData.filter((m) => seleccionados.includes(m.id));
     if (Seleccionados.length === 0) {
       toast.warning("No hay ningun producto seleccionado");
       return;
@@ -112,13 +118,13 @@ const Proveedores = () => {
     }
   };
 
-  const eliminarProveeSelec = async () => {
+  const eliminacionMesas = async () => {
     try {
       const data = { ids: seleccionados };
-      const response = await eliminarProveedores(data);
+      const response = await eliminarMesas(data);
       if (response.status === 204) {
-        toast.success("¡Proveedores eliminados exitosamente!");
-        obtenerProveedores();
+        toast.success("¡Mesas eliminadas exitosamente!");
+        obtenerMesas();
       }
     } catch (error) {
       console.error("Excepcion al eliminar el proveedores", error);
@@ -133,70 +139,69 @@ const Proveedores = () => {
   };
 
   const [edicion, setEdicion] = useState(false);
-  const [proveedorEditando, setProveedorEditando] = useState(null);
+  const [mesaEditando, setmesaEditando] = useState(null);
   const [datosEditados, setDatosEditados] = useState({});
 
   const verEdicion = () => {
-    const Seleccionados = proveedoresData.filter((p) =>
-      seleccionados.includes(p.id),
-    );
+    const Seleccionados = MesasData.filter((m) => seleccionados.includes(m.id));
 
     if (Seleccionados.length === 0) {
-      toast.warning("No hay ningun proveedor seleccionado");
+      toast.warning("No hay ninguna mesa seleccionada");
       return;
     }
 
     if (Seleccionados.length > 1) {
-      toast.warning("Selecciona solo un proveedor para editar");
+      toast.warning("Selecciona solo una mesa para editar");
       return;
     }
 
-    const proveedorSeleccionado = Seleccionados[0];
+    const mesasSeleccionadas = Seleccionados[0];
 
     setEdicion(true);
-    Editar(proveedorSeleccionado);
+    Editar(mesasSeleccionadas);
   };
 
   const ocultarEdicion = () => {
     setEdicion(false);
   };
 
-  const Editar = (proveedor) => {
-    setProveedorEditando(proveedor.id);
-    setDatosEditados({ ...proveedor });
+  const Editar = (mesa) => {
+    setmesaEditando(mesa.id);
+    setDatosEditados({ ...mesa });
   };
 
   const CancelarEdicion = () => {
-    setProveedorEditando(null);
+    setmesaEditando(null);
     setDatosEditados({});
     ocultarEdicion();
     toast.info("Cancelado con exito!");
   };
 
   const GuardarEdicion = async () => {
-    const proveedorE = {
-      nombre: datosEditados.nombre,
-      telefono: datosEditados.telefono,
-      email: datosEditados.email,
+    const MesaE = {
+      numero: datosEditados.numero,
+      capacidad: datosEditados.capacidad,
+      disponible: datosEditados.disponible,
     };
 
-    console.log("proveedor editado", proveedorE);
+    console.log("mesa editada", MesaE);
 
     try {
-      const response = await editarProveedor(proveedorE, proveedorEditando);
+      const response = await editarMesas(MesaE, mesaEditando);
+      console.log("lo que se manda :", mesaEditando);
       if (response.status === 200) {
-        toast.success("¡Proveedor actualizado exitosamente!");
-        obtenerProveedores();
+        toast.success("¡Mesa actualizada exitosamente!");
+        obtenerMesas();
       } else {
         console.log("respuesta :", response);
-        toast.warning("No se pudo actualizar el proveedor");
+        toast.warning("No se pudo actualizar la mesa");
       }
     } catch (error) {
-      console.error("Excepcion al actualizar el proveedor", error);
-      toast.error("Error al actualizar el proveedor");
+      console.error("Excepcion al actualizar la mesa", error);
+      toast.error("Error al actualizar la mesa");
     }
 
-    setProveedorEditando(null);
+    setmesaEditando(null);
     setDatosEditados({});
     ocultarEdicion();
   };
@@ -238,12 +243,12 @@ const Proveedores = () => {
       <div className="pv-header">
         <div className="pv-header-accent" />
         <div className="pv-header-content">
-          <h1 className="pv-title">PROVEEDORES</h1>
+          <h1 className="pv-title">MESAS</h1>
           <p className="pv-subtitle">
             Gestión de contactos y proveedores activos
           </p>
         </div>
-        <div className="pv-header-badge">PROVEEDORES</div>
+        <div className="pv-header-badge">MESAS</div>
       </div>
 
       {/* Toolbar */}
@@ -349,10 +354,7 @@ const Proveedores = () => {
                 <span className="pv-edit-dot" />
                 MODO EDICIÓN
               </div>
-              <button
-                className="pv-btn pv-btn--save"
-                onClick={GuardarEdicion}
-              >
+              <button className="pv-btn pv-btn--save" onClick={GuardarEdicion}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="14"
@@ -410,8 +412,8 @@ const Proveedores = () => {
           </span>
         )}
         <span className="pv-info-item pv-info-item--total">
-          <span className="pv-info-label">TOTAL PROVEEDORES</span>
-          <span className="pv-info-value">{proveedoresData.length}</span>
+          <span className="pv-info-label">TOTAL MESAS</span>
+          <span className="pv-info-value">{MesasData.length}</span>
         </span>
       </div>
 
@@ -432,25 +434,25 @@ const Proveedores = () => {
                   />
                 </th>
                 <th className="pv-th pv-th--idx">#</th>
-                <th className="pv-th">NOMBRE</th>
-                <th className="pv-th">TELÉFONO</th>
-                <th className="pv-th">EMAIL</th>
+                <th className="pv-th">NUMERO</th>
+                <th className="pv-th">CAPACIDAD</th>
+                <th className="pv-th">DISPONIBLE</th>
               </tr>
             </thead>
             <tbody>
               {datosFitrados.length > 0 ? (
-                datosFitrados.map((proveedor, index) => (
+                datosFitrados.map((mesa, index) => (
                   <tr
-                    key={proveedor.id}
-                    className={`pv-tr pv-tr--clickable${seleccionados.includes(proveedor.id) ? " pv-tr--sel" : ""}${proveedorEditando === proveedor.id ? " pv-tr--editando" : ""}`}
+                    key={mesa.id}
+                    className={`pv-tr pv-tr--clickable${seleccionados.includes(mesa.id) ? " pv-tr--sel" : ""}${mesaEditando === mesa.id ? " pv-tr--editando" : ""}`}
                     onClick={() => {
-                      if (proveedorEditando === null) {
-                        if (seleccionados.includes(proveedor.id)) {
+                      if (mesaEditando === null) {
+                        if (seleccionados.includes(mesa.id)) {
                           setSeleccionados(
-                            seleccionados.filter((id) => id !== proveedor.id),
+                            seleccionados.filter((id) => id !== mesa.id),
                           );
                         } else {
-                          setSeleccionados([...seleccionados, proveedor.id]);
+                          setSeleccionados([...seleccionados, mesa.id]);
                         }
                       }
                     }}
@@ -462,18 +464,13 @@ const Proveedores = () => {
                       <input
                         type="checkbox"
                         className="pv-checkbox"
-                        checked={seleccionados.includes(proveedor.id)}
+                        checked={seleccionados.includes(mesa.id)}
                         onChange={(e) => {
                           if (e.target.checked) {
-                            setSeleccionados([
-                              ...seleccionados,
-                              proveedor.id,
-                            ]);
+                            setSeleccionados([...seleccionados, mesa.id]);
                           } else {
                             setSeleccionados(
-                              seleccionados.filter(
-                                (id) => id !== proveedor.id,
-                              ),
+                              seleccionados.filter((id) => id !== mesa.id),
                             );
                           }
                         }}
@@ -481,47 +478,43 @@ const Proveedores = () => {
                     </td>
                     <td className="pv-td pv-td--idx">{index + 1}</td>
                     <td className="pv-td">
-                      {proveedorEditando === proveedor.id ? (
+                      {mesaEditando === mesa.id ? (
                         <input
                           className="pv-input-edit"
                           type="text"
-                          name="nombre"
-                          value={datosEditados.nombre}
+                          name="numero"
+                          value={datosEditados.numero}
                           onChange={handleChangeEdicion}
                         />
                       ) : (
-                        <span className="pv-nombre-txt">
-                          {proveedor.nombre}
-                        </span>
+                        <span className="pv-nombre-txt">{mesa.numero}</span>
                       )}
                     </td>
                     <td className="pv-td">
-                      {proveedorEditando === proveedor.id ? (
+                      {mesaEditando === mesa.id ? (
                         <input
                           className="pv-input-edit pv-input-edit--sm"
                           type="tel"
-                          name="telefono"
-                          value={datosEditados.telefono}
+                          name="capacidad"
+                          value={datosEditados.capacidad}
                           onChange={handleChangeEdicion}
                         />
                       ) : (
-                        <span className="pv-tel-txt">
-                          {proveedor.telefono}
-                        </span>
+                        <span className="pv-tel-txt">{mesa.capacidad}</span>
                       )}
                     </td>
                     <td className="pv-td">
-                      {proveedorEditando === proveedor.id ? (
+                      {mesaEditando === mesa.id ? (
                         <input
                           className="pv-input-edit"
-                          type="email"
-                          name="email"
-                          value={datosEditados.email}
+                          type="text"
+                          name="disponible"
+                          value={datosEditados.disponible}
                           onChange={handleChangeEdicion}
                         />
                       ) : (
                         <span className="pv-email-txt">
-                          {proveedor.email}
+                          {mesa.disponible ? "SI" : "NO"}
                         </span>
                       )}
                     </td>
@@ -571,38 +564,42 @@ const Proveedores = () => {
               <h2 className="pv-modal-title">Agregar nuevo proveedor</h2>
 
               <div className="pv-form-row">
-                <label className="pv-form-label">Nombre</label>
+                <label className="pv-form-label">Numero</label>
                 <input
                   className="pv-form-input"
                   type="text"
-                  placeholder="Nombre del proveedor"
-                  name="nombre"
-                  value={datosForm.nombre}
+                  placeholder="Número de la mesa"
+                  name="numero"
+                  value={datosForm.numero}
                   onChange={handleChange}
                 />
               </div>
               <div className="pv-form-row">
-                <label className="pv-form-label">Teléfono</label>
+                <label className="pv-form-label">Capacidad</label>
                 <input
                   className="pv-form-input"
-                  type="tel"
-                  placeholder="Número de contacto"
-                  name="telefono"
-                  value={datosForm.telefono}
+                  type="text"
+                  placeholder="Capacidad de la mesa"
+                  name="capacidad"
+                  value={datosForm.capacidad}
                   onChange={handleChange}
                 />
               </div>
               <div className="pv-form-row">
-                <label className="pv-form-label">Email</label>
-                <input
-                  className="pv-form-input"
-                  type="email"
-                  step="0.01"
-                  placeholder="Email del proveedor"
-                  name="email"
-                  value={datosForm.email}
-                  onChange={handleChange}
-                />
+                <span className="pv-form-label">Disponible</span>
+                <label className="me-togle">
+                  <input
+                    className="me-form-checkbox"
+                    type="checkbox"
+                    name="disponible"
+                    checked={datosForm.disponible}
+                    onChange={handleChange}
+                  />
+                  <span className="me-pista">
+                    <span className="me-pista-inner"></span>
+                  </span>
+                  <span>{datosForm.disponible ? "Sí" : "No"}</span>
+                </label>
               </div>
 
               {error && <p className="pv-form-error">{error}</p>}
@@ -657,10 +654,7 @@ const Proveedores = () => {
               Esta acción no se puede deshacer.
             </p>
             <div className="pv-modal-actions">
-              <button
-                className="pv-btn pv-btn--del"
-                onClick={eliminarProveeSelec}
-              >
+              <button className="pv-btn pv-btn--del" onClick={eliminacionMesas}>
                 Confirmar
               </button>
               <button
@@ -679,4 +673,4 @@ const Proveedores = () => {
   );
 };
 
-export default Proveedores;
+export default Mesa;
