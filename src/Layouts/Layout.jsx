@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import "../styles/Layout.css";
 
-const Layout = () => {
+const Layout = ({ setAutenticacion }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
 
@@ -40,7 +40,7 @@ const Layout = () => {
 
       <div id="layout">
         <div ref={sidebarRef} className={`Slide ${sidebarOpen ? "Open" : ""}`}>
-          <Sidebar />
+          <Sidebar setAutenticacion={setAutenticacion} />
         </div>
 
         <div className="contenido">
