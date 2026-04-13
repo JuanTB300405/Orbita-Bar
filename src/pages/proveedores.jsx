@@ -14,8 +14,9 @@ const Proveedores = () => {
   const [cargando, setCargando] = useState(true);
   const [busqueda, setBusqueda] = useState("");
   const [proveedoresData, setProveedoresData] = useState([]);
+  const [eliminacion, setEliminacion] = useState(false);
 
-  const datosFitrados = proveedoresData.filter((provedor) =>
+  const datosFiltrados = proveedoresData.filter((provedor) =>
     provedor.nombre.toLowerCase().includes(busqueda.toLowerCase()),
   );
 
@@ -75,7 +76,7 @@ const Proveedores = () => {
         obtenerProveedores();
       }
     } catch (error) {
-      console.error("Excepcion al crear el pproveedor", error);
+      console.error("Excepcion al crear el proveedor", error);
       toast.error("Error al crear el proveedor");
     }
 
@@ -105,7 +106,7 @@ const Proveedores = () => {
       seleccionados.includes(p.id),
     );
     if (Seleccionados.length === 0) {
-      toast.warning("No hay ningun producto seleccionado");
+      toast.warning("No hay ningún proveedor seleccionado");
       return;
     } else {
       setShowModalEliminar(true);
@@ -114,6 +115,7 @@ const Proveedores = () => {
 
   const eliminarProveeSelec = async () => {
     try {
+      setEliminacion(true);
       const data = { ids: seleccionados };
       const response = await eliminarProveedores(data);
       if (response.status === 204) {
@@ -126,6 +128,7 @@ const Proveedores = () => {
     }
 
     cerrarModalEliminar();
+    setEliminacion(false);
   };
 
   const cerrarModalEliminar = () => {
@@ -217,7 +220,7 @@ const Proveedores = () => {
     );
   }
 
-  const allIds = datosFitrados.map((p) => p.id);
+  const allIds = datosFiltrados.map((p) => p.id);
   const allSelected =
     allIds.length > 0 && allIds.every((id) => seleccionados.includes(id));
 
@@ -398,7 +401,7 @@ const Proveedores = () => {
       <div className="pv-info-bar">
         <span className="pv-info-item">
           <span className="pv-info-label">MOSTRANDO</span>
-          <span className="pv-info-value">{datosFitrados.length}</span>
+          <span className="pv-info-value">{datosFiltrados.length}</span>
         </span>
         {seleccionados.length > 0 && (
           <span className="pv-info-item pv-info-item--sel">
@@ -435,8 +438,8 @@ const Proveedores = () => {
               </tr>
             </thead>
             <tbody>
-              {datosFitrados.length > 0 ? (
-                datosFitrados.map((proveedor, index) => (
+              {datosFiltrados.length > 0 ? (
+                datosFiltrados.map((proveedor, index) => (
                   <tr
                     key={proveedor.id}
                     className={`pv-tr pv-tr--clickable${seleccionados.includes(proveedor.id) ? " pv-tr--sel" : ""}${proveedorEditando === proveedor.id ? " pv-tr--editando" : ""}`}
@@ -594,7 +597,6 @@ const Proveedores = () => {
                 <input
                   className="pv-form-input"
                   type="email"
-                  step="0.01"
                   placeholder="Email del proveedor"
                   name="email"
                   value={datosForm.email}
@@ -657,6 +659,7 @@ const Proveedores = () => {
               <button
                 className="pv-btn pv-btn--del"
                 onClick={eliminarProveeSelec}
+                disabled={eliminacion}
               >
                 Confirmar
               </button>

@@ -340,9 +340,10 @@
 
 /* ── Table ───────────────────────────────────────────────── */
 .eg-table-wrap {
+  height: 100%;
   overflow-x: auto;
   overflow-y: auto;
-  max-height: calc(100vh - 380px);
+  max-height: calc(100vh - 340px);
   scrollbar-width: thin;
   scrollbar-color: rgba(249, 115, 22, 0.3) transparent;
 }

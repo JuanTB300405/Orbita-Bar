@@ -2,7 +2,7 @@
    VENTAS / HOME — hm- design system
    Accent: #9cff93  (neon green — brand / ventas)
    ========================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap");
 
 /* ── Page ────────────────────────────────────────────────── */
 .hm-page {
@@ -13,7 +13,7 @@
   flex-direction: column;
   gap: 1rem;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 /* ── Header ──────────────────────────────────────────────── */
@@ -40,7 +40,7 @@
 }
 
 .hm-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 1.75rem;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -50,7 +50,7 @@
 }
 
 .hm-subtitle {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.78rem;
   color: #555a6a;
   margin: 0.2rem 0 0;
@@ -65,7 +65,7 @@
 }
 
 .hm-header-badge {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -123,7 +123,7 @@
 }
 
 .hm-label {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 0.68rem;
   font-weight: 500;
   color: #555a6a;
@@ -157,7 +157,7 @@
   border: none;
   outline: none;
   color: #e0e4ec;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.83rem;
   min-width: 0;
 }
@@ -174,7 +174,7 @@
   padding: 0.45rem 0.7rem;
   outline: none;
   color: #e0e4ec;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.83rem;
   transition: border-color 0.15s;
   width: 100%;
@@ -225,7 +225,7 @@
 }
 
 .hm-sug-name {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.83rem;
   color: #c2c9d4;
   transition: color 0.1s;
@@ -235,7 +235,7 @@
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  font-family: 'Space Grotesk', monospace;
+  font-family: "Space Grotesk", monospace;
   font-size: 0.72rem;
   color: #555a6a;
 }
@@ -248,12 +248,14 @@
   padding: 0.48rem 1rem;
   border: 1px solid;
   border-radius: 2px;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   cursor: pointer;
-  transition: background 0.14s, box-shadow 0.14s;
+  transition:
+    background 0.14s,
+    box-shadow 0.14s;
   white-space: nowrap;
 }
 
@@ -279,7 +281,7 @@
 }
 
 .hm-soon-badge {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 0.55rem;
   font-weight: 700;
   letter-spacing: 0.15em;
@@ -340,13 +342,18 @@
   background: rgba(245, 158, 11, 0.15);
 }
 
+.hm-alert-btn svg {
+  fill: none !important;
+  stroke: #f59e0b !important;
+}
+
 .hm-alert-count {
   position: absolute;
   top: -6px;
   right: -6px;
   background: #f59e0b;
   color: #090d12;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 0.6rem;
   font-weight: 700;
   width: 16px;
@@ -358,8 +365,13 @@
 }
 
 @keyframes hm-alert-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
-  50%       { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15); }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+  }
 }
 
 /* ── Cart Table ──────────────────────────────────────────── */
@@ -374,8 +386,13 @@
   scrollbar-color: rgba(156, 255, 147, 0.2) transparent;
 }
 
-.hm-table-wrap::-webkit-scrollbar { width: 4px; height: 4px; }
-.hm-table-wrap::-webkit-scrollbar-track { background: transparent; }
+.hm-table-wrap::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.hm-table-wrap::-webkit-scrollbar-track {
+  background: transparent;
+}
 .hm-table-wrap::-webkit-scrollbar-thumb {
   background: rgba(156, 255, 147, 0.25);
   border-radius: 2px;
@@ -397,7 +414,7 @@
 .hm-th {
   padding: 0.8rem 1rem;
   text-align: left;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 0.66rem;
   font-weight: 600;
   color: #555a6a;
@@ -406,10 +423,19 @@
   white-space: nowrap;
 }
 
-.hm-th--idx   { width: 40px; color: #3a3f4b; }
-.hm-th--center { text-align: center; }
-.hm-th--right  { text-align: right; }
-.hm-th--del    { width: 40px; }
+.hm-th--idx {
+  width: 40px;
+  color: #3a3f4b;
+}
+.hm-th--center {
+  text-align: center;
+}
+.hm-th--right {
+  text-align: right;
+}
+.hm-th--del {
+  width: 40px;
+}
 
 .hm-tr {
   position: relative;
@@ -441,20 +467,39 @@
 
 .hm-td {
   padding: 0.65rem 1rem;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.82rem;
   color: #c2c9d4;
   border-bottom: 1px solid rgba(68, 72, 79, 0.18);
   vertical-align: middle;
 }
 
-.hm-td--idx    { color: #3a3f4b; font-size: 0.7rem; font-family: 'Space Grotesk', monospace; }
-.hm-td--name   { color: #e0e4ec; font-weight: 500; }
-.hm-td--center { text-align: center; }
-.hm-td--right  { text-align: right; }
-.hm-td--price  { color: #8890a0; }
-.hm-td--total  { color: #9cff93; font-weight: 600; font-family: 'Space Grotesk', monospace; }
-.hm-td--del    { text-align: center; }
+.hm-td--idx {
+  color: #3a3f4b;
+  font-size: 0.7rem;
+  font-family: "Space Grotesk", monospace;
+}
+.hm-td--name {
+  color: #e0e4ec;
+  font-weight: 500;
+}
+.hm-td--center {
+  text-align: center;
+}
+.hm-td--right {
+  text-align: right;
+}
+.hm-td--price {
+  color: #8890a0;
+}
+.hm-td--total {
+  color: #9cff93;
+  font-weight: 600;
+  font-family: "Space Grotesk", monospace;
+}
+.hm-td--del {
+  text-align: center;
+}
 
 .hm-td--empty {
   text-align: center;
@@ -467,7 +512,7 @@
   align-items: center;
   gap: 0.65rem;
   color: #3a3f4b;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.83rem;
 }
 
@@ -489,7 +534,10 @@
   border-radius: 2px;
   color: #8890a0;
   cursor: pointer;
-  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  transition:
+    background 0.12s,
+    color 0.12s,
+    border-color 0.12s;
 }
 
 .hm-qty-btn:hover {
@@ -505,7 +553,7 @@
   border: 1px solid rgba(68, 72, 79, 0.4);
   border-radius: 2px;
   color: #e0e4ec;
-  font-family: 'Space Grotesk', monospace;
+  font-family: "Space Grotesk", monospace;
   font-size: 0.82rem;
   padding: 0.2rem;
 }
@@ -522,7 +570,10 @@
   border-radius: 2px;
   color: #3a3f4b;
   cursor: pointer;
-  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  transition:
+    background 0.12s,
+    color 0.12s,
+    border-color 0.12s;
   margin: 0 auto;
 }
 
@@ -551,7 +602,7 @@
   gap: 0.5rem;
   padding: 0.85rem 1rem;
   border-bottom: 1px solid rgba(68, 72, 79, 0.35);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -568,7 +619,7 @@
 }
 
 .hm-payment-total-label {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.22em;
@@ -576,7 +627,7 @@
 }
 
 .hm-payment-total-value {
-  font-family: 'Space Grotesk', monospace;
+  font-family: "Space Grotesk", monospace;
   font-size: 2rem;
   font-weight: 700;
   color: #9cff93;
@@ -585,7 +636,7 @@
 }
 
 .hm-payment-items-count {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.72rem;
   color: #555a6a;
 }
@@ -615,7 +666,7 @@
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 0.68rem;
   font-weight: 500;
   color: #555a6a;
@@ -627,7 +678,7 @@
   border: 1px solid rgba(68, 72, 79, 0.55);
   border-radius: 2px;
   color: #e0e4ec;
-  font-family: 'Space Grotesk', monospace;
+  font-family: "Space Grotesk", monospace;
   font-size: 0.92rem;
   padding: 0.5rem 0.75rem;
   outline: none;
@@ -683,8 +734,12 @@
 }
 
 @keyframes hm-overlay-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .hm-noti-panel {
@@ -703,8 +758,14 @@
 }
 
 @keyframes hm-panel-in {
-  from { opacity: 0; transform: translateX(16px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* Corner accents — amber for warning */
@@ -746,7 +807,7 @@
 }
 
 .hm-noti-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
   color: #f1f3f5;
@@ -755,7 +816,7 @@
 }
 
 .hm-noti-subtitle {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.73rem;
   color: #555a6a;
   margin: 0 0 0.75rem;
@@ -773,7 +834,9 @@
   border-radius: 2px;
   color: #555a6a;
   cursor: pointer;
-  transition: background 0.12s, color 0.12s;
+  transition:
+    background 0.12s,
+    color 0.12s;
 }
 
 .hm-noti-close:hover {
@@ -793,7 +856,9 @@
   scrollbar-color: rgba(245, 158, 11, 0.2) transparent;
 }
 
-.hm-noti-body::-webkit-scrollbar { width: 3px; }
+.hm-noti-body::-webkit-scrollbar {
+  width: 3px;
+}
 .hm-noti-body::-webkit-scrollbar-thumb {
   background: rgba(245, 158, 11, 0.25);
   border-radius: 2px;
@@ -810,13 +875,13 @@
 }
 
 .hm-noti-name {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.82rem;
   color: #c2c9d4;
 }
 
 .hm-noti-qty {
-  font-family: 'Space Grotesk', monospace;
+  font-family: "Space Grotesk", monospace;
   font-size: 0.85rem;
   font-weight: 600;
   color: #f59e0b;

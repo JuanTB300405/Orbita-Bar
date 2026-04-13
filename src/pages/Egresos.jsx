@@ -145,7 +145,6 @@ const Egresos = () => {
         proveedor: item.proveedor || "",
         productoInfo: item.productoInfo || "",
       }));
-      console.log("datos normalizados", datosNormalizados);
       setEgresoData(datosNormalizados);
     } catch (error) {
       console.error("Error en la consulta:", error);

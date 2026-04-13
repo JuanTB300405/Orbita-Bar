@@ -4,7 +4,9 @@
 
 .vt-page {
   width: 100%;
-  min-height: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
   padding: 1.5rem 1.5rem 2rem 1.5rem;
   display: flex;
   flex-direction: column;
@@ -261,9 +263,10 @@
 }
 
 .vt-table-wrap {
+  height: 100% !important;
+  min-height: 100%;
   overflow-x: auto;
   overflow-y: auto;
-  max-height: calc(100vh - 360px);
   scrollbar-width: thin;
   scrollbar-color: rgba(156, 255, 147, 0.2) transparent;
 }

@@ -289,7 +289,8 @@
 /* ── Table ───────────────────────────────────────────────── */
 .pv-table-wrap {
   width: 100%;
-  max-height: calc(100vh - 320px);
+  height: 100%;
+  max-height: calc(100vh - 280px);
   overflow-x: auto;
   overflow-y: auto;
   scrollbar-width: thin;

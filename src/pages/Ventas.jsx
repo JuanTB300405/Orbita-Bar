@@ -124,7 +124,8 @@ const Ventas = () => {
       const dentroFecha =
         (!inicio || fechaVenta >= inicio) && (!fin || fechaVenta <= fin);
       const coincideMesa =
-        mesaSeleccionada === "" || venta.mesa?.id == mesaSeleccionada;
+        mesaSeleccionada === "" ||
+        String(venta.mesa?.id) === String(mesaSeleccionada);
 
       return dentroFecha && coincideMesa;
     });
@@ -140,7 +141,8 @@ const Ventas = () => {
       const fechaVenta = new Date(venta.fecha);
       const dentroFecha = fechaVenta >= inicio && fechaVenta <= fin;
       const coincideMesa =
-        mesaSeleccionada === "" || venta.mesa?.id == mesaSeleccionada;
+        mesaSeleccionada === "" ||
+        String(venta.mesa?.id) === String(mesaSeleccionada);
 
       return dentroFecha && coincideMesa;
     });

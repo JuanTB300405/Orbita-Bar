@@ -185,7 +185,6 @@ const Deudores = () => {
     setDeudorEditando(null);
     setDatosEditados({});
     setEdicion(false);
-    console.log("datos enviados al back", deudorE);
   };
 
   const handleChangeEdicion = (e) => {
