@@ -167,15 +167,11 @@ const Categorias = () => {
             nombre: datosEditados.nombre,
         };
 
-        console.log("categoria editada", categoriaE);
-
         try {
             const response = await editarCategoria(categoriaE, categoriaEditando);
             if (response.status === 200) {
                 toast.success("¡Categoria actualizada exitosamente!");
                 obtenerCategoria();
-            } else {
-                console.log("respuesta :", response);
             }
         } catch (error) {
             console.error("Excepcion al actualizar la categoria", error);

@@ -219,8 +219,6 @@ const Home = () => {
     }
   };
 
-  console.log("esta es la sugerencia", sugerencia);
-
   const [noti, setNoti] = useState(false);
   const [condicion, setCondicion] = useState(false);
 

@@ -180,15 +180,12 @@ const Proveedores = () => {
       email: datosEditados.email,
     };
 
-    console.log("proveedor editado", proveedorE);
-
     try {
       const response = await editarProveedor(proveedorE, proveedorEditando);
       if (response.status === 200) {
         toast.success("¡Proveedor actualizado exitosamente!");
         obtenerProveedores();
       } else {
-        console.log("respuesta :", response);
         toast.warning("No se pudo actualizar el proveedor");
       }
     } catch (error) {

@@ -94,10 +94,7 @@ const Ventas = () => {
       setCargando(false);
     }
   };
-  console.log("MesasData:", mesasData);
-
   const DetallesVenta = (Venta) => {
-    console.log(Venta);
     setVentaSeleccionada(Venta);
     setPanel(true);
   };
@@ -208,8 +205,6 @@ const Ventas = () => {
     setSelectAll(false);
     setFiltracion(false);
   };
-
-  console.log("esto es lo que agrega el state", Seleccionados);
 
   useEffect(() => {
     regitroVentas();
