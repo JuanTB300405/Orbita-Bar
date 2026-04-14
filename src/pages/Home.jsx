@@ -1,6 +1,6 @@
 import "../styles/Home.css";
 import React, { useState, useEffect, useRef } from "react";
-import { consultaInventario, consultaExistencias } from "../js/inventario";
+import { consultaInventario } from "../js/inventario";
 import { venderProducto } from "../js/venta";
 import { ToastContainer, toast } from "react-toastify";
 import ImprimirFacturaPOS from "../components/imprimirFactura";
@@ -10,14 +10,12 @@ const Home = () => {
   const [productos, setProductos] = useState([]);
   const [busqueda, setBusqueda] = useState("");
   const [sugerencia, setSugerencia] = useState([]);
-  const [existencias, setExistencias] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [cantidad, setCantidad] = useState("");
   const [devuelta, setDevuelta] = useState("");
   const [ventaActual, setVentaActual] = useState(null);
   const printRef = useRef();
-  const [error, setError] = useState("");
 
   const [pago, setPago] = useState(0);
   const [Tdevuelve, setTdevuelve] = useState("--");
@@ -97,7 +95,6 @@ const Home = () => {
           setDevuelta("");
           setBusqueda("");
           setCantidad("");
-          consultaExistencias();
         }, 1000);
       } else {
         toast.error(
@@ -165,28 +162,8 @@ const Home = () => {
     }
   };
 
-  const obtenerExistencias = async () => {
-    try {
-      const data = await consultaExistencias();
-      if (Array.isArray(data)) {
-        setExistencias(data);
-      } else {
-        setError(
-          "Error al acceder a las Existencias de los productos porximos a terminar",
-        );
-        console.error("Respuesta inesperada:", data, error);
-      }
-    } catch (err) {
-      setError(
-        "Error al acceder a las Existencias de los productos porximos a terminar",
-      );
-      console.error("Error en la consulta:", err);
-    }
-  };
-
   useEffect(() => {
     ConsultarProductos();
-    obtenerExistencias();
   }, []);
 
   const handleBusqueda = (texto) => {
@@ -245,12 +222,12 @@ const Home = () => {
   };
 
   const [noti, setNoti] = useState(false);
-  const [condicion, setCondicion] = useState(false);
 
-  useEffect(() => {
-    if (existencias.length === 0) setCondicion(false);
-    else setCondicion(true);
-  }, [existencias]);
+  // Stock bajo calculado localmente: cantidad_actual <= topeMin
+  const productosStockBajo = productos.filter(
+    (p) => p.topeMin > 0 && p.cantidad_actual <= p.topeMin
+  );
+  const condicion = productosStockBajo.length > 0;
 
   const verNoti = () => setNoti(true);
   const ocultarNoti = () => setNoti(false);
@@ -315,7 +292,7 @@ const Home = () => {
                 <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
                 <path d="M12 16h.01" />
               </svg>
-              <span className="hm-alert-count">{existencias.length}</span>
+              <span className="hm-alert-count">{productosStockBajo.length}</span>
             </button>
           )}
 
@@ -750,13 +727,11 @@ const Home = () => {
             </div>
             <p className="hm-noti-subtitle">Productos próximos a agotarse</p>
             <div className="hm-noti-body">
-              {existencias.map((producto) => (
-                <div className="hm-noti-item" key={producto.producto.id}>
-                  <span className="hm-noti-name">
-                    {producto.producto.nombre}
-                  </span>
+              {productosStockBajo.map((p) => (
+                <div className="hm-noti-item" key={p.id}>
+                  <span className="hm-noti-name">{p.nombre}</span>
                   <span className="hm-noti-qty">
-                    {producto.producto.cantidad_actual}
+                    {p.cantidad_actual} / {p.topeMin} uds.
                   </span>
                 </div>
               ))}

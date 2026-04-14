@@ -2,7 +2,7 @@ import "../styles/Inventario.css";
 import { useState, useEffect, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { consultaExistencias, consultaInventario } from "../js/inventario";
+import { consultaInventario } from "../js/inventario";
 import { consultaProveedores } from "../js/proveedores";
 import { consultaCategoria } from "../js/categoria";
 import { crearProductos, eliminarProductos, editarProductos } from "../js/inventario";
@@ -12,7 +12,6 @@ const Inventario = () => {
   const [cargando, setCargando] = useState(true);
   const [busqueda, setBusqueda] = useState("");
   const [productosData, setProductosData] = useState([]);
-  const [existencias, setExistencias] = useState([]);
   const [proveedoresData, setProveedoresData] = useState([]);
   const [categoriaData, setCategoriaData] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
@@ -21,8 +20,11 @@ const Inventario = () => {
   const [error, setError] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: null, dir: "asc" });
 
-  // IDs con stock bajo para resaltar en tabla
-  const idsStockBajo = new Set(existencias.map((e) => e.producto.id));
+  // Productos con stock bajo: cantidad_actual <= topeMin (calculado localmente)
+  const productosStockBajo = productosData.filter(
+    (p) => p.topeMin > 0 && p.cantidad_actual <= p.topeMin
+  );
+  const idsStockBajo = new Set(productosStockBajo.map((p) => p.id));
 
   // Datos filtrados
   const datosFiltrados = productosData.filter(
@@ -104,14 +106,6 @@ const Inventario = () => {
     }
   };
 
-  const obtenerExistencias = async () => {
-    try {
-      const data = await consultaExistencias();
-      if (Array.isArray(data)) setExistencias(data);
-    } catch (er) {
-      console.error("Error consultando existencias:", er);
-    }
-  };
 
   const obtenerProveedores = async () => {
     try {
@@ -135,7 +129,6 @@ const Inventario = () => {
     obtenerInventario();
     obtenerProveedores();
     obtenerCategoria();
-    obtenerExistencias();
   }, []);
 
   useEffect(() => {
@@ -289,10 +282,10 @@ const Inventario = () => {
     const productoFormateado = {
       nombre: ProdEditado.nombre,
       precio: ProdEditado.precio,
-      cantidad_actual: 0,
-      cantidad_inicial: 0,
+      cantidad_actual: ProdEditado.cantidad_actual,
+      cantidad_inicial: ProdEditado.cantidad_inicial,
       foto: null,
-      topeMin: 10,
+      topeMin: ProdEditado.topeMin,
       categoriaid: ProdEditado.categoria.id,
       proveedorid: ProdEditado.proveedor.id,
     };
@@ -353,7 +346,7 @@ const Inventario = () => {
               </svg>
               ACTUALIZAR
             </button>
-            {existencias.length > 0 && (
+            {productosStockBajo.length > 0 && (
               <button className="inv-btn-alerta" onClick={() => setNoti(true)}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
@@ -361,7 +354,7 @@ const Inventario = () => {
                   <line x1="12" y1="17" x2="12.01" y2="17" />
                 </svg>
                 ALERTAS DE STOCK
-                <span className="inv-alerta-badge">{existencias.length}</span>
+                <span className="inv-alerta-badge">{productosStockBajo.length}</span>
               </button>
             )}
           </div>
@@ -820,17 +813,17 @@ const Inventario = () => {
               </button>
             </div>
             <p className="inv-noti-sub">
-              {existencias.length} producto(s) con existencias próximas a terminar
+              {productosStockBajo.length} producto(s) con existencias próximas a terminar
             </p>
             <div className="inv-noti-list">
-              {existencias.map((item) => (
-                <div key={item.producto.id} className="inv-noti-item">
+              {productosStockBajo.map((p) => (
+                <div key={p.id} className="inv-noti-item">
                   <div className="inv-noti-item-left">
                     <span className="inv-noti-dot" />
-                    <span className="inv-noti-nombre">{item.producto.nombre}</span>
+                    <span className="inv-noti-nombre">{p.nombre}</span>
                   </div>
                   <span className="inv-noti-cantidad">
-                    {item.producto.cantidad_actual} uds.
+                    {p.cantidad_actual} / {p.topeMin} uds.
                   </span>
                 </div>
               ))}
