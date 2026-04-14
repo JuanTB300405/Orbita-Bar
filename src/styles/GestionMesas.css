@@ -1,0 +1,161 @@
+/* ════════════════════════════════════════
+   SISTEMA DE GESTION DE MESAS
+   ════════════════════════════════════════ */
+
+.gm-page {
+  height: 100vh;
+  min-height: 100%;
+  max-height: 100vh;
+  overflow: hidden;
+  width: 100%;
+  min-height: 100%;
+  padding: 1.5rem 1.5rem 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+/* ── Loading ─────────────────────────────── */
+.gm-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  gap: 1.5rem;
+}
+
+.gm-loader {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(156, 255, 147, 0.15);
+  border-top-color: #9cff93;
+  border-radius: 50%;
+  animation: gm-spin 0.8s linear infinite;
+}
+
+@keyframes gm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.gm-loading-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: #a8abb3;
+}
+
+/* ── Header ──────────────────────────────── */
+.gm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.gm-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
+}
+
+.gm-status-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #9cff93;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #9cff93;
+  animation: gm-blink 0.9s linear infinite;
+}
+
+@keyframes gm-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.gm-status-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.65rem;
+  color: #9cff93;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.gm-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #f1f3fc;
+}
+
+.gm-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* ── Botones globales ────────────────────── */
+.gm-btn-ghost{
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
+}
+
+.gm-btn-ghost {
+  color: #a8abb3;
+  background: transparent;
+  border-color: rgba(68, 72, 79, 0.6);
+}
+.gm-btn-ghost:hover {
+  color: #f1f3fc;
+  border-color: rgba(168, 171, 179, 0.4);
+}
+
+/* ── Contenido ───────────────────────────── */
+
+.gm-contenido {
+  flex: 1;
+  margin: 4rem 0;
+  background-color: #0f141a;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.gm-mesa {
+    width: 250px;
+    height: 250px;
+    background-color: #1a2128;
+    border-radius: 0.5rem;
+}

@@ -19,6 +19,9 @@ const Home = () => {
   const [ventaActual, setVentaActual] = useState(null);
   const printRef = useRef();
 
+  
+  const [MesasData, setMesasData] = useState([]);
+
   const [pago, setPago] = useState(0);
   const [Tdevuelve, setTdevuelve] = useState("--");
 
@@ -344,6 +347,19 @@ const Home = () => {
               </svg>
               Agregar
             </button>
+          </div>
+
+          {/* Seleccionar mesa */}
+          <div className="hm-mesa-group">
+            <label className="hm-label">Seleccionar Mesa</label>
+            <select className="hm-input" value={mesaSeleccionada} onChange={(e) => setMesaSeleccionada(e.target.value)}>
+              <option value="">-- Seleccionar Mesa --</option>
+              {MesasData.map((mesa) => (
+                <option key={mesa.id} value={mesa.id}>
+                  Mesa {mesa.numero}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Cart table */}
