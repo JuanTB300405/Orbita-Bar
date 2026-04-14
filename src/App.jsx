@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,7 +15,6 @@ import Proveedores from "./pages/proveedores";
 import Egresos from "./pages/Egresos";
 import Categorias from "./pages/Categoria";
 import Ventas from "./pages/Ventas";
-import GestionMesas from "./pages/GestionMesas";
 import Deudores from "./pages/Deudores";
 import IngresosExternos from "./pages/IngresosExternos";
 import Inicio from "./pages/Inicio";
@@ -23,39 +22,58 @@ import Mesa from "./pages/Mesa";
 
 function App() {
   const [Autenticacion, setAutenticacion] = useState(false);
+  const [verificandoToken, setVerificandoToken] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setAutenticacion(true);
+    }
+    setVerificandoToken(false);
+  }, []);
 
   return (
     <>
-      <div id="app">
-        <Router>
-          <Routes>
-            {/* Ruta de login */}
-            <Route
-              path="/login"
-              element={<Login setAutenticacion={setAutenticacion} />}
-            />
+      {verificandoToken ? null : (
+        <div id="app">
+          <Router>
+            <Routes>
+              {/* Ruta de login */}
+              <Route
+                path="/login"
+                element={<Login setAutenticacion={setAutenticacion} />}
+              />
 
-            {/* Rutas protegidas */}
-            <Route
-              path="/"
-              element={Autenticacion ? <Layout /> : <Navigate to="/login" />}
-            >
-              <Route path="/" element={<Inicio />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/inventario" element={<Inventario />} />
-              <Route path="/informes" element={<Informes />} />
-              <Route path="/proveedores" element={<Proveedores />} />
-              <Route path="/egresos" element={<Egresos />} />
-              <Route path="/categorias" element={<Categorias />} />
-              <Route path="/ventas" element={<Ventas />} />
-              <Route path="/gestionmesas" element={<GestionMesas />} />
-              <Route path="/deudores" element={<Deudores />} />
-              <Route path="/ingresosExternos" element={<IngresosExternos />} />
-              <Route path="/mesa" element={<Mesa />} />
-            </Route>
-          </Routes>
-        </Router>
-      </div>
+              {/* Rutas protegidas */}
+              <Route
+                path="/"
+                element={
+                  Autenticacion ? (
+                    <Layout setAutenticacion={setAutenticacion} />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              >
+                <Route path="/" element={<Inicio />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/inventario" element={<Inventario />} />
+                <Route path="/informes" element={<Informes />} />
+                <Route path="/proveedores" element={<Proveedores />} />
+                <Route path="/egresos" element={<Egresos />} />
+                <Route path="/categorias" element={<Categorias />} />
+                <Route path="/ventas" element={<Ventas />} />
+                <Route path="/deudores" element={<Deudores />} />
+                <Route
+                  path="/ingresosExternos"
+                  element={<IngresosExternos />}
+                />
+                <Route path="/mesa" element={<Mesa />} />
+              </Route>
+            </Routes>
+          </Router>
+        </div>
+      )}
     </>
   );
 }

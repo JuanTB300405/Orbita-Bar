@@ -15,7 +15,7 @@ const Mesa = () => {
   const [busqueda, setBusqueda] = useState("");
   const [MesasData, setMesasData] = useState([]);
 
-  const datosFitrados = MesasData.filter((mesa) =>
+  const datosFiltrados = MesasData.filter((mesa) =>
     mesa.numero.toLowerCase().includes(busqueda.toLowerCase()),
   );
 
@@ -65,7 +65,7 @@ const Mesa = () => {
       return;
     }
 
-    if (MesasData.some((m) => m.numero == numero)) {
+    if (MesasData.some((m) => String(m.numero) === String(numero))) {
       toast.warning("Ya existe una mesa con ese número");
       return;
     }
@@ -74,8 +74,6 @@ const Mesa = () => {
       capacidad: capacidad,
       disponible: disponible,
     };
-    console.log("nueva mesa", nuevaMesa);
-
     try {
       const response = await crearMesas(nuevaMesa);
       if (response.status === 201) {
@@ -100,7 +98,7 @@ const Mesa = () => {
 
   const cerrarModalAgregar = () => {
     setShowModalAgregar(false);
-    setdatosForm({ nombre: "", telefono: "", email: "" });
+    setdatosForm({ numero: "", capacidad: "", disponible: "" });
     setError("");
   };
 
@@ -111,7 +109,7 @@ const Mesa = () => {
   const abrirModalEliminar = () => {
     const Seleccionados = MesasData.filter((m) => seleccionados.includes(m.id));
     if (Seleccionados.length === 0) {
-      toast.warning("No hay ningun producto seleccionado");
+      toast.warning("No hay ninguna mesa seleccionada");
       return;
     } else {
       setShowModalEliminar(true);
@@ -127,8 +125,8 @@ const Mesa = () => {
         obtenerMesas();
       }
     } catch (error) {
-      console.error("Excepcion al eliminar el proveedores", error);
-      toast.error("Error al eliminar el proveedores");
+      console.error("Excepcion al eliminar las mesas", error);
+      toast.error("Error al eliminar las mesas");
     }
 
     cerrarModalEliminar();
@@ -184,16 +182,12 @@ const Mesa = () => {
       disponible: datosEditados.disponible,
     };
 
-    console.log("mesa editada", MesaE);
-
     try {
       const response = await editarMesas(MesaE, mesaEditando);
-      console.log("lo que se manda :", mesaEditando);
       if (response.status === 200) {
         toast.success("¡Mesa actualizada exitosamente!");
         obtenerMesas();
       } else {
-        console.log("respuesta :", response);
         toast.warning("No se pudo actualizar la mesa");
       }
     } catch (error) {
@@ -219,13 +213,13 @@ const Mesa = () => {
       <div className="pv-loading-overlay">
         <div className="pv-loading-inner">
           <div className="pv-loader" />
-          <span className="pv-loading-text">Cargando proveedores...</span>
+          <span className="pv-loading-text">Cargando mesas...</span>
         </div>
       </div>
     );
   }
 
-  const allIds = datosFitrados.map((p) => p.id);
+  const allIds = datosFiltrados.map((p) => p.id);
   const allSelected =
     allIds.length > 0 && allIds.every((id) => seleccionados.includes(id));
 
@@ -245,7 +239,7 @@ const Mesa = () => {
         <div className="pv-header-content">
           <h1 className="pv-title">MESAS</h1>
           <p className="pv-subtitle">
-            Gestión de contactos y proveedores activos
+            Gestión de mesas del establecimiento
           </p>
         </div>
         <div className="pv-header-badge">MESAS</div>
@@ -403,7 +397,7 @@ const Mesa = () => {
       <div className="pv-info-bar">
         <span className="pv-info-item">
           <span className="pv-info-label">MOSTRANDO</span>
-          <span className="pv-info-value">{datosFitrados.length}</span>
+          <span className="pv-info-value">{datosFiltrados.length}</span>
         </span>
         {seleccionados.length > 0 && (
           <span className="pv-info-item pv-info-item--sel">
@@ -440,8 +434,8 @@ const Mesa = () => {
               </tr>
             </thead>
             <tbody>
-              {datosFitrados.length > 0 ? (
-                datosFitrados.map((mesa, index) => (
+              {datosFiltrados.length > 0 ? (
+                datosFiltrados.map((mesa, index) => (
                   <tr
                     key={mesa.id}
                     className={`pv-tr pv-tr--clickable${seleccionados.includes(mesa.id) ? " pv-tr--sel" : ""}${mesaEditando === mesa.id ? " pv-tr--editando" : ""}`}
@@ -541,7 +535,7 @@ const Mesa = () => {
                         <path d="M15 15m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
                         <path d="M21 21l-1.5 -1.5" />
                       </svg>
-                      <span>No hay proveedores registrados</span>
+                      <span>No hay mesas registradas</span>
                     </div>
                   </td>
                 </tr>
@@ -561,7 +555,7 @@ const Mesa = () => {
             <div className="pv-modal-corner pv-modal-corner--tl" />
             <div className="pv-modal-corner pv-modal-corner--br" />
             <form className="pv-form" onSubmit={handleSubmit}>
-              <h2 className="pv-modal-title">Agregar nuevo proveedor</h2>
+              <h2 className="pv-modal-title">Agregar nueva mesa</h2>
 
               <div className="pv-form-row">
                 <label className="pv-form-label">Numero</label>
@@ -650,7 +644,7 @@ const Mesa = () => {
             </div>
             <h2 className="pv-modal-title">Confirmar eliminación</h2>
             <p className="pv-modal-body">
-              ¿Eliminar {seleccionados.length} proveedor(es) seleccionado(s)?
+              ¿Eliminar {seleccionados.length} mesa(s) seleccionada(s)?
               Esta acción no se puede deshacer.
             </p>
             <div className="pv-modal-actions">

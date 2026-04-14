@@ -753,6 +753,152 @@
 }
 
 /* ════════════════════════════════════════
+   PANEL DE FILTRO
+   ════════════════════════════════════════ */
+
+.ie-filter-panel {
+  position: relative;
+  background: #151a21;
+  border: 1px solid rgba(156, 255, 147, 0.18);
+  box-shadow:
+    0 0 40px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(156, 255, 147, 0.06);
+  width: min(420px, 94vw);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: ie-fade-in 0.18s ease;
+}
+
+@keyframes ie-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ie-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.2rem;
+  background: #1b2028;
+  border-bottom: 1px solid rgba(68, 72, 79, 0.4);
+}
+
+.ie-filter-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ie-filter-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #f1f3fc;
+  margin: 0;
+}
+
+.ie-filter-body {
+  padding: 1.1rem 1.3rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.ie-filter-section-label {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #555a6a;
+  margin: 0.9rem 0 0.55rem 0;
+}
+
+.ie-filter-section-label:first-child {
+  margin-top: 0;
+}
+
+.ie-quick-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ie-quick-btn {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+  background: #0f141a;
+  border: 1px solid rgba(68, 72, 79, 0.5);
+  color: #a8abb3;
+  cursor: pointer;
+  transition:
+    border-color 0.18s,
+    color 0.18s,
+    background 0.18s;
+}
+
+.ie-quick-btn:hover {
+  border-color: rgba(156, 255, 147, 0.4);
+  color: #9cff93;
+  background: rgba(156, 255, 147, 0.04);
+}
+
+.ie-date-range {
+  display: flex;
+  gap: 0.9rem;
+}
+
+.ie-date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.ie-date-label {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a8abb3;
+}
+
+.ie-date-input {
+  background: #0f141a;
+  color: #f1f3fc;
+  border: 1px solid rgba(68, 72, 79, 0.6);
+  padding: 0.4rem 0.55rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.73rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.18s;
+}
+
+.ie-date-input:focus {
+  outline: none;
+  border-color: rgba(156, 255, 147, 0.4);
+}
+
+.ie-btn--full {
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.75rem;
+}
+
+/* ════════════════════════════════════════
    RESPONSIVE
    ════════════════════════════════════════ */
 

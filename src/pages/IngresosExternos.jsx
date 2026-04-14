@@ -16,8 +16,12 @@ const IngresosExternos = () => {
   const [cargando, setCargando] = useState(true);
   const [busqueda, setBusqueda] = useState("");
   const [ingresosData, setIngresosData] = useState([]);
+  const [ingresosDateFiltrados, setIngresosDateFiltrados] = useState([]);
+  const [fechaDesde, setFechaDesde] = useState("");
+  const [fechaHasta, setFechaHasta] = useState("");
+  const [Filtracion, setFiltracion] = useState(false);
 
-  const datosFiltrados = ingresosData.filter((ingreso) =>
+  const datosFiltrados = ingresosDateFiltrados.filter((ingreso) =>
     (ingreso.tipoIngreso ?? "").toLowerCase().includes(busqueda.toLowerCase()),
   );
 
@@ -26,6 +30,7 @@ const IngresosExternos = () => {
       const data = await consultarIngresosExternos();
       if (Array.isArray(data)) {
         setIngresosData(data);
+        setIngresosDateFiltrados(data);
       } else {
         console.error("Respuesta inesperada:", data);
       }
@@ -249,6 +254,85 @@ const IngresosExternos = () => {
     });
   };
 
+  const filtrarPorRango = (inicio, fin) => {
+    const resultado = ingresosData.filter((ingreso) => {
+      const fechaIngreso = new Date(ingreso.fecha);
+      return fechaIngreso >= inicio && fechaIngreso <= fin;
+    });
+    setIngresosDateFiltrados(resultado);
+    setSeleccionados([]);
+    setFiltracion(false);
+  };
+
+  const filtroHoy = () => {
+    const hoy = new Date();
+    const inicio = new Date(hoy);
+    inicio.setHours(0, 0, 0, 0);
+    const fin = new Date(hoy);
+    fin.setHours(23, 59, 59, 999);
+    filtrarPorRango(inicio, fin);
+  };
+
+  const filtroAyer = () => {
+    const ayer = new Date();
+    ayer.setDate(ayer.getDate() - 1);
+    const inicio = new Date(ayer);
+    inicio.setHours(0, 0, 0, 0);
+    const fin = new Date(ayer);
+    fin.setHours(23, 59, 59, 999);
+    filtrarPorRango(inicio, fin);
+  };
+
+  const filtroUltimos7Dias = () => {
+    const hoy = new Date();
+    const inicio = new Date();
+    inicio.setDate(hoy.getDate() - 6);
+    inicio.setHours(0, 0, 0, 0);
+    const fin = new Date();
+    fin.setHours(23, 59, 59, 999);
+    filtrarPorRango(inicio, fin);
+  };
+
+  const filtroEsteMes = () => {
+    const hoy = new Date();
+    const inicio = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+    const fin = new Date();
+    fin.setHours(23, 59, 59, 999);
+    filtrarPorRango(inicio, fin);
+  };
+
+  const filtroMesPasado = () => {
+    const hoy = new Date();
+    const inicio = new Date(hoy.getFullYear(), hoy.getMonth() - 1, 1);
+    const fin = new Date(hoy.getFullYear(), hoy.getMonth(), 0);
+    fin.setHours(23, 59, 59, 999);
+    filtrarPorRango(inicio, fin);
+  };
+
+  const aplicarFiltroFechas = () => {
+    const inicio = fechaDesde ? new Date(fechaDesde) : null;
+    const fin = fechaHasta ? new Date(fechaHasta) : null;
+    if (fin) fin.setHours(23, 59, 59, 999);
+    const resultado = ingresosData.filter((ingreso) => {
+      const fechaIngreso = new Date(ingreso.fecha);
+      return (
+        (!inicio || fechaIngreso >= inicio) &&
+        (!fin || fechaIngreso <= fin)
+      );
+    });
+    setIngresosDateFiltrados(resultado);
+    setSeleccionados([]);
+    setFiltracion(false);
+  };
+
+  const mostrarTodo = () => {
+    setIngresosDateFiltrados(ingresosData);
+    setFechaDesde("");
+    setFechaHasta("");
+    setSeleccionados([]);
+    setFiltracion(false);
+  };
+
   // ── Loading ───────────────────────────────────────────────────────────────
 
   if (cargando) {
@@ -303,6 +387,22 @@ const IngresosExternos = () => {
                 onChange={(e) => setBusqueda(e.target.value)}
               />
             </div>
+            <button
+              className="ie-btn ie-btn--ghost"
+              onClick={() => setFiltracion(!Filtracion)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M16 2c.183 0 .355 .05 .502 .135l.033 .02c.28 .177 .465 .49 .465 .845v1h1a3 3 0 0 1 2.995 2.824l.005 .176v12a3 3 0 0 1 -2.824 2.995l-.176 .005h-12a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-12a3 3 0 0 1 2.824 -2.995l.176 -.005h1v-1a1 1 0 0 1 .514 -.874l.093 -.046l.066 -.025l.1 -.029l.107 -.019l.12 -.007q .083 0 .161 .013l.122 .029l.04 .012l.06 .023c.328 .135 .568 .44 .61 .806l.007 .117v1h6v-1a1 1 0 0 1 1 -1m3 7h-14v9.625c0 .705 .386 1.286 .883 1.366l.117 .009h12c.513 0 .936 -.53 .993 -1.215l.007 -.16z" />
+              </svg>
+              FILTRAR
+            </button>
           </div>
 
           <div className="ie-toolbar-right">
@@ -696,6 +796,93 @@ const IngresosExternos = () => {
                     <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
                   </svg>
                   CONFIRMAR
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── Panel de filtro ── */}
+        {Filtracion && (
+          <div className="ie-overlay" onClick={() => setFiltracion(false)}>
+            <div className="ie-filter-panel" onClick={(e) => e.stopPropagation()}>
+              <span className="ie-corner ie-corner--tl"></span>
+              <span className="ie-corner ie-corner--br"></span>
+
+              <div className="ie-filter-header">
+                <div className="ie-filter-title-wrap">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    style={{ color: "#9cff93" }}
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M16 2c.183 0 .355 .05 .502 .135l.033 .02c.28 .177 .465 .49 .465 .845v1h1a3 3 0 0 1 2.995 2.824l.005 .176v12a3 3 0 0 1 -2.824 2.995l-.176 .005h-12a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-12a3 3 0 0 1 2.824 -2.995l.176 -.005h1v-1a1 1 0 0 1 .514 -.874l.093 -.046l.066 -.025l.1 -.029l.107 -.019l.12 -.007q .083 0 .161 .013l.122 .029l.04 .012l.06 .023c.328 .135 .568 .44 .61 .806l.007 .117v1h6v-1a1 1 0 0 1 1 -1m3 7h-14v9.625c0 .705 .386 1.286 .883 1.366l.117 .009h12c.513 0 .936 -.53 .993 -1.215l.007 -.16z" />
+                  </svg>
+                  <p className="ie-filter-title">FILTRAR INGRESOS</p>
+                </div>
+                <button
+                  className="ie-close-btn"
+                  onClick={() => setFiltracion(false)}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 6l-12 12" />
+                    <path d="M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="ie-filter-body">
+                <p className="ie-filter-section-label">Acceso rápido</p>
+                <div className="ie-quick-filters">
+                  <button className="ie-quick-btn" onClick={filtroHoy}>Hoy</button>
+                  <button className="ie-quick-btn" onClick={filtroAyer}>Ayer</button>
+                  <button className="ie-quick-btn" onClick={filtroUltimos7Dias}>7 días</button>
+                  <button className="ie-quick-btn" onClick={filtroEsteMes}>Este mes</button>
+                  <button className="ie-quick-btn" onClick={filtroMesPasado}>Mes pasado</button>
+                  <button className="ie-quick-btn" onClick={mostrarTodo}>Todo</button>
+                </div>
+
+                <p className="ie-filter-section-label">Rango de fechas</p>
+                <div className="ie-date-range">
+                  <div className="ie-date-field">
+                    <label className="ie-date-label">Desde</label>
+                    <input
+                      className="ie-date-input"
+                      type="date"
+                      value={fechaDesde}
+                      onChange={(e) => setFechaDesde(e.target.value)}
+                    />
+                  </div>
+                  <div className="ie-date-field">
+                    <label className="ie-date-label">Hasta</label>
+                    <input
+                      className="ie-date-input"
+                      type="date"
+                      value={fechaHasta}
+                      onChange={(e) => setFechaHasta(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <button
+                  className="ie-btn ie-btn--verde ie-btn--full"
+                  onClick={aplicarFiltroFechas}
+                >
+                  APLICAR FILTROS
                 </button>
               </div>
             </div>

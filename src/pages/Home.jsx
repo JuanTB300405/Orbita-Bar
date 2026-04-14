@@ -1,17 +1,15 @@
 import "../styles/Home.css";
 import React, { useState, useEffect, useRef } from "react";
-import { consultaInventario, consultaExistencias } from "../js/inventario";
-import { PrefetchPageLinks } from "react-router-dom";
+import { consultaInventario } from "../js/inventario";
 import { venderProducto } from "../js/venta";
 import { ToastContainer, toast } from "react-toastify";
 import ImprimirFacturaPOS from "../components/imprimirFactura";
-import Print from "../components/imprimirFactura";
+import { generarCierreCajaPDF } from "../js/cierreCaja";
 
 const Home = () => {
   const [productos, setProductos] = useState([]);
   const [busqueda, setBusqueda] = useState("");
   const [sugerencia, setSugerencia] = useState([]);
-  const [existencias, setExistencias] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [cantidad, setCantidad] = useState("");
@@ -30,7 +28,7 @@ const Home = () => {
     if (/^-?\d*$/.test(valor)) {
       setCantidad(valor);
     } else {
-      alert("Por favor, ingresa un número válido");
+      toast.error("Por favor, ingresa un número válido");
     }
   };
 
@@ -49,11 +47,11 @@ const Home = () => {
 
   const vender = async () => {
     if (pago < calcularTotal()) {
-      alert("El pago es insuficiente");
+      toast.error("El pago es insuficiente");
       return;
     }
     if (productosSeleccionados.length === 0) {
-      alert("No hay productos seleccionados para vender.");
+      toast.error("No hay productos seleccionados para vender.");
       return;
     }
     const ahoraUTC = new Date();
@@ -100,14 +98,15 @@ const Home = () => {
           setDevuelta("");
           setBusqueda("");
           setCantidad("");
-          consultaExistencias();
         }, 1000);
       } else {
-        alert("Error al realizar la venta");
+        toast.error(
+          "Error, revise el stock de los productos o intente nuevamente.",
+        );
       }
     } catch (error) {
       console.error("Error al realizar la venta:", error.response?.data);
-      alert("Error al realizar la venta. Por favor, inténtelo de nuevo.");
+      toast.error("Error al realizar la venta. Por favor, inténtelo de nuevo.");
     }
   };
 
@@ -127,7 +126,7 @@ const Home = () => {
   const calcularTotal = () => {
     return productosSeleccionados.reduce(
       (total, producto) => total + producto.total,
-      0
+      0,
     );
   };
 
@@ -145,7 +144,12 @@ const Home = () => {
         if (cantidadNueva < 1) cantidadNueva = 1;
         const nuevoSubtotal = p.Precio * cantidadNueva;
         const nuevoTotal = p.Precio * cantidadNueva;
-        return { ...p, cantidad: cantidadNueva, subtotal: nuevoSubtotal, total: nuevoTotal };
+        return {
+          ...p,
+          cantidad: cantidadNueva,
+          subtotal: nuevoSubtotal,
+          total: nuevoTotal,
+        };
       }
       return p;
     });
@@ -161,30 +165,14 @@ const Home = () => {
     }
   };
 
-  const obtenerExistencias = async () => {
-    try {
-      const data = await consultaExistencias();
-      if (Array.isArray(data)) {
-        setExistencias(data);
-      } else {
-        setError("Error al acceder a las Existencias de los productos porximos a terminar");
-        console.error("Respuesta inesperada:", data);
-      }
-    } catch (err) {
-      setError("Error al acceder a las Existencias de los productos porximos a terminar");
-      console.error("Error en la consulta:", err);
-    }
-  };
-
   useEffect(() => {
     ConsultarProductos();
-    obtenerExistencias();
   }, []);
 
   const handleBusqueda = (texto) => {
     setBusqueda(texto);
     const filtracion = productos.filter((p) =>
-      p.nombre.toLowerCase().includes(texto.toLowerCase())
+      p.nombre.toLowerCase().includes(texto.toLowerCase()),
     );
     setSugerencia(filtracion);
   };
@@ -198,10 +186,10 @@ const Home = () => {
   const AgregarProducto = () => {
     if (productoSeleccionado && cantidad > 0) {
       const Existe = productosSeleccionados.find(
-        (p) => p.id === productoSeleccionado.id
+        (p) => p.id === productoSeleccionado.id,
       );
       if (Existe) {
-        alert("El producto ya está en la lista");
+        toast.warning("El producto ya está en la lista");
         return;
       }
       const nuevo = {
@@ -218,19 +206,31 @@ const Home = () => {
       setSugerencia([]);
       setBusqueda("");
     } else {
-      alert("Por favor, selecciona un producto y una cantidad válida.");
+      toast.error("Por favor, selecciona un producto y una cantidad válida.");
     }
   };
 
-  console.log("esta es la sugerencia", sugerencia);
+  const [cargandoCierre, setCargandoCierre] = useState(false);
+
+  const handleCierreCaja = async () => {
+    setCargandoCierre(true);
+    try {
+      await generarCierreCajaPDF();
+    } catch (error) {
+      console.error("Error al generar cierre de caja:", error);
+      toast.error("Error al generar el cierre de caja.");
+    } finally {
+      setCargandoCierre(false);
+    }
+  };
 
   const [noti, setNoti] = useState(false);
-  const [condicion, setCondicion] = useState(false);
 
-  useEffect(() => {
-    if (existencias.length === 0) setCondicion(false);
-    else setCondicion(true);
-  }, [existencias]);
+  // Stock bajo calculado localmente: cantidad_actual <= topeMin
+  const productosStockBajo = productos.filter(
+    (p) => p.topeMin > 0 && p.cantidad_actual <= p.topeMin
+  );
+  const condicion = productosStockBajo.length > 0;
 
   const verNoti = () => setNoti(true);
   const ocultarNoti = () => setNoti(false);
@@ -238,36 +238,64 @@ const Home = () => {
   /* ── render ────────────────────────────────────────────── */
   return (
     <div className="hm-page">
-
       {/* ── Header ──────────────────────────────────────────── */}
       <div className="hm-header">
         <div className="hm-header-accent" />
         <div className="hm-header-content">
           <h1 className="hm-title">VENTAS</h1>
-          <p className="hm-subtitle">Punto de venta — registro de transacciones</p>
+          <p className="hm-subtitle">
+            Punto de venta — registro de transacciones
+          </p>
         </div>
         <div className="hm-header-actions">
           {/* Ventas por mesas — próximo módulo */}
-          <button className="hm-btn hm-btn--mesas" disabled>
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <button
+            className="hm-btn hm-btn--mesas"
+            onClick={handleCierreCaja}
+            disabled={cargandoCierre}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M3 10v8l7 -3v-2.6z" />
               <path d="M3 6l9 3l9 -3l-9 -3z" />
               <path d="M14 12.3v8.7l7 -3v-8z" />
             </svg>
-            <span>Ventas por Mesas</span>
-            <span className="hm-soon-badge">PRÓXIMO</span>
+            <span>{cargandoCierre ? "Generando..." : "Cierre de caja"}</span>
           </button>
 
           {/* Stock alert bell */}
           {condicion && (
-            <button className="hm-alert-btn" onClick={verNoti} title="Productos con stock bajo">
-              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <button
+              className="hm-alert-btn"
+              onClick={verNoti}
+              title="Productos con stock bajo"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#f59e0b"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M12 9v4" />
                 <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
                 <path d="M12 16h.01" />
               </svg>
-              <span className="hm-alert-count">{existencias.length}</span>
+              <span className="hm-alert-count">{productosStockBajo.length}</span>
             </button>
           )}
 
@@ -277,17 +305,25 @@ const Home = () => {
 
       {/* ── POS Body ────────────────────────────────────────── */}
       <div className="hm-pos">
-
         {/* ── Cart Panel ───────────────────────────────────── */}
         <div className="hm-cart-panel">
-
           {/* Input bar */}
           <div className="hm-input-bar">
             {/* Product search */}
             <div className="hm-search-group">
               <label className="hm-label">Producto</label>
               <div className="hm-search-wrap">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                   <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
                   <path d="M21 21l-6 -6" />
@@ -310,7 +346,17 @@ const Home = () => {
                     >
                       <span className="hm-sug-name">{producto.nombre}</span>
                       <span className="hm-sug-stock">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="11"
+                          height="11"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                           <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
                           <path d="M12 12l8 -4.5" />
@@ -338,7 +384,17 @@ const Home = () => {
 
             {/* Add button */}
             <button className="hm-btn hm-btn--add" onClick={AgregarProducto}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
                 <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
@@ -387,7 +443,17 @@ const Home = () => {
                           className="hm-qty-btn"
                           onClick={() => actualizarCantidad(p.id, "restar")}
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M5 12l14 0" />
                           </svg>
@@ -402,7 +468,17 @@ const Home = () => {
                           className="hm-qty-btn"
                           onClick={() => actualizarCantidad(p.id, "sumar")}
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                             <path d="M12 5l0 14" />
                             <path d="M5 12l14 0" />
@@ -410,12 +486,29 @@ const Home = () => {
                         </button>
                       </div>
                     </td>
-                    <td className="hm-td hm-td--right hm-td--price">${p.Precio}</td>
+                    <td className="hm-td hm-td--right hm-td--price">
+                      ${p.Precio}
+                    </td>
                     <td className="hm-td hm-td--right">${p.subtotal}</td>
-                    <td className="hm-td hm-td--right hm-td--total">${p.total}</td>
+                    <td className="hm-td hm-td--right hm-td--total">
+                      ${p.total}
+                    </td>
                     <td className="hm-td hm-td--del">
-                      <button className="hm-del-btn" onClick={() => eliminarP(p.id)}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <button
+                        className="hm-del-btn"
+                        onClick={() => eliminarP(p.id)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="15"
+                          height="15"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                           <path d="M4 7h16" />
                           <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
@@ -430,7 +523,17 @@ const Home = () => {
                   <tr>
                     <td colSpan={7} className="hm-td hm-td--empty">
                       <div className="hm-empty-state">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                           <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
                           <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
@@ -450,7 +553,17 @@ const Home = () => {
         {/* ── Payment Panel ────────────────────────────────── */}
         <div className="hm-payment-panel">
           <div className="hm-payment-header">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
               <path d="M14 8h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5m2 0v1.5m0 -9v1.5" />
@@ -460,8 +573,13 @@ const Home = () => {
 
           <div className="hm-payment-total-display">
             <span className="hm-payment-total-label">TOTAL</span>
-            <span className="hm-payment-total-value">${calcularTotal().toFixed(2)}</span>
-            <span className="hm-payment-items-count">{productosSeleccionados.length} producto{productosSeleccionados.length !== 1 ? "s" : ""}</span>
+            <span className="hm-payment-total-value">
+              ${calcularTotal().toFixed(2)}
+            </span>
+            <span className="hm-payment-items-count">
+              {productosSeleccionados.length} producto
+              {productosSeleccionados.length !== 1 ? "s" : ""}
+            </span>
           </div>
 
           <div className="hm-payment-divider" />
@@ -469,7 +587,17 @@ const Home = () => {
           <div className="hm-payment-fields">
             <div className="hm-pay-row">
               <label className="hm-pay-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                   <path d="M6 5h12a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-3a2 2 0 0 0 0 -4v-3a2 2 0 0 1 2 -2" />
                 </svg>
@@ -489,15 +617,40 @@ const Home = () => {
             </div>
 
             {devuelta !== "" && (
-              <div className={`hm-pay-row hm-pay-row--result ${Tdevuelve === "Falta" ? "hm-pay-row--falta" : "hm-pay-row--devuelve"}`}>
+              <div
+                className={`hm-pay-row hm-pay-row--result ${Tdevuelve === "Falta" ? "hm-pay-row--falta" : "hm-pay-row--devuelve"}`}
+              >
                 <span className="hm-pay-label">
                   {Tdevuelve === "Falta" ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12 9v4" />
+                      <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
+                      <path d="M12 16h.01" />
                     </svg>
                   ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l5 5l10 -10" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M5 12l5 5l10 -10" />
                     </svg>
                   )}
                   {Tdevuelve === "Falta" ? "Falta" : "Devuelve"}
@@ -514,13 +667,26 @@ const Home = () => {
 
           <div className="hm-payment-actions">
             <button className="hm-btn hm-btn--vender" onClick={() => vender()}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <path d="M5 12l5 5l10 -10" />
               </svg>
               Confirmar Venta
             </button>
-            <button className="hm-btn hm-btn--cancelar" onClick={() => cancelarPago()}>
+            <button
+              className="hm-btn hm-btn--cancelar"
+              onClick={() => cancelarPago()}
+            >
               Cancelar
             </button>
           </div>
@@ -540,7 +706,17 @@ const Home = () => {
             <div className="hm-noti-corner hm-noti-corner--br" />
             <div className="hm-noti-header">
               <div className="hm-noti-title-wrap">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#f59e0b"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M12 9v4" />
                   <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
                   <path d="M12 16h.01" />
@@ -548,7 +724,17 @@ const Home = () => {
                 <h2 className="hm-noti-title">Stock Bajo</h2>
               </div>
               <button className="hm-noti-close" onClick={ocultarNoti}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                   <path d="M18 6l-12 12" />
                   <path d="M6 6l12 12" />
@@ -557,10 +743,12 @@ const Home = () => {
             </div>
             <p className="hm-noti-subtitle">Productos próximos a agotarse</p>
             <div className="hm-noti-body">
-              {existencias.map((producto) => (
-                <div className="hm-noti-item" key={producto.producto.id}>
-                  <span className="hm-noti-name">{producto.producto.nombre}</span>
-                  <span className="hm-noti-qty">{producto.producto.cantidad_actual}</span>
+              {productosStockBajo.map((p) => (
+                <div className="hm-noti-item" key={p.id}>
+                  <span className="hm-noti-name">{p.nombre}</span>
+                  <span className="hm-noti-qty">
+                    {p.cantidad_actual} / {p.topeMin} uds.
+                  </span>
                 </div>
               ))}
             </div>

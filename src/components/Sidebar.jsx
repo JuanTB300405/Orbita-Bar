@@ -4,14 +4,15 @@ import logo from "../assets/images/orbitafondo.jpeg";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-const Sidebar = () => {
+const Sidebar = ({ setAutenticacion }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [modal, setModal] = useState(false);
 
   const CerrarSesion = () => {
-    navigate("/Login");
-    sessionStorage.removeItem("token");
+    navigate("/login");
+    localStorage.removeItem("token");
+    setAutenticacion(false);
   };
 
   const abrirmodal = () => setModal(true);

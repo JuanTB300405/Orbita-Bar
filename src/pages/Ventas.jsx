@@ -94,10 +94,7 @@ const Ventas = () => {
       setCargando(false);
     }
   };
-  console.log("MesasData:", mesasData);
-
   const DetallesVenta = (Venta) => {
-    console.log(Venta);
     setVentaSeleccionada(Venta);
     setPanel(true);
   };
@@ -127,7 +124,8 @@ const Ventas = () => {
       const dentroFecha =
         (!inicio || fechaVenta >= inicio) && (!fin || fechaVenta <= fin);
       const coincideMesa =
-        mesaSeleccionada === "" || venta.mesa?.id == mesaSeleccionada;
+        mesaSeleccionada === "" ||
+        String(venta.mesa?.id) === String(mesaSeleccionada);
 
       return dentroFecha && coincideMesa;
     });
@@ -143,7 +141,8 @@ const Ventas = () => {
       const fechaVenta = new Date(venta.fecha);
       const dentroFecha = fechaVenta >= inicio && fechaVenta <= fin;
       const coincideMesa =
-        mesaSeleccionada === "" || venta.mesa?.id == mesaSeleccionada;
+        mesaSeleccionada === "" ||
+        String(venta.mesa?.id) === String(mesaSeleccionada);
 
       return dentroFecha && coincideMesa;
     });
@@ -208,8 +207,6 @@ const Ventas = () => {
     setSelectAll(false);
     setFiltracion(false);
   };
-
-  console.log("esto es lo que agrega el state", Seleccionados);
 
   useEffect(() => {
     regitroVentas();
