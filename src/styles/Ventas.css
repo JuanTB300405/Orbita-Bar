@@ -760,6 +760,56 @@
   background: #1b2028;
 }
 
+/* ── Modal de confirmación (sm) ── */
+.vt-modal--sm {
+  width: min(380px, 92vw);
+  text-align: center;
+  padding: 2rem 1.8rem 1.6rem;
+  border-color: rgba(255, 77, 79, 0.25);
+}
+
+.vt-corner--danger {
+  border-color: #ff4d4f !important;
+}
+
+.vt-modal-warning-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.vt-modal-confirm-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f1f3fc;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: 0.02em;
+}
+
+.vt-modal-warn-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.8rem;
+  color: #a8abb3;
+  line-height: 1.65;
+  margin: 0 0 1.5rem 0;
+}
+
+.vt-modal-warn-text strong {
+  color: #ff4d4f;
+}
+
+.vt-modal-confirm-btns {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.vt-btn--lg {
+  padding: 0.65rem 1.5rem;
+  font-size: 0.68rem;
+}
+
 /* ════════════════════════════════════════
    PANEL DE FILTRO
    ════════════════════════════════════════ */
