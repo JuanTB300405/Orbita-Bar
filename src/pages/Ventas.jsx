@@ -2,10 +2,12 @@
 import { useState, useEffect, useRef, createRef } from "react";
 import "../styles/Ventas.css";
 import Button from "../components/Button";
-import { ConsultarVentas } from "../js/ventas.js";
+import { ConsultarVentas, eliminarVentas } from "../js/ventas.js";
 import { consultaMesas } from "../js/mesa.js";
 import Select from "react-select";
 import ImprimirFacturaPOS from "../components/imprimirFactura";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Ventas = () => {
   const [ventasData, setventasData] = useState([]);
@@ -24,6 +26,7 @@ const Ventas = () => {
   const [Total, setTotal] = useState(0);
   const [mesasData, setMesasData] = useState([]);
   const [mesaSeleccionada, setMesaSeleccionada] = useState("");
+  const [showModalEliminar, setShowModalEliminar] = useState(false);
 
   const getPrintRef = (id) => {
     if (!printRefs.current[id]) {
@@ -112,6 +115,25 @@ const Ventas = () => {
     setTimeout(() => {
       ref.current?.print();
     }, 200);
+  };
+
+  const handleEliminarSeleccionados = () => {
+    if (Seleccionados.length === 0) return;
+    setShowModalEliminar(true);
+  };
+
+  const confirmarEliminar = async () => {
+    setShowModalEliminar(false);
+    const res = await eliminarVentas({ ids: Seleccionados });
+    if (res?.status === 200 || res?.status === 204) {
+      toast.success(`${Seleccionados.length} venta(s) eliminada(s) correctamente`);
+      setSeleccionados([]);
+      setSelectAll(false);
+      setPanel(false);
+      await regitroVentas();
+    } else {
+      toast.error("Error al eliminar las ventas. Intenta de nuevo.");
+    }
   };
 
   const aplicarFiltroFechas = () => {
@@ -269,6 +291,31 @@ const Ventas = () => {
         </div>
 
         <div className="vt-toolbar-right">
+          {Seleccionados.length > 0 && (
+            <button
+              className="vt-btn vt-btn--rojo"
+              onClick={handleEliminarSeleccionados}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4 7l16 0" />
+                <path d="M10 11l0 6" />
+                <path d="M14 11l0 6" />
+                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+              </svg>
+              ELIMINAR ({Seleccionados.length})
+            </button>
+          )}
           {descargarTodo && (
             <button
               className="vt-btn vt-btn--verde"
@@ -292,6 +339,7 @@ const Ventas = () => {
               DESCARGAR TODO
             </button>
           )}
+          <div Classname="vt-"></div>
           <div className="vt-total-badge">
             <span className="vt-total-label">SELECCIÓN</span>
             <span className="vt-total-value">${Total}</span>
@@ -621,6 +669,66 @@ const Ventas = () => {
           </div>
         </div>
       )}
+      {/* ── Modal: Confirmar eliminar ── */}
+      {showModalEliminar && (
+        <div className="vt-overlay" onClick={() => setShowModalEliminar(false)}>
+          <div
+            className="vt-modal vt-modal--sm"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span className="vt-corner vt-corner--tl vt-corner--danger"></span>
+            <span className="vt-corner vt-corner--br vt-corner--danger"></span>
+
+            <div className="vt-modal-warning-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="40"
+                height="40"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#ff4d4f"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+            </div>
+            <h3 className="vt-modal-confirm-title">Confirmar Eliminación</h3>
+            <p className="vt-modal-warn-text">
+              Se eliminarán{" "}
+              <strong>{Seleccionados.length}</strong> venta(s) de forma
+              permanente y se restaurará el stock de los productos. Esta acción
+              no se puede deshacer.
+            </p>
+            <div className="vt-modal-confirm-btns">
+              <button className="vt-btn vt-btn--rojo vt-btn--lg" onClick={confirmarEliminar}>
+                SÍ, ELIMINAR
+              </button>
+              <button
+                className="vt-btn vt-btn--ghost vt-btn--lg"
+                onClick={() => setShowModalEliminar(false)}
+              >
+                CANCELAR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        theme="dark"
+        toastStyle={{
+          background: "#151a21",
+          border: "1px solid rgba(156,255,147,0.2)",
+          fontFamily: "Space Grotesk, sans-serif",
+          fontSize: "0.8rem",
+        }}
+      />
     </section>
   );
 };
