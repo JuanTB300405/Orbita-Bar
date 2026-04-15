@@ -1,11 +1,16 @@
 import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import {consultaMesas} from "../js/mesa";
 import '../styles/GestionMesas.css';
 
 const GestionMesas = () => {
 
+    const location = useLocation();
+    const Mesa = location.state?.productos ?? JSON.parse(localStorage.getItem("mesaProductos") ?? "[]");
+
     const [cargando, setCargando] = useState(false);
     const [MesasData, setMesasData] = useState([]);
+
 
     const obtenerMesas = async () => {
         try {
@@ -24,7 +29,16 @@ const GestionMesas = () => {
     
     useEffect(() => {
         obtenerMesas();
+        console.log("mesa", Mesa);
     }, []);
+
+    useEffect(() => {
+        if (location.state?.productos) {
+            localStorage.setItem("mesaProductos", JSON.stringify(location.state.productos));
+        }
+    }, [location.state]);
+
+    {/*localStorage.removeItem("mesaProductos");*/}
 
     if (cargando) {
         return (
@@ -60,12 +74,13 @@ const GestionMesas = () => {
                 </div>
 
                 <div className="gm-contenido">
-                    {MesasData.length > 0 ? (
-                        MesasData.map((mesa, index) => (
-                            <div key={index} className="gm-mesa">
-                                <h3 className="gm-mesa-name">{mesa.numero}</h3>
-                                <p className="gm-mesa-capacidad">Capacidad: {mesa.capacidad}</p>
-                                <p className="gm-mesa-estado">Estado: {mesa.estado ? "Disponible" : "Ocupada"}</p>
+                    {Mesa.length > 0 ? (
+                        Mesa.map((producto) => (
+                            <div key={producto.id} className="gm-mesa">
+                                <h3 className="gm-mesa-name">{producto.nombre}</h3>
+                                <p className="gm-mesa-capacidad">Cantidad: {producto.cantidad}</p>
+                                <p className="gm-mesa-estado">Precio: ${producto.Precio}</p>
+                                <p className="gm-mesa-estado">Total: ${producto.total}</p>
                             </div>
                         ))) 
                         : 

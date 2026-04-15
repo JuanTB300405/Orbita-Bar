@@ -1,10 +1,13 @@
 import "../styles/Home.css";
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { consultaInventario } from "../js/inventario";
 import { venderProducto } from "../js/venta";
+import {consultaMesas} from "../js/mesa";
 import { ToastContainer, toast } from "react-toastify";
 import ImprimirFacturaPOS from "../components/imprimirFactura";
 import { generarCierreCajaPDF } from "../js/cierreCaja";
+import GestionMesas from "./GestionMesas";
 
 const Home = () => {
   const [productos, setProductos] = useState([]);
@@ -17,8 +20,35 @@ const Home = () => {
   const [ventaActual, setVentaActual] = useState(null);
   const printRef = useRef();
 
+  const navigate = useNavigate(); 
   
   const [MesasData, setMesasData] = useState([]);
+  const [mesaSeleccionada, setMesaSeleccionada] = useState("");
+
+  const enviarmesa = () => {
+    navigate("/gestionmesas", { state: { productos: productosSeleccionados } });
+  };
+
+
+  const obtenerMesas = async () => {
+      try {
+          const MesasD = await consultaMesas();
+          if (MesasD != null) {
+              setMesasData(MesasD);
+          } else {
+              console.error("Respuesta inesperada:", MesasD);
+          }
+      } catch (error) {
+          console.error("Error en la consulta:", error);
+      } finally {
+          setCargando(false);
+      }
+  };
+  
+  useEffect(() => {
+      obtenerMesas();
+  }, []);
+  
 
   const [pago, setPago] = useState(0);
   const [Tdevuelve, setTdevuelve] = useState("--");
@@ -405,19 +435,6 @@ const Home = () => {
             </button>
           </div>
 
-          {/* Seleccionar mesa */}
-          <div className="hm-mesa-group">
-            <label className="hm-label">Seleccionar Mesa</label>
-            <select className="hm-input" value={mesaSeleccionada} onChange={(e) => setMesaSeleccionada(e.target.value)}>
-              <option value="">-- Seleccionar Mesa --</option>
-              {MesasData.map((mesa) => (
-                <option key={mesa.id} value={mesa.id}>
-                  Mesa {mesa.numero}
-                </option>
-              ))}
-            </select>
-          </div>
-
           {/* Cart table */}
           <div className="hm-table-wrap">
             <table className="hm-table">
@@ -663,6 +680,32 @@ const Home = () => {
                 />
               </div>
             )}
+
+              {/* Seleccionar mesa */}
+              <div className="hm-mesa-group">
+                <label className="hm-label">Seleccionar Mesa</label>
+                <select className="hm-input" value={mesaSeleccionada} onChange={(e) => setMesaSeleccionada(e.target.value)}>
+                  <option value="">-- Seleccionar Mesa --</option>
+                      {MesasData.filter(mesa => mesa.disponible === true).length > 0 ? (
+                        MesasData.filter(mesa => mesa.disponible === true).map((mesa) => (
+                          <option key={mesa.id} value={mesa.id}>
+                            Mesa {mesa.numero}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="" disabled>
+                          No hay mesas disponibles
+                        </option>
+                      )}
+                </select>
+              </div>
+
+              {mesaSeleccionada && (
+                <button onClick={enviarmesa}>
+                  Enviar a Mesa
+                </button>
+              )}
+
           </div>
 
           <div className="hm-payment-actions">
