@@ -348,6 +348,7 @@
   justify-content: center;
   width: 34px;
   height: 34px;
+  padding: 0;
   background: rgba(245, 158, 11, 0.08);
   border: 1px solid rgba(245, 158, 11, 0.3);
   border-radius: 2px;
@@ -461,17 +462,6 @@
   transition: background 0.1s;
 }
 
-.hm-tr::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: transparent;
-  transition: background 0.12s;
-}
-
 .hm-tr:hover {
   background: rgba(156, 255, 147, 0.03);
 }
@@ -548,6 +538,7 @@
   justify-content: center;
   width: 22px;
   height: 22px;
+  padding: 0;
   background: #0f141a;
   border: 1px solid rgba(68, 72, 79, 0.55);
   border-radius: 2px;
@@ -584,10 +575,11 @@
   justify-content: center;
   width: 26px;
   height: 26px;
+  padding: 0;
   background: transparent;
   border: 1px solid transparent;
   border-radius: 2px;
-  color: #3a3f4b;
+  color: #9ba3b5;
   cursor: pointer;
   transition:
     background 0.12s,
@@ -600,6 +592,10 @@
   background: rgba(248, 113, 113, 0.1);
   border-color: rgba(248, 113, 113, 0.3);
   color: #f87171;
+}
+
+.hm-del-btn svg {
+  z-index: 100;
 }
 
 /* ── Payment Panel ───────────────────────────────────────── */
@@ -848,10 +844,11 @@
   justify-content: center;
   width: 26px;
   height: 26px;
+  padding: 0;
   background: transparent;
   border: 1px solid rgba(68, 72, 79, 0.4);
   border-radius: 2px;
-  color: #555a6a;
+  color: #9ba3b5;
   cursor: pointer;
   transition:
     background 0.12s,

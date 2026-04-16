@@ -26,12 +26,14 @@ const ImprimirFacturaPOS = forwardRef(({ venta }, ref) => {
   }));
 
   return (
-    <div style={{ 
-      position: "absolute",
-      left: "-9999px",
-      top: "0" ,
-      width: "58mm"    // MUY IMPORTANTE
-    }}>
+    <div
+      style={{
+        position: "absolute",
+        left: "-9999px",
+        top: "0",
+        width: "58mm", // MUY IMPORTANTE
+      }}
+    >
       {/* Contenido a imprimir (oculto visualmente) */}
       <div ref={contentRef} className="factura-container">
         {/* Encabezado */}
@@ -41,15 +43,15 @@ const ImprimirFacturaPOS = forwardRef(({ venta }, ref) => {
             alt="Q'Sabores"
             className="factura-logo"
           />
-          <h2>Q'SABORES</h2>
+          <h2>ORBITABAR</h2>
           <p className="factura-slogan">
-            TODO LO QUE NECESITAS, SIEMPRE CERCA
+            ¡Sabor que te da una experiencia galactica! 🌟
           </p>
           <hr />
           <p className="factura-info">
-            <strong>NIT EMPRESA Q'SABORES:</strong> 1094430725-9
+            <strong>NIT EMPRESA ORBITABAR:</strong> xxxxxxxx
             <br />
-            <strong>Direccion:</strong> Carrera 32 # 76 - 30 Medellin
+            <strong>Direccion:</strong> Bello-Antioquia
             <br />
             <strong>Factura N°:</strong> {venta.id}
             <br />
@@ -89,8 +91,16 @@ const ImprimirFacturaPOS = forwardRef(({ venta }, ref) => {
         {/* Pago y devuelta */}
         {(venta.pago > 0 || venta.devuelta != null) && (
           <div className="factura-pago">
-            {venta.pago > 0 && <span>Pago cliente: ${parseFloat(venta.pago).toLocaleString()}</span>}
-            {venta.devuelta != null && <span>Devuelta: ${parseFloat(venta.devuelta).toLocaleString()}</span>}
+            {venta.pago > 0 && (
+              <span>
+                Pago cliente: ${parseFloat(venta.pago).toLocaleString()}
+              </span>
+            )}
+            {venta.devuelta != null && (
+              <span>
+                Devuelta: ${parseFloat(venta.devuelta).toLocaleString()}
+              </span>
+            )}
           </div>
         )}
 
