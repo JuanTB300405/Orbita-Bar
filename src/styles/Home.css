@@ -134,14 +134,33 @@
 .hm-search-wrap {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.45rem;
   background: #090d12;
   border: 1px solid rgba(68, 72, 79, 0.55);
   border-radius: 2px;
   padding: 0.45rem 0.7rem;
   transition: border-color 0.15s;
+  max-height: 1.1rem;
+}
+.Scanner {
+  padding-top: 0.3rem;
+  cursor: pointer;
 }
 
+.Scanner svg:hover {
+  color: #9cff93;
+}
+.Scan--inactive {
+  display: none;
+}
+.Scan--active {
+  display: block;
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  z-index: 300;
+}
 .hm-search-wrap:focus-within {
   border-color: rgba(156, 255, 147, 0.45);
 }
