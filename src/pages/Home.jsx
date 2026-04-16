@@ -1,13 +1,12 @@
 import "../styles/Home.css";
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { consultaInventario } from "../js/inventario";
 import { venderProducto } from "../js/venta";
+import { crearPedido } from "../js/pedidos";
 import {consultaMesas} from "../js/mesa";
 import { ToastContainer, toast } from "react-toastify";
 import ImprimirFacturaPOS from "../components/imprimirFactura";
 import { generarCierreCajaPDF } from "../js/cierreCaja";
-import GestionMesas from "./GestionMesas";
 
 const Home = () => {
   const [productos, setProductos] = useState([]);
@@ -19,16 +18,36 @@ const Home = () => {
   const [devuelta, setDevuelta] = useState("");
   const [ventaActual, setVentaActual] = useState(null);
   const printRef = useRef();
-
-  const navigate = useNavigate(); 
   
   const [MesasData, setMesasData] = useState([]);
   const [mesaSeleccionada, setMesaSeleccionada] = useState("");
 
-  const enviarmesa = () => {
-    navigate("/gestionmesas", { state: { productos: productosSeleccionados } });
-  };
+  const enviarmesa = async () => {
 
+    const pedido = {
+      mesa_id: mesaSeleccionada,
+      productos: productosSeleccionados.map((p) => ({
+        producto_id: p.id,
+        cantidad: p.cantidad
+      }))
+    };
+
+    try {
+      const respuesta = await crearPedido(pedido);
+      if (respuesta.status === 201) {
+        toast.success(
+          "Pedido creado con éxito."
+        );
+      } else {
+        toast.error(
+          "Error al crear el pedido.",
+        );
+      }
+    } catch (error) {
+      console.error("Error al crear el pedido rr:", error.response?.data);
+    }
+
+  };
 
   const obtenerMesas = async () => {
       try {
