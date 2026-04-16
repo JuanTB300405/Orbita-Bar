@@ -1156,6 +1156,88 @@
   color: #ff4d4f;
 }
 
+.Scanner {
+  padding-top: 0.3rem;
+  cursor: pointer;
+}
+
+.Scanner svg:hover {
+  color: #9cff93;
+}
+.Scan--inactive {
+  display: none;
+}
+.Scan--active {
+  display: block;
+  position: fixed;
+  top: 8%;
+  left: 3%;
+  z-index: 30000;
+  border: 2px solid rgba(156, 255, 147, 0.35);
+  box-shadow: 0 0 24px rgba(156, 255, 147, 0.12);
+  background: #0a0e14;
+}
+
+/* ── Scanner icon: estado escaneado con éxito ── */
+.Scanner--scanned {
+  position: relative;
+  color: #9cff93;
+}
+
+.Scanner--scanned svg {
+  filter: drop-shadow(0 0 5px rgba(156, 255, 147, 0.55));
+}
+
+.Scanner--scanned::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  right: -3px;
+  width: 7px;
+  height: 7px;
+  background: #9cff93;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #9cff93;
+}
+
+/* ── Display código de barras escaneado ── */
+.inv-barcode-display {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(156, 255, 147, 0.05);
+  border: 1px solid rgba(156, 255, 147, 0.25);
+  padding: 0.45rem 0.75rem;
+}
+
+.inv-barcode-icon {
+  color: #9cff93;
+  flex-shrink: 0;
+}
+
+.inv-barcode-value {
+  font-family: "Space Grotesk", monospace;
+  font-size: 0.78rem;
+  color: #9cff93;
+  letter-spacing: 0.08em;
+  flex: 1;
+}
+
+.inv-barcode-clear {
+  background: transparent;
+  border: none;
+  color: #a8abb3;
+  cursor: pointer;
+  padding: 0.1rem;
+  line-height: 0;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.inv-barcode-clear:hover {
+  color: #ff4d4f;
+}
+
 /* ════════════════════════════════════════
    RESPONSIVE
    ════════════════════════════════════════ */

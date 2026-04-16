@@ -6,6 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import ImprimirFacturaPOS from "../components/imprimirFactura";
 import { generarCierreCajaPDF } from "../js/cierreCaja";
 import BarcodeScanner from "../components/BardcodeScanner";
+import beepSound from "../assets/sonidos/beepSound.mp3";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [productos, setProductos] = useState([]);
@@ -20,6 +22,7 @@ const Home = () => {
   const [scanner, setScanner] = useState(false);
   const [pago, setPago] = useState(0);
   const [Tdevuelve, setTdevuelve] = useState("--");
+  const navegate = useNavigate();
   const handlechange = (e) => {
     const valor = e.target.value;
     if (/^-?\d*$/.test(valor)) {
@@ -231,6 +234,29 @@ const Home = () => {
 
   const verNoti = () => setNoti(true);
   const ocultarNoti = () => setNoti(false);
+  const reproducirBeep = () => {
+    const audio = new Audio(beepSound);
+    audio.volume = 0.5;
+    audio.play();
+  };
+  const agregarProductoPorCodigo = (codigo) => {
+    const producto = productos.find((p) => p.codigoBarras === codigo);
+    if (producto) {
+      const nuevo = {
+        id: producto.id,
+        nombre: producto.nombre,
+        Precio: producto.precio,
+        cantidad: 1,
+        subtotal: producto.precio * 1,
+        total: producto.precio * 1,
+      };
+      setProductosSeleccionados([...productosSeleccionados, nuevo]);
+      setScanner(false);
+      reproducirBeep();
+    } else {
+      navegate("/inventario", { state: { codigoBarras: codigo } });
+    }
+  };
 
   /* ── render ────────────────────────────────────────────── */
   return (
@@ -238,7 +264,7 @@ const Home = () => {
       {scanner && (
         <div className="Scan--active">
           <BarcodeScanner
-            onResult={(valor) => console.log("Escaneado:", valor)}
+            onResult={(valor) => agregarProductoPorCodigo(valor)}
           />
         </div>
       )}
