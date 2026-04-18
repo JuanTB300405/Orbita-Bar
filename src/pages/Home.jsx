@@ -38,6 +38,7 @@ const Home = () => {
         toast.success(
           "Pedido creado con éxito."
         );
+        setProductosSeleccionados([]);
       } else {
         toast.error(
           "Error al crear el pedido.",

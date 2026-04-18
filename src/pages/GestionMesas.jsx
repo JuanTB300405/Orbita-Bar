@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { consultaInventario } from "../js/inventario";
-import { venderProducto } from "../js/venta";
+import {confirmarPago} from "../js/pedidos";
 import {consultaMesas} from "../js/mesa";
 import {crearIngresosExternos} from "../js/ingresosExternos";
 import {crearDeudores} from "../js/deudores";
@@ -51,7 +51,8 @@ const GestionMesas = () => {
         try {
             const PedidosD = await consultarPedidos();
             if (PedidosD != null) {
-                setPedidos(PedidosD);
+                const pedidoFiltrados = PedidosD.filter(p => p.estado === "activo" || p.estado === "pendiente");
+                setPedidos(pedidoFiltrados);
             } else {
                 console.error("Respuesta inesperada:", PedidosD);
             }
@@ -226,24 +227,13 @@ const GestionMesas = () => {
         const pedidoDeMesa = Pedidos.find(p => p.mesa.id === mesaSeleccionada.id);
 
         if (pedidoDeMesa) {
-            const detallesVentas = pedidoDeMesa.detalles.map((detalle) => ({
-                idproducto: detalle.producto.id,
-                subtotal: detalle.subtotal,
-                cantidad: detalle.cantidad,
-            }));
 
-            console.log(detallesVentas); // verificas que llegue bien
-
-            const ahoraUTC = new Date();
-        
             const data = {
-                fecha: ahoraUTC,
-                devuelta: parseFloat(devuelta) || 0,
-                detallesVentas: detallesVentas
+                devuelta: parseFloat(devuelta)
             };
 
             try {
-                const respuesta = await venderProducto(data);
+                const respuesta = await confirmarPago(pedidoDeMesa.id, data);
                 if (respuesta.status === 201) {
                     
                     toast.success("Venta realizada con éxito");
