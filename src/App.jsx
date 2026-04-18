@@ -15,6 +15,7 @@ import Proveedores from "./pages/proveedores";
 import Egresos from "./pages/Egresos";
 import Categorias from "./pages/Categoria";
 import Ventas from "./pages/Ventas";
+import GestionMesas from "./pages/GestionMesas";
 import Deudores from "./pages/Deudores";
 import IngresosExternos from "./pages/IngresosExternos";
 import Inicio from "./pages/Inicio";
@@ -63,6 +64,7 @@ function App() {
                 <Route path="/egresos" element={<Egresos />} />
                 <Route path="/categorias" element={<Categorias />} />
                 <Route path="/ventas" element={<Ventas />} />
+                <Route path="/gestionMesas" element={<GestionMesas />} />
                 <Route path="/deudores" element={<Deudores />} />
                 <Route
                   path="/ingresosExternos"

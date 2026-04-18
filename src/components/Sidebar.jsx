@@ -119,6 +119,29 @@ const Sidebar = ({ setAutenticacion }) => {
             </Link>
           </li>
 
+          <li className={`sb-item${act("/gestionmesas")}`}>
+            <span className="sb-item-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 10v8l7 -3v-2.6z" />
+                <path d="M3 6l9 3l9 -3l-9 -3z" />
+                <path d="M14 12.3v8.7l7 -3v-8z" />
+              </svg>
+            </span>
+            <Link className="sb-link" to="/gestionmesas">
+              Gestión de Mesas
+            </Link>
+          </li>
+
           {/* ─── STOCK ─── */}
           <li className="sb-section">
             <span className="sb-section-label">STOCK</span>
