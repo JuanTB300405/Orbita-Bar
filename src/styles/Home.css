@@ -909,25 +909,28 @@
 }
 
 .hm-mesa-select-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
+  position: relative;
   background: #090d12;
   border: 1px solid rgba(68, 72, 79, 0.55);
   border-radius: 2px;
-  padding: 0.45rem 0.7rem;
   transition: border-color 0.15s;
 }
 .hm-mesa-select-wrap:focus-within {
   border-color: rgba(167, 139, 250, 0.45);
 }
 .hm-mesa-select-wrap svg {
+  position: absolute;
+  left: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
   color: #555a6a;
+  pointer-events: none;
   flex-shrink: 0;
 }
 
 .hm-mesa-select {
-  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
   background: transparent;
   border: none;
   outline: none;
@@ -937,7 +940,7 @@
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
-  min-width: 0;
+  padding: 0.45rem 0.7rem 0.45rem 2.1rem;
 }
 .hm-mesa-select option {
   background: #0f141a;
