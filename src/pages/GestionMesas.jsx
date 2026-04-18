@@ -5,6 +5,7 @@ import { consultaInventario } from "../js/inventario";
 import { venderProducto } from "../js/venta";
 import {consultaMesas} from "../js/mesa";
 import {crearIngresosExternos} from "../js/ingresosExternos";
+import {crearDeudores} from "../js/deudores";
 import {consultarPedidos, agregarProducto} from "../js/pedidos";
 import '../styles/GestionMesas.css';
 
@@ -20,6 +21,8 @@ const GestionMesas = () => {
     const [productosSeleccionados, setProductosSeleccionados] = useState([]);
     const [cantidad, setCantidad] = useState("");
     const [devuelta, setDevuelta] = useState("");
+    const [Tdevuelve, setTdevuelve] = useState("--");
+    const [pago, setPago] = useState(0);
     const [mesaSeleccionada, setMesaSeleccionada] = useState(null);
     const [pedidoId, setPedidoId] = useState(null);
 
@@ -87,6 +90,8 @@ const GestionMesas = () => {
     const CerrarMD = () => {
         setMesaSeleccionada(null);
         setModalDetalle(false);
+        setDevuelta("");
+        setPago(0);
     }
 
     /* Modal agregar ----------------------------------------------------------------------------*/
@@ -191,81 +196,95 @@ const GestionMesas = () => {
         
         try {
           const respuesta = await agregarProducto(pedidoId,  productos );
-          if (respuesta.status === 201) {
-            toast.success(
-              "Pedido actualizado con éxito."
-            );
-          } else {
-            toast.error(
-              "Error al actualizar el pedido.",
-            );
-          }
+            if (respuesta.status === 200) {
+                toast.success(
+                "Pedido actualizado con éxito."
+                );
+                obtenerPedidos();
+            } else {
+                toast.error(
+                "Error al actualizar el pedido.",
+                );
+            }
         } catch (error) {
-          console.error("Error al actualizar el pedido rr:", error.response?.data);
+            console.error("Error al actualizar el pedido rr:", error.response?.data);
         }
+
+        CerrarMA();
     
     };
 
     /* Metodo de vender ----------------------------------------------------------------------------*/
 
     const vender = async () => {
-        if (productosSeleccionados.length === 0) {
-          toast.error("No hay productos seleccionados para vender.");
-          return;
+
+        if (pago < calcularTotal()) {
+            toast.error("El pago es insuficiente");
+            return;
         }
-        const ahoraUTC = new Date();
-        const [fecha, hora] = ahoraColombia.toISOString().split("T");
-    
-        const data = {
-          fecha: ahoraUTC,
-          devuelta: parseFloat(devuelta) || 0,
-          detallesVentas: productosSeleccionados.map((p) => ({
-            idproducto: p.id,
-            subtotal: p.Precio,
-            cantidad: p.cantidad,
-          })),
-        };
-    
-        try {
-          const respuesta = await venderProducto(data);
-          if (respuesta.status === 201) {
-            const ventaCompleta = {
-              id: respuesta.data?.id || Date.now(),
-              fecha: fecha,
-              hora: hora.split(".")[0],
-              total: calcularTotal(),
-              pago: parseFloat(pago) || 0,
-              devuelta: parseFloat(devuelta) || 0,
-              detallesVentas: productosSeleccionados.map((p) => ({
-                id: p.id,
-                cantidad: p.cantidad,
-                subtotal: p.Precio * p.cantidad,
-                producto: { nombre: p.nombre, precio: p.Precio },
-              })),
+
+        const pedidoDeMesa = Pedidos.find(p => p.mesa.id === mesaSeleccionada.id);
+
+        if (pedidoDeMesa) {
+            const detallesVentas = pedidoDeMesa.detalles.map((detalle) => ({
+                idproducto: detalle.producto.id,
+                subtotal: detalle.subtotal,
+                cantidad: detalle.cantidad,
+            }));
+
+            console.log(detallesVentas); // verificas que llegue bien
+
+            const ahoraUTC = new Date();
+        
+            const data = {
+                fecha: ahoraUTC,
+                devuelta: parseFloat(devuelta) || 0,
+                detallesVentas: detallesVentas
             };
-    
-            exito("Venta realizada con éxito");
-            setVentaActual(ventaCompleta);
-            setTimeout(() => {
-              printRef.current?.print();
-            }, 300);
-    
-            setTimeout(() => {
-              setProductosSeleccionados([]);
-              setPago(0);
-              setDevuelta("");
-              setBusqueda("");
-              setCantidad("");
-            }, 1000);
-          } else {
-            toast.error(
-              "Error, revise el stock de los productos o intente nuevamente.",
-            );
-          }
-        } catch (error) {
-          console.error("Error al realizar la venta:", error.response?.data);
-          toast.error("Error al realizar la venta. Por favor, inténtelo de nuevo.");
+
+            try {
+                const respuesta = await venderProducto(data);
+                if (respuesta.status === 201) {
+                    
+                    toast.success("Venta realizada con éxito");
+                    setTimeout(() => {
+                    setPago(0);
+                    setDevuelta("");
+                    }, 1000);
+
+                } else {
+                    toast.error(
+                        "Error, revise el stock de los productos o intente nuevamente.",
+                    );
+                }
+            } catch (error) {
+                console.error("Error al realizar la venta:", error.response?.data);
+                toast.error("Error al realizar la venta. Por favor, inténtelo de nuevo.");
+            }
+        } else {
+            toast.error("Esta mesa no tiene pedidos activos.");
+            return;
+        };
+
+    };
+
+    const devolucion = (valor) => {
+        const total = calcularTotal();
+        const pagoNumero = Number(valor);
+        if (isNaN(pagoNumero) || pagoNumero < total) {
+            setTdevuelve("Falta");
+            setDevuelta((pagoNumero - total).toFixed(2));
+        return;
+        } else {
+            setTdevuelve("Devuelve");
+            setDevuelta((pagoNumero - total).toFixed(2));
         }
+    };
+
+    const calcularTotal = () => {
+        const pedidoDeMesa = Pedidos.find(p => p.mesa.id === mesaSeleccionada.id);
+        if (!pedidoDeMesa) return 0;
+        return parseFloat(pedidoDeMesa.total);
     };
 
     /* Modal Propina ----------------------------------------------------------------------------*/
@@ -328,6 +347,71 @@ const GestionMesas = () => {
 
     };
 
+    /* Modal Deudor ----------------------------------------------------------------------------*/
+
+        const [ModalDeudor, setModalDeudor] = useState(false);
+        const [errorD, setErrorD] = useState("");
+        const pedidoDeMesa = Pedidos.find(p => p.mesa.id === mesaSeleccionada?.id);
+        const [datosFormD, setDatosFormD] = useState({
+            nombre: "",
+            celular: "",
+            autorizacion: false,
+        });
+    
+        const abrirMdeudor = (mesa) => {
+            setMesaSeleccionada(mesa);
+            setModalDeudor(true);
+        };
+    
+        const cerrarMdeudor = () => {
+            setModalDeudor(false);
+            setDatosFormD({ nombre: "", celular: "", deuda: "", autorizacion: false });
+            setErrorD("");
+        };
+
+        const handleChangeD = (e) => {
+            const { name, value, type, checked } = e.target;
+            setDatosFormD((prev) => ({
+                ...prev,
+                [name]: type === "checkbox" ? checked : value,
+            }));
+        };
+    
+        const handleSubmitD = async (e) => {
+            e.preventDefault();
+
+            const { nombre, celular } = datosFormD;
+        
+            if (!nombre || !celular ) {
+                setError("Por favor complete todos los campos obligatorios.");
+                return;
+            }
+            
+            const pedidoDeMesa = Pedidos.find(p => p.mesa.id === mesaSeleccionada.id);
+
+            const nuevoDeudor = {
+                nombre,
+                celular,
+                deuda: parseFloat(pedidoDeMesa.total),
+                autorizacion: datosFormD.autorizacion,
+            };
+        
+            try {
+                const response = await crearDeudores(nuevoDeudor);
+                if (response.status === 201) {
+                    toast.success("¡Deudor registrado exitosamente!");
+                }
+            } catch (error) {
+                console.error("Excepción al crear el deudor:", error);
+                toast.error("Error al registrar el deudor");
+            }
+        
+            setDatosFormD({ nombre: "", celular: "", autorizacion: false });
+            setErrorD("");
+            cerrarMdeudor();
+        };
+    
+
 
     /* *********************************************************************************************** */
 
@@ -370,10 +454,17 @@ const GestionMesas = () => {
                 <div className="gm-contenido">
                     {MesasData.length > 0 ? (
                         MesasData.map((mesa) => (
-                            <div key={mesa.id} className="gm-mesa" onClick={() => AbrirMD(mesa)}>
-                                <h2 className="gm-mesa-numero"> Mesa #{mesa.numero}</h2>
-                                <button onClick={abrirModalIE}>Propina</button>
+                            <div>
+                                <div key={mesa.id} className="gm-mesa" onClick={() => AbrirMD(mesa)}>
+                                    <h2 className="gm-mesa-numero"> Mesa #{mesa.numero}</h2>
+                                </div>
+                                <div>
+                                    <button onClick={abrirModalIE}>Propina</button>
+                                    <button onClick={() => abrirMdeudor(mesa)}>Deudor</button>
+                                </div>
+
                             </div>
+                            
 
                         ))) 
                         : 
@@ -384,13 +475,14 @@ const GestionMesas = () => {
                 </div>
 
                 {ModalDetalle && mesaSeleccionada && (
-                    <div className="gm-modal" onClick={CerrarMD}>
+                    <div className="gm-modal-d" onClick={CerrarMD}>
                         <div className="gm-modal-content" onClick={(e) => e.stopPropagation()}>
                             <h2> Detalles de Mesa #{mesaSeleccionada.numero}</h2>
 
                             {Pedidos.filter(pedido => pedido.mesa.id === mesaSeleccionada.id).map((pedido) => (
                                 <div key={pedido.id} className="gm-pedido">
                                     <button onClick={() => AbrirMA(pedido.id)}>Agregar</button>
+                                    <button onClick={vender}>Vender</button>
                                     <div className="gm-pedido-header">
                                         <span className="gm-pedido-estado">{pedido.estado}</span>
                                         <span className="gm-pedido-total">Total: ${pedido.total}</span>
@@ -415,13 +507,93 @@ const GestionMesas = () => {
                             {Pedidos.filter(p => p.mesa.id === mesaSeleccionada.id).length === 0 && (
                                 <p>Esta mesa no tiene pedidos.</p>
                             )}
+
+                            <div className="hm-payment-fields">
+                                <div className="hm-pay-row">
+                                    <label className="hm-pay-label">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="13"
+                                            height="13"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        >
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M6 5h12a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-3a2 2 0 0 0 0 -4v-3a2 2 0 0 1 2 -2" />
+                                        </svg>
+                                        Pago del cliente
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        className="hm-pay-input"
+                                        value={pago}
+                                        onChange={(e) => {
+                                            const valor = e.target.value;
+                                            setPago(valor);
+                                            devolucion(valor);
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            {devuelta !== "" && (
+                                <div
+                                    className={`hm-pay-row hm-pay-row--result ${Tdevuelve === "Falta" ? "hm-pay-row--falta" : "hm-pay-row--devuelve"}`}
+                                >
+                                    <span className="hm-pay-label">
+                                        {Tdevuelve === "Falta" ? (
+                                            <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="13"
+                                            height="13"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            >
+                                            <path d="M12 9v4" />
+                                            <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
+                                            <path d="M12 16h.01" />
+                                            </svg>
+                                        ) : (
+                                            <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="13"
+                                            height="13"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            >
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M5 12l5 5l10 -10" />
+                                            </svg>
+                                        )}
+                                        {Tdevuelve === "Falta" ? "Falta" : "Devuelve"}
+                                    </span>
+                                    <input
+                                        type="text"
+                                        className="hm-pay-input hm-pay-input--result"
+                                        value={devuelta}
+                                        readOnly
+                                    />
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}
 
 
                 {ModalAgregar && pedidoId &&  mesaSeleccionada && (
-                    <div className="gm-modal" onClick={CerrarMA}>
+                    <div className="gm-modal-ap" onClick={CerrarMA}>
                         <div className="gm-cart-panel" onClick={(e) => e.stopPropagation()}>
                             <h1>Agregar productos al pedido actual de la mesa #{mesaSeleccionada.numero}</h1>
                             {/* Input bar */}
@@ -501,24 +673,24 @@ const GestionMesas = () => {
 
                                 {/* Add button */}
                                 <button className="gm-btn gm-btn--add" onClick={AgregarProducto}>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="15"
-                                    height="15"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                >
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                    <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                    <path d="M17 17h-11v-14h-2" />
-                                    <path d="M6 5l14 1l-1 7h-13" />
-                                </svg>
-                                Agregar
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="15"
+                                        height="15"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                        <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                        <path d="M17 17h-11v-14h-2" />
+                                        <path d="M6 5l14 1l-1 7h-13" />
+                                    </svg>
+                                    Agregar
                                 </button>
                             </div>
 
@@ -539,87 +711,93 @@ const GestionMesas = () => {
                                 <tbody>
                                     {productosSeleccionados.map((p, i) => (
                                     <tr key={p.id} className="gm-tr">
-                                        <td className="gm-td gm-td--idx">{i + 1}</td>
-                                        <td className="gm-td gm-td--name">{p.nombre}</td>
+                                        <td className="gm-td gm-td--idx">
+                                            {i + 1}
+                                        </td>
+                                        <td className="gm-td gm-td--name">
+                                            {p.nombre}
+                                        </td>
                                         <td className="gm-td gm-td--center">
-                                        <div className="gm-qty-ctrl">
-                                            <button
-                                            className="gm-qty-btn"
-                                            onClick={() => actualizarCantidad(p.id, "restar")}
-                                            >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="12"
-                                                height="12"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="2.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            >
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M5 12l14 0" />
-                                            </svg>
-                                            </button>
-                                            <input
-                                            type="number"
-                                            className="gm-qty-val"
-                                            value={p.cantidad}
-                                            readOnly
-                                            />
-                                            <button
-                                            className="gm-qty-btn"
-                                            onClick={() => actualizarCantidad(p.id, "sumar")}
-                                            >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="12"
-                                                height="12"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="2.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            >
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M12 5l0 14" />
-                                                <path d="M5 12l14 0" />
-                                            </svg>
-                                            </button>
-                                        </div>
+                                            <div className="gm-qty-ctrl">
+                                                <button
+                                                className="gm-qty-btn"
+                                                onClick={() => actualizarCantidad(p.id, "restar")}
+                                                >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="12"
+                                                    height="12"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2.5"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                >
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M5 12l14 0" />
+                                                </svg>
+                                                </button>
+                                                <input
+                                                type="number"
+                                                className="gm-qty-val"
+                                                value={p.cantidad}
+                                                readOnly
+                                                />
+                                                <button
+                                                className="gm-qty-btn"
+                                                onClick={() => actualizarCantidad(p.id, "sumar")}
+                                                >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="12"
+                                                    height="12"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2.5"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                >
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M12 5l0 14" />
+                                                    <path d="M5 12l14 0" />
+                                                </svg>
+                                                </button>
+                                            </div>
                                         </td>
                                         <td className="gm-td gm-td--right gm-td--price">
-                                        ${p.Precio}
+                                            ${p.Precio}
                                         </td>
-                                        <td className="gm-td gm-td--right">${p.subtotal}</td>
+                                        <td className="gm-td gm-td--right">
+                                            ${p.subtotal}
+                                        </td>
                                         <td className="gm-td gm-td--right gm-td--total">
-                                        ${p.total}
+                                            ${p.total}
                                         </td>
                                         <td className="gm-td gm-td--del">
-                                        <button
-                                            className="gm-del-btn"
-                                            onClick={() => eliminarP(p.id)}
-                                        >
-                                            <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="15"
-                                            height="15"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
+                                            <button
+                                                className="gm-del-btn"
+                                                onClick={() => eliminarP(p.id)}
                                             >
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M4 7h16" />
-                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                            <path d="M10 12l4 4m0 -4l-4 4" />
-                                            </svg>
-                                        </button>
+                                                <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="15"
+                                                height="15"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                >
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 7h16" />
+                                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                <path d="M10 12l4 4m0 -4l-4 4" />
+                                                </svg>
+                                            </button>
                                         </td>
                                     </tr>
                                     ))}
@@ -657,6 +835,7 @@ const GestionMesas = () => {
                                 <button onClick={CerrarMA}>Cancelar</button>
                             </div>
                         </div>
+
                     </div>
                 )}
 
@@ -722,6 +901,122 @@ const GestionMesas = () => {
                                         strokeLinejoin="round"
                                         >
                                         <path d="M5 12l5 5l10 -10" />
+                                        </svg>
+                                        GUARDAR
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
+
+                {ModalDeudor && (
+                    <div className="de-overlay-gm" onClick={cerrarMdeudor}>
+                        <div
+                            className="de-modal-gm"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <span className="de-corner de-corner--tl-gm"></span>
+                            <span className="de-corner de-corner--br-gm"></span>
+
+                            <div className="de-modal-header-gm">
+                                <p className="de-modal-title-gm">REGISTRAR NUEVO DEUDOR</p>
+                                <button className="de-close-btn-gm" onClick={cerrarMdeudor}>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    >
+                                        <path d="M18 6l-12 12" />
+                                        <path d="M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <form className="de-form-gm" onSubmit={handleSubmitD}>
+                                <div className="de-field-gm">
+                                    <label className="de-label-gm">Nombre completo</label>
+                                    <input
+                                        className="de-input-gm"
+                                        type="text"
+                                        placeholder="Ej: Juan Pérez"
+                                        name="nombre"
+                                        value={datosFormD.nombre}
+                                        onChange={handleChangeD}
+                                    />
+                                </div>
+
+                                <div className="de-field-gm">
+                                    <label className="de-label-gm">Celular</label>
+                                    <input
+                                        className="de-input-gm"
+                                        type="tel"
+                                        placeholder="Número de celular"
+                                        name="celular"
+                                        value={datosFormD.celular}
+                                        onChange={handleChangeD}
+                                    />
+                                </div>
+
+                                <div className="de-field-gm">
+                                    <label className="de-label-gm">Deuda ($)</label>
+                                    {pedidoDeMesa && (
+                                        <input
+                                            className="de-input-gm"
+                                            value={pedidoDeMesa.total}
+                                            readOnly
+                                        />
+                                    )}
+                                </div>
+
+                                <div className="de-field--toggle-gm">
+                                    <span className="de-label-gm">Autorizado</span>
+                                    <label className="de-toggle-gm">
+                                        <input
+                                            type="checkbox"
+                                            name="autorizacion"
+                                            checked={datosFormD.autorizacion}
+                                            onChange={handleChangeD}
+                                            className="de-toggle-input-gm"
+                                        />
+                                        <span className="de-toggle-track-gm">
+                                            <span className="de-toggle-thumb-gm"></span>
+                                        </span>
+                                        <span className="de-toggle-text-gm">
+                                            {datosFormD.autorizacion ? "SÍ" : "NO"}
+                                        </span>
+                                    </label>
+                                </div>
+
+                                {errorD && <p className="de-error-gm">{errorD}</p>}
+
+                                <div className="de-modal-footer-gm">
+                                    <button
+                                        type="button"
+                                        className="de-btn de-btn--ghost"
+                                        onClick={cerrarMdeudor}
+                                    >
+                                        CANCELAR
+                                    </button>
+                                    <button type="submit" className="de-btn de-btn--verde">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="13"
+                                            height="13"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        >
+                                            <path d="M5 12l5 5l10 -10" />
                                         </svg>
                                         GUARDAR
                                     </button>

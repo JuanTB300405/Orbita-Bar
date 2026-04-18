@@ -178,7 +178,7 @@
 }
 
 /* Modal Detalles */
-.gm-modal {
+.gm-modal-d {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.75);
@@ -264,7 +264,7 @@
 /* ----------------------------------------------------------------------------------------------------------*/
 /* Modal Agregar Productos */
 
-.gm-modal {
+.gm-modal-ap {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.75);
@@ -821,6 +821,7 @@
 }
 
 /* ── Error ── */
+
 .gm-error {
   font-family: "Space Grotesk", sans-serif;
   font-size: 0.65rem;
@@ -834,6 +835,211 @@
 }
 
 .gm-modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  padding: 0.9rem 1.4rem;
+  border-top: 1px solid rgba(68, 72, 79, 0.4);
+  background: #1b2028;
+} 
+
+/* ----------------------------------------------------------------------------------------------------------*/
+/* Modal Propina */
+
+.de-overlay-gm {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  backdrop-filter: blur(2px);
+}
+
+.de-modal-gm {
+  position: relative;
+  background: #151a21;
+  border: 1px solid rgba(156, 255, 147, 0.18);
+  box-shadow:
+    0 0 40px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(156, 255, 147, 0.06);
+  width: min(480px, 94vw);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: de-fade-in 0.18s ease;
+}
+
+.de-modal-header-gm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.3rem;
+  background: #1b2028;
+  border-bottom: 1px solid rgba(68, 72, 79, 0.4);
+}
+
+.de-modal-title-gm {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #f1f3fc;
+  margin: 0;
+}
+
+.de-close-btn-gm {
+  background: transparent;
+  border: none;
+  color: #555a6a;
+  cursor: pointer;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.de-close-btn-gm:hover {
+  color: #ff4d4f;
+}
+
+.de-form-gm {
+  padding: 1.3rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.de-field-gm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.de-label-gm {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #a8abb3;
+}
+
+.de-input-gm {
+  background: #0f141a;
+  color: #f1f3fc;
+  border: 1px solid rgba(68, 72, 79, 0.6);
+  padding: 0.55rem 0.75rem;
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition:
+    border-color 0.18s,
+    box-shadow 0.18s;
+}
+
+.de-input-gm:focus {
+  border-color: rgba(156, 255, 147, 0.45);
+  box-shadow: 0 0 0 1px rgba(156, 255, 147, 0.12);
+}
+
+.de-input-gm::placeholder {
+  color: #3d4251;
+  font-size: 0.8rem;
+}
+
+.de-field--toggle-gm {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.75rem;
+  background: rgba(10, 14, 20, 0.4);
+  border: 1px solid rgba(68, 72, 79, 0.4);
+}
+
+.de-toggle-gm {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.de-toggle-input-gm {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.de-toggle-track-gm {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  background: rgba(68, 72, 79, 0.5);
+  border: 1px solid rgba(68, 72, 79, 0.7);
+  border-radius: 10px;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.de-toggle-input-gm:checked + .de-toggle-track-gm {
+  background: rgba(156, 255, 147, 0.2);
+  border-color: rgba(156, 255, 147, 0.5);
+}
+
+.de-toggle-thumb-gm {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: #555a6a;
+  border-radius: 50%;
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+
+.de-toggle-input-gm:checked + .de-toggle-track-gm .de-toggle-thumb-gm {
+  transform: translateX(16px);
+  background: #9cff93;
+}
+
+.de-toggle-text-gm {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #a8abb3;
+  min-width: 1.5rem;
+  transition: color 0.2s;
+}
+
+.de-toggle-input-gm:checked ~ .de-toggle-text-gm {
+  color: #9cff93;
+}
+
+.de-error-gm {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #ff4d4f;
+  background: rgba(255, 77, 79, 0.06);
+  border: 1px solid rgba(255, 77, 79, 0.2);
+  padding: 0.45rem 0.75rem;
+  margin: 0;
+}
+
+.de-modal-footer-gm {
   display: flex;
   gap: 0.75rem;
   justify-content: flex-end;
