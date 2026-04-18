@@ -389,12 +389,34 @@ const GestionMesas = () => {
             try {
                 const response = await crearDeudores(nuevoDeudor);
                 if (response.status === 201) {
-                    toast.success("¡Deudor registrado exitosamente!");
+                    if (pedidoDeMesa) {
+
+                        try {
+                            const respuesta = await confirmarPago(pedidoDeMesa.id);
+                            if (respuesta.status === 201) {
+                                toast.success("Deudor registrado y venta realizada con éxito");
+                            } else {
+                                toast.error(
+                                    "Error al registrar la venta del deudor.",
+                                );
+                            }
+                        } catch (error) {
+                            console.error("Error al realizar la venta:", error.response?.data);
+                            toast.error("Error al realizar la venta. Por favor, inténtelo de nuevo.");
+                        }
+                        
+                    } else {
+                        toast.error("Esta mesa no tiene pedidos activos.");
+                        return;
+                    };
                 }
             } catch (error) {
                 console.error("Excepción al crear el deudor:", error);
                 toast.error("Error al registrar el deudor");
             }
+
+
+
         
             setDatosFormD({ nombre: "", celular: "", autorizacion: false });
             setErrorD("");
