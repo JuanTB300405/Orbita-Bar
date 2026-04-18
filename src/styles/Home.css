@@ -892,9 +892,71 @@
 }
 
 
-/* mesas */
+/* ── Mesa group ──────────────────────────────────────────── */
+.hm-mesa-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(68, 72, 79, 0.3);
+  margin-top: 0.1rem;
+}
 
+.hm-mesa-group .hm-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
 
+.hm-mesa-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #090d12;
+  border: 1px solid rgba(68, 72, 79, 0.55);
+  border-radius: 2px;
+  padding: 0.45rem 0.7rem;
+  transition: border-color 0.15s;
+}
+.hm-mesa-select-wrap:focus-within {
+  border-color: rgba(167, 139, 250, 0.45);
+}
+.hm-mesa-select-wrap svg {
+  color: #555a6a;
+  flex-shrink: 0;
+}
+
+.hm-mesa-select {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e0e4ec;
+  font-family: "Inter", sans-serif;
+  font-size: 0.83rem;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  min-width: 0;
+}
+.hm-mesa-select option {
+  background: #0f141a;
+  color: #e0e4ec;
+}
+
+.hm-btn--mesa {
+  width: 100%;
+  justify-content: center;
+  padding: 0.55rem 1rem;
+  background: rgba(167, 139, 250, 0.07);
+  border-color: rgba(167, 139, 250, 0.32);
+  color: #a78bfa;
+  font-size: 0.72rem;
+}
+.hm-btn--mesa:hover {
+  background: rgba(167, 139, 250, 0.14);
+  box-shadow: 0 0 12px rgba(167, 139, 250, 0.18);
+}
 
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 900px) {

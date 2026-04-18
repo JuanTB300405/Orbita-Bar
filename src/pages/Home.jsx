@@ -23,6 +23,14 @@ const Home = () => {
   const [mesaSeleccionada, setMesaSeleccionada] = useState("");
 
   const enviarmesa = async () => {
+    if (productosSeleccionados.length === 0) {
+      toast.error("Agrega productos antes de enviar a mesa.");
+      return;
+    }
+    if (!mesaSeleccionada) {
+      toast.error("Selecciona una mesa.");
+      return;
+    }
 
     const pedido = {
       mesa_id: mesaSeleccionada,
@@ -35,19 +43,15 @@ const Home = () => {
     try {
       const respuesta = await crearPedido(pedido);
       if (respuesta.status === 201) {
-        toast.success(
-          "Pedido creado con éxito."
-        );
+        toast.success("Pedido enviado a mesa con éxito.");
         setProductosSeleccionados([]);
+        setMesaSeleccionada("");
       } else {
-        toast.error(
-          "Error al crear el pedido.",
-        );
+        toast.error("Error al crear el pedido.");
       }
     } catch (error) {
-      console.error("Error al crear el pedido rr:", error.response?.data);
+      console.error("Error al crear el pedido:", error.response?.data);
     }
-
   };
 
   const obtenerMesas = async () => {
@@ -60,8 +64,6 @@ const Home = () => {
           }
       } catch (error) {
           console.error("Error en la consulta:", error);
-      } finally {
-          setCargando(false);
       }
   };
   
@@ -703,28 +705,47 @@ const Home = () => {
 
               {/* Seleccionar mesa */}
               <div className="hm-mesa-group">
-                <label className="hm-label">Seleccionar Mesa</label>
-                <select className="hm-input" value={mesaSeleccionada} onChange={(e) => setMesaSeleccionada(e.target.value)}>
-                  <option value="">-- Seleccionar Mesa --</option>
-                      {MesasData.filter(mesa => mesa.disponible === true).length > 0 ? (
-                        MesasData.filter(mesa => mesa.disponible === true).map((mesa) => (
-                          <option key={mesa.id} value={mesa.id}>
-                            Mesa {mesa.numero}
-                          </option>
-                        ))
-                      ) : (
-                        <option value="" disabled>
-                          No hay mesas disponibles
-                        </option>
-                      )}
-                </select>
+                <label className="hm-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-4z" />
+                    <path d="M3 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-4z" />
+                    <path d="M15 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-4z" />
+                    <path d="M9 15h6" />
+                  </svg>
+                  ENVIAR A MESA
+                </label>
+                <div className="hm-mesa-select-wrap">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-4z" />
+                    <path d="M3 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-4z" />
+                    <path d="M15 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-4z" />
+                    <path d="M9 15h6" />
+                  </svg>
+                  <select
+                    className="hm-mesa-select"
+                    value={mesaSeleccionada}
+                    onChange={(e) => setMesaSeleccionada(e.target.value)}
+                  >
+                    <option value="">-- Seleccionar --</option>
+                    {MesasData.filter(m => m.disponible === true).map(m => (
+                      <option key={m.id} value={m.id}>Mesa {m.numero}</option>
+                    ))}
+                    {MesasData.filter(m => m.disponible === true).length === 0 && (
+                      <option value="" disabled>Sin mesas disponibles</option>
+                    )}
+                  </select>
+                </div>
+                {mesaSeleccionada && (
+                  <button className="hm-btn hm-btn--mesa" onClick={enviarmesa}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M10 14l11 -11" />
+                      <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" />
+                    </svg>
+                    ENVIAR A MESA
+                  </button>
+                )}
               </div>
-
-              {mesaSeleccionada && (
-                <button onClick={enviarmesa}>
-                  Enviar a Mesa
-                </button>
-              )}
 
           </div>
 
