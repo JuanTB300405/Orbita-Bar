@@ -21,6 +21,7 @@ import IngresosExternos from "./pages/IngresosExternos";
 import Inicio from "./pages/Inicio";
 import Mesa from "./pages/Mesa";
 import Pedidos from "./pages/pedidos";
+import CierreCaja from "./pages/CierreCaja";
 function App() {
   const [Autenticacion, setAutenticacion] = useState(false);
   const [verificandoToken, setVerificandoToken] = useState(true);
@@ -72,6 +73,7 @@ function App() {
                   element={<IngresosExternos />}
                 />
                 <Route path="/mesa" element={<Mesa />} />
+                <Route path="/cierreCaja" element={<CierreCaja />} />
               </Route>
             </Routes>
           </Router>
