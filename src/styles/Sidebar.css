@@ -225,6 +225,19 @@
   font-weight: 500;
 }
 
+/* ── Pedidos fijo (no scrollea con el nav) ───────────────── */
+.sb-pedidos-fixed {
+  flex-shrink: 0;
+  padding: 0 0.6rem 0.3rem;
+  border-top: 1px solid rgba(68, 72, 79, 0.28);
+  background: rgba(156, 255, 147, 0.02);
+}
+
+.sb-pedidos-fixed .sb-section {
+  padding-top: 0.65rem;
+  padding-bottom: 0.2rem;
+}
+
 /* ── Logout ──────────────────────────────────────────────── */
 .sb-logout {
   display: flex;

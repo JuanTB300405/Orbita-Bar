@@ -36,7 +36,8 @@ const Home = () => {
     }
 
     const pedido = {
-      mesa_id: mesaSeleccionada,
+      mesa_id: Number(mesaSeleccionada),
+      proveniencia: "mesa",
       productos: productosSeleccionados.map((p) => ({
         producto_id: p.id,
         cantidad: p.cantidad,
@@ -428,9 +429,9 @@ const Home = () => {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="1"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
                     <path d="M10 8v8" />
                     <path d="M14 8v8" />
@@ -599,9 +600,9 @@ const Home = () => {
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          stroke-width="1"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         >
                           <path d="M4 7l16 0" />
                           <path d="M10 11l0 6" />

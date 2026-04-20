@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import BarcodeScanner from "../components/BardcodeScanner";
+import beepSound from "../assets/sonidos/beepSound.mp3";
 import "react-toastify/dist/ReactToastify.css";
 import { consultaInventario } from "../js/inventario";
 import { confirmarPago } from "../js/pedidos";
@@ -28,6 +30,7 @@ const GestionMesas = () => {
     const [MesasData, setMesasData] = useState([]);
     const [Pedidos, setPedidos] = useState([]);
     const [productos, setProductos] = useState([]);
+    const [scanner, setScanner] = useState(false);
 
     const obtenerMesas = async () => {
         try {
@@ -75,6 +78,25 @@ const GestionMesas = () => {
     const CerrarMA = () => {
         setPedidoId(null); setModalAgregar(false);
         setProductosSeleccionados([]); setBusqueda(""); setCantidad("");
+        setScanner(false);
+    };
+
+    const reproducirBeep = () => {
+        const audio = new Audio(beepSound);
+        audio.volume = 0.5;
+        audio.play();
+    };
+
+    const agregarProductoPorCodigo = (codigo) => {
+        const producto = productos.find((p) => p.codigoBarras === codigo);
+        if (!producto) {
+            toast.error("Producto no encontrado");
+            setScanner(false);
+            return;
+        }
+        reproducirBeep();
+        handleSeleccionarProducto(producto);
+        setScanner(false);
     };
 
     const handleBusqueda = (texto) => {
@@ -261,6 +283,11 @@ const GestionMesas = () => {
 
     return (
         <>
+            {scanner && (
+                <div className="Scan--active">
+                    <BarcodeScanner onResult={(valor) => agregarProductoPorCodigo(valor)} />
+                </div>
+            )}
             <div className="gm-page">
 
                 {/* ── Header ───────────────────────────────────────────── */}
@@ -531,6 +558,13 @@ const GestionMesas = () => {
                                             <path d="M21 21l-6 -6" />
                                         </svg>
                                         <input type="text" className="gm-input" value={busqueda} placeholder="Buscar producto..." onChange={e => handleBusqueda(e.target.value)} />
+                                        <div className="Scanner" title="Escanear código de barras" onClick={() => setScanner(!scanner)}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M10 8v8" /><path d="M14 8v8" /><path d="M8 10h8" /><path d="M8 14h8" />
+                                                <path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" />
+                                                <path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" />
+                                            </svg>
+                                        </div>
                                     </div>
                                     {sugerencia.length > 0 && (
                                         <div className="gm-suggestions">

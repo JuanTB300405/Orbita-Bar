@@ -339,7 +339,6 @@ const Ventas = () => {
               DESCARGAR TODO
             </button>
           )}
-          <div Classname="vt-"></div>
           <div className="vt-total-badge">
             <span className="vt-total-label">SELECCIÓN</span>
             <span className="vt-total-value">${Total}</span>

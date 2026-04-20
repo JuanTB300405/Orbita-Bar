@@ -20,7 +20,7 @@ import Deudores from "./pages/Deudores";
 import IngresosExternos from "./pages/IngresosExternos";
 import Inicio from "./pages/Inicio";
 import Mesa from "./pages/Mesa";
-
+import Pedidos from "./pages/pedidos";
 function App() {
   const [Autenticacion, setAutenticacion] = useState(false);
   const [verificandoToken, setVerificandoToken] = useState(true);
@@ -66,6 +66,7 @@ function App() {
                 <Route path="/ventas" element={<Ventas />} />
                 <Route path="/gestionMesas" element={<GestionMesas />} />
                 <Route path="/deudores" element={<Deudores />} />
+                <Route path="/pedidos" element={<Pedidos />} />
                 <Route
                   path="/ingresosExternos"
                   element={<IngresosExternos />}

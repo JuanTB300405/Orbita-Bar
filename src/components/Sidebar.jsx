@@ -348,6 +348,38 @@ const Sidebar = ({ setAutenticacion }) => {
         </ul>
       </nav>
 
+      {/* ── Pedidos fijo (fuera del scroll) ───────────── */}
+      <div className="sb-pedidos-fixed">
+        <div className="sb-section">
+          <span className="sb-section-label">PEDIDOS</span>
+        </div>
+        <div className={`sb-item${act("/pedidos")}`}>
+          <span className="sb-item-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="17"
+              height="17"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+              <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+              <path d="M9 12l.01 0" />
+              <path d="M13 12l2 0" />
+              <path d="M9 16l.01 0" />
+              <path d="M13 16l2 0" />
+            </svg>
+          </span>
+          <Link className="sb-link" to="/pedidos">
+            Pedidos
+          </Link>
+        </div>
+      </div>
+
       {/* ── Logout ────────────────────────────────────── */}
       <button className="sb-logout" onClick={abrirmodal}>
         <svg

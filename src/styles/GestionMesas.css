@@ -1344,3 +1344,24 @@
   background: rgba(156, 255, 147, 0.14);
   box-shadow: 0 0 10px rgba(156, 255, 147, 0.15);
 }
+
+/* ── Scanner ─────────────────────────────── */
+.gm-search-wrap .Scanner {
+  flex-shrink: 0;
+  cursor: pointer;
+  color: #555a6a;
+  transition: color 0.14s;
+  display: flex;
+  align-items: center;
+  padding: 0 0.2rem;
+}
+.gm-search-wrap .Scanner:hover { color: #9cff93; }
+.Scan--active {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+}

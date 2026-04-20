@@ -1,0 +1,1326 @@
+/* ════════════════════════════════════════
+   MÓDULO DE PEDIDOS  —  pd- design token
+   ════════════════════════════════════════ */
+
+.pd-page {
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  padding: 1.5rem 1.5rem 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+/* ── Loading ────────────────────────────── */
+.pd-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 1.5rem;
+}
+
+.pd-loader {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(156, 255, 147, 0.15);
+  border-top-color: #9cff93;
+  border-radius: 50%;
+  animation: pd-spin 0.8s linear infinite;
+}
+
+@keyframes pd-spin {
+  to { transform: rotate(360deg); }
+}
+
+.pd-loading-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: #a8abb3;
+}
+
+/* ── Header ─────────────────────────────── */
+.pd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.pd-header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.pd-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.pd-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
+}
+
+.pd-status-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #9cff93;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #9cff93;
+  animation: pd-blink 0.9s linear infinite;
+}
+
+@keyframes pd-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.pd-status-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.65rem;
+  color: #9cff93;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.pd-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #f1f3fc;
+}
+
+/* ── Error ──────────────────────────────── */
+.pd-error {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.75rem;
+  color: #ff4d4f;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(255, 77, 79, 0.25);
+  background: rgba(255, 77, 79, 0.06);
+  flex-shrink: 0;
+}
+
+/* ── Botones ────────────────────────────── */
+.pd-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.pd-btn--ghost {
+  color: #a8abb3;
+  background: transparent;
+  border-color: rgba(68, 72, 79, 0.6);
+}
+.pd-btn--ghost:hover {
+  color: #f1f3fc;
+  border-color: rgba(168, 171, 179, 0.4);
+}
+
+.pd-btn--verde {
+  color: #9cff93;
+  background: rgba(156, 255, 147, 0.08);
+  border-color: rgba(156, 255, 147, 0.3);
+}
+.pd-btn--verde:hover {
+  background: rgba(156, 255, 147, 0.15);
+  box-shadow: 0 0 12px rgba(156, 255, 147, 0.15);
+}
+
+.pd-btn--rojo {
+  color: #ff4d4f;
+  background: rgba(255, 77, 79, 0.08);
+  border-color: rgba(255, 77, 79, 0.3);
+}
+.pd-btn--rojo:hover {
+  background: rgba(255, 77, 79, 0.15);
+}
+
+.pd-btn--lg {
+  padding: 0.65rem 1.5rem;
+  font-size: 0.68rem;
+}
+
+/* ── Tabs: Mesa / Web ──────────────────── */
+.pd-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(68, 72, 79, 0.4);
+  flex-shrink: 0;
+}
+
+.pd-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.65rem 1.2rem;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #555a6a;
+  transition: color 0.18s, border-color 0.18s;
+  margin-bottom: -1px;
+}
+
+.pd-tab:hover {
+  color: #a8abb3;
+}
+
+.pd-tab--active {
+  color: #9cff93;
+  border-bottom-color: #9cff93;
+}
+
+/* ── Filtros de estado ─────────────────── */
+.pd-estado-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.pd-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.7rem;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid rgba(68, 72, 79, 0.5);
+  color: #555a6a;
+  transition: border-color 0.18s, color 0.18s, background 0.18s;
+}
+
+.pd-chip:hover {
+  border-color: rgba(168, 171, 179, 0.35);
+  color: #a8abb3;
+}
+
+.pd-chip-count {
+  font-size: 0.58rem;
+  background: rgba(68, 72, 79, 0.4);
+  padding: 0.05rem 0.3rem;
+  border-radius: 8px;
+}
+
+/* active states */
+.pd-chip--todos.pd-chip--active {
+  color: #9cff93;
+  border-color: rgba(156, 255, 147, 0.45);
+  background: rgba(156, 255, 147, 0.06);
+}
+
+.pd-chip--pendiente.pd-chip--active {
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.45);
+  background: rgba(245, 158, 11, 0.06);
+}
+
+.pd-chip--pagado.pd-chip--active {
+  color: #9cff93;
+  border-color: rgba(156, 255, 147, 0.45);
+  background: rgba(156, 255, 147, 0.06);
+}
+
+.pd-chip--cancelado.pd-chip--active {
+  color: #ff4d4f;
+  border-color: rgba(255, 77, 79, 0.45);
+  background: rgba(255, 77, 79, 0.06);
+}
+
+.pd-estado-spacer {
+  flex: 1;
+}
+
+.pd-count-info {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.62rem;
+  color: #555a6a;
+  letter-spacing: 0.05em;
+}
+
+.pd-count-info strong {
+  color: #f1f3fc;
+}
+
+/* ════════════════════════════════════════
+   TABLA
+   ════════════════════════════════════════ */
+
+.pd-table-panel {
+  background: #0f141a;
+  border: 1px solid rgba(68, 72, 79, 0.45);
+  flex: 1;
+  overflow: hidden;
+  border-radius: 2px;
+  min-height: 0;
+}
+
+.pd-table-wrap {
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 255, 147, 0.2) transparent;
+}
+
+.pd-table-wrap::-webkit-scrollbar { width: 4px; height: 4px; }
+.pd-table-wrap::-webkit-scrollbar-track { background: transparent; }
+.pd-table-wrap::-webkit-scrollbar-thumb {
+  background: rgba(156, 255, 147, 0.2);
+  border-radius: 2px;
+}
+
+.pd-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.pd-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #090d12;
+}
+
+.pd-th {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #555a6a;
+  text-align: left;
+  padding: 0.85rem 1rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  user-select: none;
+  border-bottom: 1px solid rgba(68, 72, 79, 0.5);
+}
+
+.pd-th + .pd-th {
+  border-left: 1px solid rgba(68, 72, 79, 0.08);
+}
+
+.pd-th--idx {
+  width: 36px;
+  text-align: right;
+  padding-right: 0.5rem;
+}
+
+.pd-th--center { text-align: center; }
+.pd-th--right  { text-align: right; }
+.pd-th--del    { width: 40px; }
+
+.pd-tr {
+  border-bottom: 1px solid rgba(68, 72, 79, 0.1);
+  transition: background 0.12s;
+}
+
+.pd-table tbody .pd-tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.012);
+}
+
+.pd-tr--clickable { cursor: pointer; }
+
+.pd-tr--clickable:hover {
+  background: rgba(156, 255, 147, 0.045) !important;
+}
+
+.pd-td {
+  padding: 0.85rem 1rem;
+  color: #a8abb3;
+  vertical-align: middle;
+}
+
+.pd-td--idx {
+  width: 36px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.56rem;
+  color: #333740;
+  text-align: right;
+  padding-right: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pd-td--fecha {
+  color: #6c6f7c;
+  font-size: 0.79rem;
+  white-space: nowrap;
+}
+
+.pd-td--center { text-align: center; }
+.pd-td--right  { text-align: right; }
+
+.pd-td--empty {
+  text-align: center;
+  padding: 5rem 1rem;
+  color: #2e323c;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.pd-td--del {
+  width: 40px;
+  text-align: center;
+}
+
+/* ── Badges de estado ── */
+.pd-badge {
+  display: inline-block;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pd-badge--pendiente {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.pd-badge--pagado {
+  color: #9cff93;
+  background: rgba(156, 255, 147, 0.1);
+  border: 1px solid rgba(156, 255, 147, 0.3);
+}
+
+.pd-badge--cancelado {
+  color: #ff4d4f;
+  background: rgba(255, 77, 79, 0.08);
+  border: 1px solid rgba(255, 77, 79, 0.25);
+}
+
+/* ── Tags ── */
+.pd-id-tag {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.72rem;
+  color: #a8abb3;
+  letter-spacing: 0.05em;
+}
+
+.pd-mesa-tag {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: #7de8f5;
+  background: rgba(14, 234, 253, 0.07);
+  border: 1px solid rgba(14, 234, 253, 0.18);
+  padding: 0.2rem 0.55rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pd-tipo-tag {
+  display: inline-block;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.18rem 0.5rem;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.pd-tipo-tag--mesa {
+  color: #7de8f5;
+  background: rgba(14, 234, 253, 0.07);
+  border: 1px solid rgba(14, 234, 253, 0.2);
+}
+
+.pd-tipo-tag--web {
+  color: #c084fc;
+  background: rgba(192, 132, 252, 0.08);
+  border: 1px solid rgba(192, 132, 252, 0.25);
+}
+
+/* ── Precio ── */
+.pd-precio-txt {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  color: #9cff93;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.1rem;
+}
+
+.pd-precio-sym {
+  font-size: 0.65rem;
+  opacity: 0.55;
+}
+
+/* ── Botón "Ver más" en fila ── */
+.pd-detail-btn {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
+  background: transparent;
+  border: 1px solid rgba(68, 72, 79, 0.6);
+  color: #a8abb3;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.pd-detail-btn:hover {
+  border-color: rgba(156, 255, 147, 0.4);
+  color: #9cff93;
+  background: rgba(156, 255, 147, 0.04);
+}
+
+/* ════════════════════════════════════════
+   OVERLAY & MODALES
+   ════════════════════════════════════════ */
+
+.pd-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  backdrop-filter: blur(2px);
+  animation: pd-fade-in 0.15s ease;
+}
+
+@keyframes pd-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Corners ── */
+.pd-corner {
+  position: absolute;
+  width: 0.85rem;
+  height: 0.85rem;
+  pointer-events: none;
+}
+
+.pd-corner--tl {
+  top: 0; left: 0;
+  border-top: 2px solid #9cff93;
+  border-left: 2px solid #9cff93;
+}
+
+.pd-corner--br {
+  bottom: 0; right: 0;
+  border-bottom: 2px solid #9cff93;
+  border-right: 2px solid #9cff93;
+}
+
+.pd-corner--danger {
+  border-color: #ff4d4f !important;
+}
+
+/* ── Close button ── */
+.pd-close-btn {
+  background: transparent;
+  border: none;
+  color: #555a6a;
+  cursor: pointer;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.pd-close-btn:hover {
+  color: #ff4d4f;
+}
+
+/* ── Modal base ── */
+.pd-modal {
+  position: relative;
+  background: #151a21;
+  border: 1px solid rgba(156, 255, 147, 0.18);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(156, 255, 147, 0.06);
+  width: min(500px, 94vw);
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: pd-modal-in 0.18s ease;
+}
+
+@keyframes pd-modal-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.pd-modal--sm {
+  width: min(400px, 92vw);
+  text-align: center;
+  padding: 2rem 1.8rem 1.6rem;
+  border-color: rgba(255, 77, 79, 0.25);
+}
+
+.pd-modal--danger {
+  border-color: rgba(255, 77, 79, 0.3);
+}
+
+/* ── Modal header ── */
+.pd-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.1rem 1.3rem 0.9rem 1.3rem;
+  border-bottom: 1px solid rgba(68, 72, 79, 0.4);
+  background: #1b2028;
+  gap: 0.75rem;
+}
+
+.pd-modal-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.pd-modal-header-right {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.pd-modal-id {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #9cff93;
+  margin: 0;
+}
+
+.pd-modal-fecha {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.72rem;
+  color: #a8abb3;
+  margin: 0;
+}
+
+.pd-modal-meta-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.pd-modal-totales {
+  text-align: right;
+}
+
+.pd-modal-total-label {
+  display: block;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  color: #a8abb3;
+  text-transform: uppercase;
+  margin-bottom: 0.1rem;
+}
+
+.pd-modal-total-valor {
+  display: block;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #9cff93;
+  line-height: 1;
+}
+
+/* ── Modal body ── */
+.pd-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.3rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 255, 147, 0.2) transparent;
+}
+
+.pd-modal-body::-webkit-scrollbar { width: 4px; }
+.pd-modal-body::-webkit-scrollbar-track { background: transparent; }
+.pd-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(156, 255, 147, 0.2);
+  border-radius: 2px;
+}
+
+.pd-modal-section-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #555a6a;
+  margin: 0 0 0.75rem 0;
+}
+
+/* ── Lista de productos en detalle ── */
+.pd-productos-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.pd-producto-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.55rem 0.85rem;
+  background: #0f141a;
+  border: 1px solid rgba(68, 72, 79, 0.3);
+  transition: background 0.12s, border-color 0.12s;
+  position: relative;
+}
+
+.pd-producto-item::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: rgba(156, 255, 147, 0.2);
+}
+
+.pd-producto-item:hover {
+  background: rgba(156, 255, 147, 0.03);
+  border-color: rgba(156, 255, 147, 0.1);
+}
+
+.pd-producto-nombre {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.82rem;
+  color: #d8dbe5;
+  flex: 1;
+  font-weight: 500;
+}
+
+.pd-producto-qty {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #555a6a;
+  min-width: 2rem;
+  text-align: center;
+}
+
+.pd-producto-precio {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #9cff93;
+}
+
+.pd-remove-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #555a6a;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  border-radius: 2px;
+  transition: color 0.18s, border-color 0.18s, background 0.18s;
+  flex-shrink: 0;
+}
+
+.pd-remove-btn:hover {
+  color: #ff4d4f;
+  border-color: rgba(255, 77, 79, 0.3);
+  background: rgba(255, 77, 79, 0.06);
+}
+
+.pd-productos-empty {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.7rem;
+  color: #555a6a;
+  letter-spacing: 0.1em;
+  padding: 1.5rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* ── Modal footer ── */
+.pd-modal-footer {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+  padding: 0.85rem 1.3rem;
+  border-top: 1px solid rgba(68, 72, 79, 0.4);
+  background: #1b2028;
+  flex-wrap: wrap;
+}
+
+/* ── Modal de confirmación (sm) ── */
+.pd-modal-warning-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.pd-modal-confirm-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f1f3fc;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: 0.02em;
+}
+
+.pd-modal-warn-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.8rem;
+  color: #a8abb3;
+  line-height: 1.65;
+  margin: 0 0 1.5rem 0;
+}
+
+.pd-modal-warn-text strong {
+  color: #ff4d4f;
+}
+
+.pd-modal-confirm-btns {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ════════════════════════════════════════
+   PANEL CARRITO (agregar / nuevo pedido)
+   ════════════════════════════════════════ */
+
+.pd-cart-panel {
+  position: relative;
+  background: #151a21;
+  border: 1px solid rgba(156, 255, 147, 0.15);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+  width: min(720px, 96vw);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: pd-modal-in 0.18s ease;
+}
+
+.pd-cart-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1rem 1.3rem;
+  background: #1b2028;
+  border-bottom: 1px solid rgba(68, 72, 79, 0.4);
+  flex-shrink: 0;
+}
+
+.pd-cart-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #f1f3fc;
+  margin: 0 0 0.2rem 0;
+  text-transform: uppercase;
+}
+
+.pd-cart-sub {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.68rem;
+  color: #a8abb3;
+  margin: 0;
+}
+
+/* ── Input bar de búsqueda ── */
+.pd-input-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  padding: 0.85rem 1.3rem;
+  background: #101519;
+  border-bottom: 1px solid rgba(68, 72, 79, 0.3);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.pd-search-group {
+  flex: 1;
+  min-width: 180px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.pd-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pd-search-wrap > svg {
+  position: absolute;
+  left: 0.6rem;
+  color: #555a6a;
+  pointer-events: none;
+}
+
+.pd-label {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.56rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #555a6a;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.pd-input {
+  width: 100%;
+  background: #0f141a;
+  color: #f1f3fc;
+  border: 1px solid rgba(68, 72, 79, 0.6);
+  padding: 0.42rem 0.7rem 0.42rem 2rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.78rem;
+  box-sizing: border-box;
+  transition: border-color 0.18s;
+}
+
+.pd-input:focus {
+  outline: none;
+  border-color: rgba(156, 255, 147, 0.4);
+}
+
+.pd-input--qty {
+  padding-left: 0.6rem;
+  width: 80px;
+}
+
+.pd-input--pago {
+  padding-left: 0.6rem;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* ── Sugerencias ── */
+.pd-suggestions {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: #1b2028;
+  border: 1px solid rgba(68, 72, 79, 0.55);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.pd-suggestion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+  transition: background 0.12s;
+  border-bottom: 1px solid rgba(68, 72, 79, 0.15);
+}
+
+.pd-suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.pd-suggestion-item:hover {
+  background: rgba(156, 255, 147, 0.07);
+}
+
+.pd-sug-name {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.8rem;
+  color: #d8dbe5;
+}
+
+.pd-sug-stock {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.62rem;
+  color: #555a6a;
+}
+
+/* ── Cantidad group ── */
+.pd-qty-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* ── Tabla carrito ── */
+.pd-table-wrap--cart {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+
+/* ── Controles de cantidad en carrito ── */
+.pd-qty-ctrl {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid rgba(68, 72, 79, 0.45);
+  background: #0f141a;
+  padding: 0.1rem 0.3rem;
+}
+
+.pd-qty-btn {
+  background: transparent;
+  border: none;
+  color: #9cff93;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.1rem 0.25rem;
+  transition: color 0.15s, background 0.15s;
+  border-radius: 1px;
+}
+
+.pd-qty-btn:hover {
+  background: rgba(156, 255, 147, 0.1);
+}
+
+.pd-qty-val {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #f1f3fc;
+  min-width: 1.4rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Botón eliminar del carrito ── */
+.pd-del-btn {
+  background: transparent;
+  border: none;
+  color: #555a6a;
+  cursor: pointer;
+  padding: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.18s;
+}
+
+.pd-del-btn:hover {
+  color: #ff4d4f;
+}
+
+/* ── Total carrito ── */
+.pd-cart-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1.3rem;
+  background: rgba(156, 255, 147, 0.04);
+  border-top: 1px solid rgba(156, 255, 147, 0.1);
+  flex-shrink: 0;
+}
+
+.pd-cart-total-label {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #555a6a;
+  text-transform: uppercase;
+}
+
+.pd-cart-total-valor {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+/* ── Cart footer ── */
+.pd-cart-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  padding: 0.85rem 1.3rem;
+  border-top: 1px solid rgba(68, 72, 79, 0.4);
+  background: #1b2028;
+  flex-shrink: 0;
+}
+
+/* ════════════════════════════════════════
+   MODAL CONFIRMAR PAGO
+   ════════════════════════════════════════ */
+
+.pd-pago-body {
+  padding: 1.2rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pd-pago-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(156, 255, 147, 0.04);
+  border: 1px solid rgba(156, 255, 147, 0.12);
+}
+
+.pd-pago-total-label {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #a8abb3;
+  text-transform: uppercase;
+}
+
+.pd-pago-total-valor {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #9cff93;
+}
+
+.pd-pay-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.pd-devuelta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid transparent;
+}
+
+.pd-devuelta--falta {
+  color: #ff4d4f;
+  background: rgba(255, 77, 79, 0.06);
+  border-color: rgba(255, 77, 79, 0.2);
+}
+
+.pd-devuelta--devuelve {
+  color: #9cff93;
+  background: rgba(156, 255, 147, 0.05);
+  border-color: rgba(156, 255, 147, 0.15);
+}
+
+.pd-devuelta-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pd-devuelta-valor {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+/* ════════════════════════════════════════
+   MODAL NUEVO PEDIDO — selector de mesa
+   ════════════════════════════════════════ */
+
+.pd-nuevo-mesa-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.85rem 1.3rem;
+  background: #101519;
+  border-bottom: 1px solid rgba(68, 72, 79, 0.3);
+  flex-shrink: 0;
+}
+
+.pd-select {
+  background: #0f141a;
+  color: #f1f3fc;
+  border: 1px solid rgba(68, 72, 79, 0.6);
+  padding: 0.42rem 2rem 0.42rem 0.6rem;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.78rem;
+  width: 100%;
+  max-width: 320px;
+  box-sizing: border-box;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%239cff93'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.55rem center;
+  transition: border-color 0.18s;
+}
+
+.pd-select:focus {
+  outline: none;
+  border-color: rgba(156, 255, 147, 0.4);
+}
+
+.pd-select option {
+  background: #0f141a;
+  color: #f1f3fc;
+}
+
+.pd-mesa-aviso {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.68rem;
+  color: #f59e0b;
+  margin: 0.25rem 0 0 0;
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .pd-page {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+  .pd-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .pd-header-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 600px) {
+  .pd-page {
+    padding: 0.75rem;
+    gap: 0.65rem;
+  }
+  .pd-title {
+    font-size: 1.4rem;
+  }
+  .pd-modal,
+  .pd-cart-panel {
+    width: 96vw;
+    max-height: 94vh;
+  }
+  .pd-modal-header {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .pd-modal-footer {
+    flex-direction: column-reverse;
+  }
+  .pd-modal-footer .pd-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .pd-cart-footer .pd-btn {
+    flex: 1;
+    justify-content: center;
+  }
+  .pd-input-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pd-input--qty {
+    width: 100%;
+  }
+  .pd-tabs {
+    overflow-x: auto;
+  }
+  .pd-td {
+    padding: 0.65rem 0.65rem;
+    font-size: 0.78rem;
+  }
+  .pd-th {
+    padding: 0.65rem 0.65rem;
+  }
+}
+
+/* ── Scanner ─────────────────────────────── */
+.pd-search-wrap .Scanner {
+  flex-shrink: 0;
+  cursor: pointer;
+  color: #555a6a;
+  transition: color 0.14s;
+  display: flex;
+  align-items: center;
+  padding: 0 0.3rem;
+}
+.pd-search-wrap .Scanner:hover { color: #9cff93; }
+.pd-search-wrap .pd-input {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+.Scan--active {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+}
