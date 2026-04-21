@@ -337,6 +337,10 @@
   top: 0;
   z-index: 5;
   background: #090d12;
+  align-items: center;
+}
+.pv-thead:first-child .pv-checkbox {
+  margin-left: 0.9rem;
 }
 
 .pv-th {
@@ -355,12 +359,12 @@
   border-left: 1px solid rgba(68, 72, 79, 0.08);
 }
 
-.pv-th--chk {
+.pv-th--chk .pv-td--chk {
   width: 42px;
   text-align: center;
 }
 
-.pv-th--idx {
+.pv-th--idx .pv-td--idx {
   width: 48px;
   text-align: center;
   color: #3a3f4b;
@@ -413,9 +417,17 @@
   box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
 }
 
+.pv-th--idx {
+  text-align: center;
+}
+
 /* Alternating rows */
 .pv-tr:nth-child(even) {
   background: rgba(255, 255, 255, 0.018);
+}
+
+.pv-th:last-child {
+  text-align: center;
 }
 
 /* Cells */
@@ -426,6 +438,37 @@
   color: #c2c9d4;
   border-bottom: 1px solid rgba(68, 72, 79, 0.2);
   vertical-align: middle;
+}
+.pv-td:last-child {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pv-td-btn {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
+  background: transparent;
+  border: 1px solid rgba(68, 72, 79, 0.6);
+  color: #a8abb3;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background 0.2s;
+  white-space: nowrap;
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.pv-td-btn:hover {
+  border-color: rgba(156, 255, 147, 0.4);
+  color: #9cff93;
+  background: rgba(156, 255, 147, 0.04);
 }
 
 .pv-td--chk {

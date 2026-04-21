@@ -15,7 +15,7 @@ export const ConsultarRegistros = async () => {
 
 export const CrearRegistro = async (cierreData) => {
   try {
-    const response = await api.porst("cierreCaja/", cierreData);
+    const response = await api.post("cierreCaja/", cierreData);
     return response.data;
   } catch (error) {
     console.log(

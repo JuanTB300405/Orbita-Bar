@@ -4,6 +4,7 @@ import { consultaDashboard } from "./dashboard";
 import { consultarIngresosExternos } from "./ingresosExternos";
 import { ConsultarVentas } from "./ventas";
 import { getEgresos } from "./egresosService";
+import { CrearRegistro } from "./cierreCajaBack";
 
 // Formatea número como $1.250.000 (estilo colombiano)
 const fmt = (valor) => {
@@ -67,11 +68,11 @@ export const generarCierreCajaPDF = async () => {
   // Egresos: sumar desde los registros filtrados del día
   const totalGastos = gastosHoy.reduce(
     (a, g) => a + parseFloat(g.precio || 0),
-    0
+    0,
   );
   const totalCompras = comprasHoy.reduce(
     (a, c) => a + parseFloat(c.precio || c.subtotal || 0),
-    0
+    0,
   );
   const totalEgresos = totalGastos + totalCompras;
 
@@ -120,7 +121,11 @@ export const generarCierreCajaPDF = async () => {
   const tableDefaults = {
     theme: "grid",
     styles: { fontSize: 9, cellPadding: 2.5 },
-    headStyles: { fillColor: HEADER_BG, textColor: [255, 255, 255], fontStyle: "bold" },
+    headStyles: {
+      fillColor: HEADER_BG,
+      textColor: [255, 255, 255],
+      fontStyle: "bold",
+    },
     margin: { left: 14, right: 14 },
   };
 
@@ -233,19 +238,13 @@ export const generarCierreCajaPDF = async () => {
       head: [["#", "Hora", "Productos", "Total", "Devuelta"]],
       body: ventasHoy.map((v, i) => {
         const horaVenta = v.fecha
-          ? v.fecha.split("T")[1]?.split(".")[0] ?? "--"
+          ? (v.fecha.split("T")[1]?.split(".")[0] ?? "--")
           : "--";
         const productos =
           v.detallesVentas
             ?.map((d) => `${d.producto?.nombre} x${d.cantidad}`)
             .join(", ") || "--";
-        return [
-          i + 1,
-          horaVenta,
-          productos,
-          fmt(v.total),
-          fmt(v.devuelta),
-        ];
+        return [i + 1, horaVenta, productos, fmt(v.total), fmt(v.devuelta)];
       }),
     });
     y = doc.lastAutoTable.finalY + 8;
@@ -294,8 +293,36 @@ export const generarCierreCajaPDF = async () => {
       `Orbita Bar — Cierre de caja ${hoy} — Página ${i} de ${totalPages}`,
       W / 2,
       doc.internal.pageSize.getHeight() - 8,
-      { align: "center" }
+      { align: "center" },
     );
+  }
+  // ── Guardar registro del cierre de caja ─────────────────
+  const cierreData = {
+    fecha: hoy,
+    hora: hora,
+    total_ventas: totalVentas,
+    total_propinas: totalPropinas,
+    total_descorches: totalDescorches,
+    total_otros: totalOtros,
+    total_ingresos: totalIngresos,
+    total_gastos: totalGastos,
+    total_compras: totalCompras,
+    total_egresos: totalEgresos,
+    balance_neto: balanceNeto,
+    conteo_deudores: dashboard.conteo_deudores || 0,
+    deuda_total: dashboard.deuda_total || 0,
+    num_ventas: ventasHoy.length,
+  };
+
+  try {
+    const response = await CrearRegistro(cierreData);
+    if (response) {
+      console.log("Registro de cierre de caja creado exitosamente", response);
+    } else {
+      console.log("Error al crear el registro de cierre de caja", response);
+    }
+  } catch (error) {
+    console.error("Excepción al crear el registro de cierre de caja", error);
   }
 
   // ── Descargar ─────────────────────────────────────────────
