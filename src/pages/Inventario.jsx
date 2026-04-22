@@ -405,7 +405,7 @@ const Inventario = () => {
     <>
       <div className="inv-page">
         {scanner && (
-          <div className="Scan--active">
+          <div className="Scanner--active">
             <BarcodeScanner
               onResult={(valor) => agregarProductoPorCodigo(valor)}
             />

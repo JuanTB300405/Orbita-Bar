@@ -154,12 +154,11 @@
 .Scan--inactive {
   display: none;
 }
-.Scan--active {
-  display: block;
+.Scanner--active {
   position: absolute;
-  top: 30%;
-  left: 40%;
-  z-index: 300;
+  z-index: 10000;
+  top: 0%;
+  left: 0%;
 }
 .hm-search-wrap:focus-within {
   border-color: rgba(156, 255, 147, 0.45);
@@ -906,7 +905,6 @@
   border-radius: 2px;
   padding: 0.1rem 0.5rem;
 }
-
 
 /* ── Mesa group ──────────────────────────────────────────── */
 .hm-mesa-group {

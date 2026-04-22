@@ -316,7 +316,7 @@ const Home = () => {
   return (
     <div className="hm-page">
       {scanner && (
-        <div className="Scan--active">
+        <div className="Scanner--active">
           <BarcodeScanner
             onResult={(valor) => agregarProductoPorCodigo(valor)}
           />

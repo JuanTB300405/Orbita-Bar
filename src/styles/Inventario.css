@@ -1167,15 +1167,11 @@
 .Scan--inactive {
   display: none;
 }
-.Scan--active {
-  display: block;
-  position: fixed;
-  top: 8%;
-  left: 3%;
-  z-index: 30000;
-  border: 2px solid rgba(156, 255, 147, 0.35);
-  box-shadow: 0 0 24px rgba(156, 255, 147, 0.12);
-  background: #0a0e14;
+.Scanner--active {
+  position: absolute;
+  z-index: 10000;
+  top: 0%;
+  left: 0%;
 }
 
 /* ── Scanner icon: estado escaneado con éxito ── */
